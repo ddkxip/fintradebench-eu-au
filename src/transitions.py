@@ -65,7 +65,9 @@ def classify(
     else:
         flow = "MIXED_FLOW"
 
-    prd = (rf.eu_norm >= high_eu_threshold
+    # absolute floor prevents the flag firing on trivial EU when the
+    # empirical top-tercile threshold degenerates toward 0
+    prd = (rf.eu_norm >= max(high_eu_threshold, 0.10)
            and max(rf.agent_gold_probs.values()) >= 0.5)
     cms = (max(r0.agent_gold_probs.values()) >= 0.5
            and r0.gold_prob < 0.5
