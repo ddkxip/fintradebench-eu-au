@@ -1,0 +1,26 @@
+{
+ "run_id": "gemini_subset16",
+ "model": "vertex:gemini-3.1-pro-preview",
+ "k": 10,
+ "tau": 0.7,
+ "rounds": 1,
+ "questions": [
+  "F1",
+  "F11",
+  "F12",
+  "F2",
+  "F25",
+  "F31",
+  "F44",
+  "FT1",
+  "FT10",
+  "FT12",
+  "FT2",
+  "FT25",
+  "FT31",
+  "T1",
+  "T10",
+  "T2"
+ ],
+ "seconds": 1441.6
+}
