@@ -1,0 +1,32 @@
+{
+ "run_id": "main_pilot20",
+ "model": "gemma4:latest",
+ "digest": "c6eb396dbd59",
+ "k_by_lane": {
+  "F": 10,
+  "FT": 10,
+  "T": 20
+ },
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "questions": [
+  "F1",
+  "F11",
+  "F12",
+  "F2",
+  "F25",
+  "F31",
+  "F44",
+  "T1",
+  "T2",
+  "T10",
+  "FT1",
+  "FT2",
+  "FT10",
+  "FT12",
+  "FT25",
+  "FT31"
+ ],
+ "seconds": 13261.6
+}
