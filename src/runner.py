@@ -96,6 +96,10 @@ def ollama_digest() -> str:
 
 def chat(system: str, user: str, temperature: float = TAU,
          timeout: int = 300, model: str = MODEL) -> str:
+    if model.startswith("vertex:"):
+        from .vertex import chat_vertex
+        return chat_vertex(system, user, model.split(":", 1)[1],
+                           temperature=temperature)
     payload = {
         "model": model,
         "messages": [{"role": "system", "content": system},
