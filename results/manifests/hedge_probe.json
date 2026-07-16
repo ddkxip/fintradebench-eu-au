@@ -1,0 +1,24 @@
+{
+ "run_id": "hedge_probe",
+ "model": "gemma4:latest",
+ "digest": "c6eb396dbd59",
+ "k": 10,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 0,
+ "questions": [
+  "F1",
+  "F11",
+  "FT1",
+  "FT2",
+  "FT10",
+  "FT12",
+  "FT25",
+  "FT31"
+ ],
+ "arms": [
+  "directional_menu",
+  "hedge_justified"
+ ],
+ "seconds": 1010.0
+}

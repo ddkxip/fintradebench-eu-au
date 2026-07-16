@@ -236,14 +236,18 @@ def run_question(schema: AnswerSchema, k: int, rounds: int = 1,
                 "k_eff_fundamental": k_eff.get("fundamental"),
                 "k_eff_trading": k_eff.get("trading"),
             })
-            if scoreable:
-                row.update({
-                    "gold_prob": gm.gold_prob, "correct": gm.correct,
-                    "brier": gm.brier, "nll": gm.nll,
-                    "agent_gold_prob_fundamental":
-                        float(dists["fundamental"][gi]),
-                    "agent_gold_prob_trading": float(dists["trading"][gi]),
-                })
+            # gold columns always present (None when unscoreable) so CSV
+            # appends stay rectangular across mixed-scoreability runs
+            row.update({
+                "gold_prob": gm.gold_prob if scoreable else None,
+                "correct": gm.correct if scoreable else None,
+                "brier": gm.brier if scoreable else None,
+                "nll": gm.nll if scoreable else None,
+                "agent_gold_prob_fundamental":
+                    float(dists["fundamental"][gi]) if scoreable else None,
+                "agent_gold_prob_trading":
+                    float(dists["trading"][gi]) if scoreable else None,
+            })
         else:
             row["error"] = "agent distribution unavailable (parse failure)"
         rows.append(row)

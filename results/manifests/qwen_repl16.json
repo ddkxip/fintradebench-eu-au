@@ -1,0 +1,31 @@
+{
+ "run_id": "qwen_repl16",
+ "model": "qwen3:8b",
+ "k_by_lane": {
+  "F": 10,
+  "FT": 10,
+  "T": 20
+ },
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "questions": [
+  "F1",
+  "F11",
+  "F12",
+  "F2",
+  "F25",
+  "F31",
+  "F44",
+  "FT1",
+  "FT10",
+  "FT12",
+  "FT2",
+  "FT25",
+  "FT31",
+  "T1",
+  "T10",
+  "T2"
+ ],
+ "seconds": 2888.1
+}
