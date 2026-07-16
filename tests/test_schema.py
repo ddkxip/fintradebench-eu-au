@@ -11,8 +11,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.schema import load_schemas, validate
 
-PILOT_TOTAL = 20
-PILOT_LANES = {"F": 7, "T": 7, "FT": 6}
+PILOT_TOTAL = 150
+PILOT_LANES = {"F": 50, "T": 50, "FT": 50}
 
 
 def test_load_and_validate_pilot():
@@ -34,7 +34,7 @@ def test_headline_exclusion_of_low_confidence():
             assert not s.headline_eligible, s.question_id
     eligible = [s for s in schemas.values() if s.headline_eligible]
     assert all(s.gold_label in s.answer_space for s in eligible)
-    assert len(eligible) >= 14  # pilot expectation: >= 70% reducible
+    assert len(eligible) >= 100  # 150-scale expectation
 
 
 def test_gold_labels_nonempty_for_eligible():

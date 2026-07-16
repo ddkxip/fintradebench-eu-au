@@ -26,6 +26,21 @@ class AnswerSchema:
     label_parse_rules: str = ""
     ambiguity_notes: str = ""
     schema_confidence: str = "low"
+    noncommit_labels: list[str] | None = None
+
+    DEFAULT_NONCOMMIT = ("mixed", "conditional", "insufficient_data",
+                         "none_clear")
+
+    @property
+    def noncommit_set(self) -> set[str]:
+        """Labels expressing non-commitment for this question.
+
+        Per-question override via `noncommit_labels`; default = the
+        standard non-committal labels intersected with the answer space.
+        """
+        if self.noncommit_labels is not None:
+            return set(self.noncommit_labels) & set(self.answer_space)
+        return set(self.DEFAULT_NONCOMMIT) & set(self.answer_space)
 
     @property
     def headline_eligible(self) -> bool:

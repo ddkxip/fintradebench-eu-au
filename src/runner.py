@@ -229,6 +229,17 @@ def run_question(schema: AnswerSchema, k: int, rounds: int = 1,
                 "tu_norm": d.tu_norm, "au_norm": d.au_norm, "eu_norm": d.eu_norm,
                 "eu_tu_ratio": d.eu / d.tu if d.tu > 0 else 0.0,
                 "predicted": schema.answer_space[int(np.argmax(d.p_sys))],
+                "p_noncommit": float(sum(
+                    d.p_sys[j] for j, y in enumerate(schema.answer_space)
+                    if y in schema.noncommit_set)),
+                "p_noncommit_fundamental": float(sum(
+                    dists["fundamental"][j]
+                    for j, y in enumerate(schema.answer_space)
+                    if y in schema.noncommit_set)),
+                "p_noncommit_trading": float(sum(
+                    dists["trading"][j]
+                    for j, y in enumerate(schema.answer_space)
+                    if y in schema.noncommit_set)),
                 "p_sys": json.dumps(dict(zip(schema.answer_space,
                                              np.round(d.p_sys, 4).tolist()))),
                 "agent_entropy_fundamental": d.agent_entropies.get("fundamental"),
