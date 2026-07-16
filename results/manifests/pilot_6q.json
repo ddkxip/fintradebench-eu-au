@@ -1,0 +1,19 @@
+{
+ "run_id": "pilot_6q",
+ "model": "gemma4:latest",
+ "digest": "c6eb396dbd59",
+ "k": 5,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 0,
+ "questions": [
+  "F11",
+  "F12",
+  "T2",
+  "T10",
+  "FT2",
+  "FT12"
+ ],
+ "seconds": 1263.7,
+ "n_decodes": 60
+}
