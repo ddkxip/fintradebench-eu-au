@@ -1,0 +1,15 @@
+{
+ "run_id": "ea_full_qwen3",
+ "model": "qwen3:8b",
+ "digest": "c6eb396dbd59",
+ "k_by_lane": {
+  "F": 10,
+  "FT": 10,
+  "T": 20
+ },
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "n_questions": 139,
+ "seconds": 24239.6
+}
