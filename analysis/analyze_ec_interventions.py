@@ -25,6 +25,7 @@ OUT = REPO / "analysis" / "source_intervention_pilot.md"
 
 ec = pd.read_csv(RES / "ec_interventions_gemma4" / "rows.csv")
 ec = ec[ec["round"] == 0].copy()
+ec = ec[ec["arm"].apply(lambda x: isinstance(x, str))].copy()  # drop parse-fail rows
 base = pd.read_csv(RES / "ea_full_gemma4" / "rows.csv")
 base = base[base["round"] == 0].set_index("question_id")
 

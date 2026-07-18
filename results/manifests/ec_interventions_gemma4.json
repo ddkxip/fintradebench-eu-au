@@ -1,0 +1,18 @@
+{
+ "run_id": "ec_interventions_gemma4",
+ "model": "gemma4:latest",
+ "digest": "c6eb396dbd59",
+ "k": 10,
+ "tau": 0.7,
+ "rounds": 0,
+ "n_questions": 30,
+ "arms": [
+  "remove_top",
+  "remove_placebo",
+  "inject_conflict",
+  "horizon_short",
+  "horizon_long"
+ ],
+ "control": "ea_full_gemma4 round 0",
+ "seconds": 8094.9
+}
