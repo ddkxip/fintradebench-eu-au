@@ -176,17 +176,20 @@ def modal_label_and_rationale(recs: list, schema: AnswerSchema) -> tuple[str, st
 
 def run_question(schema: AnswerSchema, k: int, rounds: int = 1,
                  raw_sink: list | None = None, model: str = MODEL,
-                 extra_instruction: str = "") -> list[dict]:
+                 extra_instruction: str = "", pack: EvidencePack | None = None,
+                 intervention: str = "") -> list[dict]:
     """Run one question; returns one row per round with EU/AU + gold metrics.
 
-    If schema.gold_label is not in schema.answer_space (e.g. hedge-gold
-    questions under a directional-only probe menu), gold metrics are
-    skipped and the row carries gold_scoreable = False.
+    If gold_label is not in the answer space (e.g. directional-only probe
+    menu) gold metrics are skipped and gold_scoreable = False. Pass a
+    pre-built (possibly edited) `pack` for interventions; otherwise the
+    oracle pack is built here.
     """
-    candidates = [y for y in schema.answer_space
-                  if y.isupper() and 2 <= len(y) <= 5]  # ticker labels
-    pack = build_pack(schema.question_id, schema.lane, schema.question,
-                      schema.golden_indicators, candidate_tickers=candidates)
+    if pack is None:
+        candidates = [y for y in schema.answer_space
+                      if y.isupper() and 2 <= len(y) <= 5]  # ticker labels
+        pack = build_pack(schema.question_id, schema.lane, schema.question,
+                          schema.golden_indicators, candidate_tickers=candidates)
 
     kw = {"model": model, "extra_instruction": extra_instruction}
     rows = []
@@ -216,7 +219,7 @@ def run_question(schema: AnswerSchema, k: int, rounds: int = 1,
                 k_eff[a] = len(labs)
         row = {"question_id": schema.question_id, "lane": schema.lane,
                "answer_type": schema.answer_type, "round": t, "K": k,
-               "evidence_mode": pack.evidence_mode,
+               "evidence_mode": pack.evidence_mode, "intervention": intervention,
                "coverage_incomplete": pack.coverage_incomplete,
                "tickers": "|".join(pack.tickers),
                "parse_rate": parse_ok / parse_tot if parse_tot else 0.0}
