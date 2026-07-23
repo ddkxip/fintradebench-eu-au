@@ -21,6 +21,14 @@ consistent *and* more non-committal — confidence laundering into hedges.
 
 ## 3. The central UQ result: categorical beats distributional uncertainty
 
+> **REFINED — see NONCOMMIT_ERROR_DECOMPOSITION_FINDINGS.md.** The
+> comparison below stands, but the *interpretation* is narrower than
+> originally written: p_noncommit wins because ~62% of errors are hedge
+> collisions (committed gold, non-committal prediction), a substantially
+> mechanical relationship. It carries no signal among committed
+> predictions (AUROC ≈0.40–0.45) and inverts on non-committal-gold items.
+> Describe it as a hedge-collision detector, not a general error predictor.
+
 Error-prediction AUROC (final round):
 
 | predictor | gemma4 | qwen3 |

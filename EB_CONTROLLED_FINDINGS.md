@@ -6,6 +6,12 @@ all 39 reported coefficients. Reading below is deliberately conservative.
 
 ## The four results that survive FDR (q < 0.05)
 
+> **REFINED — see NONCOMMIT_ERROR_DECOMPOSITION_FINDINGS.md.** The
+> estimate below is unaffected, but the single-slope specification is
+> misspecified: adding a p_noncommit × noncommit_is_gold interaction
+> flips the slope from +4.33 (committed gold) to −13.17 (non-committal
+> gold) and lifts pseudo-R² from 0.10 to 0.40. Report the interaction.
+
 1. **p_noncommit predicts error, net of TU and lane, in BOTH models**
    (gemma4 β=+1.82, q=0.012; qwen3 β=+1.58, q=0.016). This is the
    headline UQ claim confirmed under controls: the mass an item places on
