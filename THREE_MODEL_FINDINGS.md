@@ -1,5 +1,12 @@
 # THREE_MODEL_FINDINGS — capability transforms the attractor; it does not fix accuracy
 
+> **EXTENDED to four models — see HF_QWEN36_FULL_FINDINGS.md.** Adding
+> Qwen3.6-27B-FP8 (full 139-q run) shows the two-regime (small-vs-capable)
+> story is really a **model×lane** map: qwen3.6-27b commits on F (0.61
+> acc, best of any model) but hedges on FT (pNC 0.74) — capability buys
+> commitment except on the cross-signal-conflict lane. The universal
+> regularities below still hold across all four models.
+
 Shared 16 questions, R0+R1: gemma4 (K=10/20), qwen3:8b (K=10/20),
 gemini-3.1-pro-preview (K=10, Vertex). Tables:
 results/three_model_comparison.md. n=16 — directions, not powered claims.

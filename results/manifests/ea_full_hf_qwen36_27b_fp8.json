@@ -1,0 +1,15 @@
+{
+ "run_id": "ea_full_hf_qwen36_27b_fp8",
+ "model": "vllm:Qwen/Qwen3.6-27B-FP8",
+ "digest": "unknown",
+ "k_by_lane": {
+  "F": 10,
+  "FT": 10,
+  "T": 20
+ },
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "n_questions": 139,
+ "seconds": 5557.2
+}
