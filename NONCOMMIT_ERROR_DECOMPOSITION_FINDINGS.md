@@ -1,5 +1,14 @@
 # NONCOMMIT_ERROR_DECOMPOSITION_FINDINGS
 
+> **VALIDATED by independent blinded annotators — see
+> INTERANNOTATOR_FINDINGS.md.** Codex and Antigravity independently
+> re-adjudicated gold commitment on a blinded sheet (Cohen's κ 0.59,
+> Fleiss 0.53, disagreeing with the schema on 30/139 in opposite
+> lane-directions). Hedge collision stays the modal error mode (55–62%)
+> and p_noncommit stays a hedge-collision detector (committed-cell AUROC
+> 0.42–0.46 ≈ chance) under every annotator, majority vote, and blinded
+> consensus. The conclusion below is robust to who classifies commitment.
+
 Reanalysis only (no new model calls). Tables:
 analysis/noncommit_error_decomposition.md; per-row data:
 analysis/noncommit_decomposition_rows.csv. Primary set = gemma4 + qwen3

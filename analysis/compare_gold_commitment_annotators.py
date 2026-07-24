@@ -156,23 +156,47 @@ def fleiss_kappa(maps, keys):
     return (Pbar - Pe) / (1 - Pe) if Pe < 1 else float("nan")
 
 
+# the two genuinely blinded, independent external annotators
+BLINDED = [n for n in ("codex", "antigravity") if n in anns]
+
 A.append("\n## Pairwise agreement + Cohen's kappa (binary commitment)\n")
-if len(active) >= 2:
-    A.append("| pair | n common | exact-label agree | commit agree | Cohen kappa |")
-    A.append("|---|---|---|---|---|")
-    for x, y in combinations(active, 2):
+A.append("All present annotator pairs, computed on their complete-case "
+         "overlap. `fable` is the analyst's own non-blinded audit (≈schema); "
+         "`codex`/`antigravity` are the independent blinded external raters; "
+         "`human` is partial (low n).\n")
+present = list(anns)
+if len(present) >= 2:
+    A.append("| pair | n common | exact-label agree | commit agree | Cohen kappa | note |")
+    A.append("|---|---|---|---|---|---|")
+    for x, y in combinations(present, 2):
         keys = [q for q in QIDS if q in anns[x]["map"] and q in anns[y]["map"]]
+        if len(keys) < 5:
+            continue
         lab_ag = np.mean([anns[x]["map"][q][0] == anns[y]["map"][q][0] for q in keys])
         po, k = cohen_kappa(anns[x]["map"], anns[y]["map"], keys)
-        A.append(f"| {x} vs {y} | {len(keys)} | {lab_ag:.3f} | {po:.3f} | {k:.3f} |")
+        note = ""
+        if {x, y} == set(BLINDED):
+            note = "**independent blinded pair**"
+        elif len(keys) < 0.5 * len(QIDS):
+            note = "low-n (partial annotator)"
+        elif "fable" in (x, y):
+            note = "vs non-blinded self-audit"
+        A.append(f"| {x} vs {y} | {len(keys)} | {lab_ag:.3f} | {po:.3f} | "
+                 f"{k:.3f} | {note} |")
     common = [q for q in QIDS if all(q in anns[n]["map"] for n in active)]
     fk = fleiss_kappa([anns[n]["map"] for n in active], common)
-    A.append(f"\n**Fleiss' kappa across {len(active)} active annotators "
-             f"(n={len(common)} complete items): {fk:.3f}.**")
+    A.append(f"\n**Fleiss' kappa across the {len(active)} active annotators "
+             f"({', '.join(active)}; n={len(common)} complete items): "
+             f"{fk:.3f}.**")
+    if len(BLINDED) == 2:
+        bkeys = [q for q in QIDS if q in anns[BLINDED[0]]["map"]
+                 and q in anns[BLINDED[1]]["map"]]
+        bpo, bk = cohen_kappa(anns[BLINDED[0]]["map"], anns[BLINDED[1]]["map"], bkeys)
+        A.append(f"\n**Headline (independent blinded pair, codex vs "
+                 f"antigravity, n={len(bkeys)}): commitment agreement "
+                 f"{bpo:.3f}, Cohen kappa {bk:.3f}.**")
 else:
-    A.append("_Pending: fewer than two active annotators. Cohen's / Fleiss' "
-             "kappa cannot be computed until the blinded external annotations "
-             "(codex, antigravity) are supplied._")
+    A.append("_Fewer than two annotators present._")
 
 # disagreements + majority vote (across active annotators)
 A.append("\n## Commitment disagreements and majority vote\n")
@@ -262,6 +286,17 @@ for n in ("fable", "codex", "antigravity"):
                          (lambda mm: (lambda q: mm.get(q, (schemas[q].gold_label, None))[0]))(m)))
 if len(active) >= 2:
     versions.append(("E_majority", lambda q: maj[q], lambda q: schemas[q].gold_label))
+# F: strict independent-blinded consensus — use codex/antigravity value only
+# where they AGREE; where they disagree, fall back to schema (conservative).
+if len(BLINDED) == 2:
+    cx, ag = anns[BLINDED[0]]["map"], anns[BLINDED[1]]["map"]
+
+    def blinded_consensus(q):
+        a = cx.get(q, (None, None))[1]
+        b = ag.get(q, (None, None))[1]
+        return a if (a is not None and a == b) else schema_commit(q)
+    versions.append(("F_blinded_consensus", blinded_consensus,
+                     lambda q: schemas[q].gold_label))
 
 D = ["# Non-commitment error decomposition — multi-annotator\n",
      f"Primary set = gemma4 + qwen3:8b final rows (n={len(df)}). Reanalysis "
@@ -271,7 +306,8 @@ D.append("|---|---|---|---|---|---|---|")
 results = {}
 for name, commit_of, label_of in versions:
     sh, auc, ncell = decompose(commit_of, label_of)
-    survives = (sh["hedge_collision"] >= 0.30
+    is_modal = sh["hedge_collision"] == max(sh.values())
+    survives = (sh["hedge_collision"] >= 0.30 and is_modal
                 and (np.isnan(auc) or auc < 0.55))
     results[name] = (sh, auc, survives)
     D.append(f"| {name} | {sh['hedge_collision']} | {sh['overcommitment']} | "
