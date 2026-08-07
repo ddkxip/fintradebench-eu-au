@@ -9,6 +9,19 @@
 > vs −8.90 non-committal-gold, p=1.7e-10, pseudo-R² 0.152→0.388, n=556).
 > Holds under majority-vote commitment too (modal 4/4, 0.468–0.610).
 
+> **⚠ NARROWED by the FinanceBench oracle run — see
+> `analysis/financebench/FINANCEBENCH_YESNO_ORACLE_FINDINGS.md` §7.2.**
+> The "no wrong-direction signal" half of the conclusion rested on
+> chance-level committed-cell AUROC (0.40–0.45) across four FinTradeBench
+> models. On FinanceBench the same cell gives **0.815**, and the diagnostic
+> shows why: in FinTradeBench residual hedge mass in that cell was
+> compressed near zero (sd 0.17, mean 0.08) so there was nothing to rank —
+> the chance result was substantially a **degeneracy artifact**. Corrected
+> claim: p_noncommit carries wrong-direction signal *only where residual
+> non-commitment mass has variance*; in near-degenerate small-model regimes
+> that variance vanishes. (FinanceBench n=18 in that cell — small; awaiting
+> the 27B run.)
+
 > **VALIDATED by independent blinded annotators — see
 > INTERANNOTATOR_FINDINGS.md.** Codex and Antigravity independently
 > re-adjudicated gold commitment on a blinded sheet (Cohen's κ 0.59,

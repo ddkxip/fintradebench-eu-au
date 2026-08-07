@@ -1,0 +1,23 @@
+{
+ "run_id": "financebench_yesno_oracle_local_qwen3_8b",
+ "model": "ollama:qwen3:8b",
+ "k": 10,
+ "tau": 0.7,
+ "rounds": 1,
+ "evidence_field": "evidence_text",
+ "n_examples": 37,
+ "answer_space": [
+  "yes",
+  "no",
+  "insufficient_data"
+ ],
+ "noncommit_set": [
+  "insufficient_data"
+ ],
+ "agents": [
+  "evidence_accountant",
+  "skeptical_auditor"
+ ],
+ "workers": 4,
+ "seconds": 3357.8
+}
