@@ -105,14 +105,22 @@ def chat(system: str, user: str, model: str, temperature: float = TAU,
                          {"role": "user", "content": user}],
             "temperature": float(temperature),
             "max_tokens": 512,
-            "response_format": {"type": "json_object"},
         }
+        if not os.environ.get("VLLM_NO_JSON_MODE"):
+            # some vLLM builds reject response_format -> set VLLM_NO_JSON_MODE=1
+            payload["response_format"] = {"type": "json_object"}
         req = urllib.request.Request(
             f"{base}/chat/completions", data=json.dumps(payload).encode(),
             headers={"Content-Type": "application/json",
                      "Authorization": f"Bearer {os.environ.get('VLLM_API_KEY', 'EMPTY')}"})
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            obj = json.loads(r.read().decode())
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                obj = json.loads(r.read().decode())
+        except urllib.error.HTTPError as e:  # surface the server's message
+            body = e.read().decode(errors="replace")[:500]
+            raise RuntimeError(f"vLLM HTTP {e.code} from {base}: {body}") from None
+        except Exception as e:
+            raise RuntimeError(f"vLLM request to {base} failed: {e}") from None
         return obj["choices"][0]["message"]["content"]
     # ollama (default)
     name = model.split(":", 1)[1] if model.startswith("ollama:") else model
@@ -257,6 +265,31 @@ def main() -> None:
         print("DRY RUN COMPLETE — no model was called.")
         return
 
+    # ── preflight: one live call, fail LOUDLY before spending the run ───
+    print(f"[preflight] testing backend with 1 call to {a.model} ...", flush=True)
+    probe = build_prompts(schs[0], a.evidence_field)["evidence_accountant"]
+    try:
+        raw = chat(probe["system"], probe["user"], model=a.model, timeout=180)
+    except Exception as exc:
+        raise SystemExit(
+            f"\n[PREFLIGHT FAILED] backend call raised:\n  {exc}\n\n"
+            "Common fixes:\n"
+            "  * vLLM not reachable  -> check VLLM_BASE_URL (currently "
+            f"{os.environ.get('VLLM_BASE_URL', 'http://localhost:8000/v1')})\n"
+            "  * model id mismatch   -> must match what the server reports at "
+            "GET /v1/models\n"
+            "  * 400 on response_format -> export VLLM_NO_JSON_MODE=1\n"
+            "No output was written.")
+    lab, method = parse_label(raw)
+    print(f"[preflight] raw (first 200 chars): {str(raw)[:200]!r}")
+    print(f"[preflight] parsed -> label={lab!r} method={method}")
+    if lab is None:
+        raise SystemExit(
+            "\n[PREFLIGHT FAILED] the backend responded but the output could "
+            "not be parsed into a label. Inspect the raw text above. "
+            "No output was written.")
+    print("[preflight] OK\n", flush=True)
+
     # ── real run ────────────────────────────────────────────────────────
     import pandas as pd
     out_dir = REPO / "results" / a.run_id
@@ -335,6 +368,23 @@ def main() -> None:
                                  "eu": dec.eu_norm,
                                  "p_sys": json.dumps(dict(zip(ANSWER_SPACE,
                                                               np.round(dec.p_sys, 4).tolist())))})
+        # never write silence: if nothing parsed, say why and stop
+        n_err = sum(1 for r in sink if str(r["raw_text"]).startswith("__ERROR__"))
+        if not out_rows:
+            first_err = next((r["raw_text"] for r in sink
+                              if str(r["raw_text"]).startswith("__ERROR__")), None)
+            with (raw_dir / "decodes.jsonl").open("a", encoding="utf-8") as f:
+                for r in sink:
+                    f.write(json.dumps(r) + "\n")
+            raise SystemExit(
+                f"\n[ABORT] {sch['financebench_id']} produced no parseable "
+                f"labels ({n_err}/{len(sink)} decodes errored).\n"
+                f"first error: {first_err}\n"
+                f"raw decodes saved to {raw_dir/'decodes.jsonl'} for inspection.\n"
+                "Nothing further was written.")
+        if n_err:
+            print(f"  [warn] {n_err}/{len(sink)} decodes errored this question",
+                  flush=True)
         df = pd.DataFrame(out_rows)
         df.to_csv(rows_path, mode="a", header=not rows_path.exists(), index=False)
         with (raw_dir / "decodes.jsonl").open("a", encoding="utf-8") as f:
