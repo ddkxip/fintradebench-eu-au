@@ -1,5 +1,14 @@
 # NONCOMMIT_ERROR_DECOMPOSITION_FINDINGS
 
+> **EXTENDED to 4 models — see
+> `analysis/noncommit_error_decomposition_allmodels.md`.** Adding
+> qwen3.6-27b and gemma4-31b-it: hedge_collision is the modal error type in
+> **4/4 models** (0.506–0.670; pooled 57.2%), the non-mechanical
+> committed∧committed cell is at/below chance in **4/4** (AUROC 0.403–0.446),
+> and the sign-flipping interaction strengthens (slope +5.12 committed-gold
+> vs −8.90 non-committal-gold, p=1.7e-10, pseudo-R² 0.152→0.388, n=556).
+> Holds under majority-vote commitment too (modal 4/4, 0.468–0.610).
+
 > **VALIDATED by independent blinded annotators — see
 > INTERANNOTATOR_FINDINGS.md.** Codex and Antigravity independently
 > re-adjudicated gold commitment on a blinded sheet (Cohen's κ 0.59,
