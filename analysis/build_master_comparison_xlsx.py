@@ -18,9 +18,11 @@ import re
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
+from scipy import stats
 
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
@@ -124,10 +126,37 @@ MODELS = [("ea_full_gemma4", "gemma4"), ("ea_full_qwen3", "qwen3_8b"),
           ("ea_full_hf_qwen36_27b_fp8", "qwen3.6_27b"),
           ("ea_full_hf_gemma_4_31B_it", "gemma4_31b_it"),
           ("gemini_subset16", "gemini_3.1_pro")]
+def err_type(noncommit_gold, pred_nc, correct):
+    """Same taxonomy as noncommit_error_decomposition_allmodels.py."""
+    if correct:
+        return "correct_noncommit" if (noncommit_gold and pred_nc) else "correct_committed"
+    if not noncommit_gold and pred_nc:
+        return "hedge_collision"
+    if noncommit_gold and not pred_nc:
+        return "overcommitment"
+    if not noncommit_gold and not pred_nc:
+        return "wrong_direction_commitment"
+    return "wrong_noncommit_type"
+
+
+def cell_of(noncommit_gold, pred_nc):
+    g = "noncommit_gold" if noncommit_gold else "committed_gold"
+    p = "noncommit_pred" if pred_nc else "committed_pred"
+    return f"{g}__{p}"
+
+
 mp = {s.question_id: {"question_id": s.question_id, "lane": s.lane,
                       "gold_label": s.gold_label,
                       "schema_commitment": schema_commit(s.question_id)}
       for s in ELIG}
+# per-question x per-model decomposition detail
+decomp = {s.question_id: {
+    "question_id": s.question_id, "lane": s.lane,
+    "answer_type": s.answer_type, "gold_label": s.gold_label,
+    "schema_commitment": schema_commit(s.question_id),
+    "noncommit_is_gold": schema_commit(s.question_id) == "noncommitted",
+} for s in ELIG}
+
 for run, name in MODELS:
     p = RES / run / "rows.csv"
     if not p.exists():
@@ -136,13 +165,69 @@ for run, name in MODELS:
     d = d[d["round"] == 1]
     for _, r in d.iterrows():
         q = str(r["question_id"])
-        if q in mp:
-            pred = r["predicted"] if pd.notna(r["predicted"]) else ""
-            corr = "" if pd.isna(r["correct"]) else ("Y" if r["correct"] else "N")
-            mp[q][f"{name}_pred"] = pred
-            mp[q][f"{name}_ok"] = corr
-            mp[q][f"{name}_pNC"] = round(float(r["p_noncommit"]), 3) if pd.notna(r.get("p_noncommit")) else ""
+        if q not in mp:
+            continue
+        pred = r["predicted"] if pd.notna(r["predicted"]) else ""
+        corr = "" if pd.isna(r["correct"]) else ("Y" if r["correct"] else "N")
+        pnc = round(float(r["p_noncommit"]), 3) if pd.notna(r.get("p_noncommit")) else ""
+        ncg = schema_commit(q) == "noncommitted"
+        pred_nc = str(pred) in schemas[q].noncommit_set
+        et = err_type(ncg, pred_nc, r["correct"]) if pd.notna(r["correct"]) else ""
+        mp[q][f"{name}_pred"] = pred
+        mp[q][f"{name}_ok"] = corr
+        mp[q][f"{name}_pNC"] = pnc
+        mp[q][f"{name}_errtype"] = et
+        decomp[q][f"{name}_pred"] = pred
+        decomp[q][f"{name}_pred_is_noncommit"] = "Y" if pred_nc else "N"
+        decomp[q][f"{name}_cell"] = cell_of(ncg, pred_nc)
+        decomp[q][f"{name}_errtype"] = et
 models = pd.DataFrame(list(mp.values()))
+decomposition = pd.DataFrame(list(decomp.values()))
+
+# ── decomposition summary tables (per model) ────────────────────────────
+ETYPES = ["hedge_collision", "wrong_direction_commitment",
+          "overcommitment", "wrong_noncommit_type"]
+summ_rows = []
+for run, name in MODELS:
+    p = RES / run / "rows.csv"
+    if not p.exists():
+        continue
+    d = pd.read_csv(p)
+    d = d[(d["round"] == 1) & d["correct"].notna()].copy()
+    d["ncg"] = d["question_id"].map(lambda q: schema_commit(q) == "noncommitted")
+    d["pnc_pred"] = d.apply(
+        lambda r: str(r["predicted"]) in schemas[r["question_id"]].noncommit_set, axis=1)
+    d["et"] = d.apply(lambda r: err_type(r["ncg"], r["pnc_pred"], r["correct"]), axis=1)
+    e = d[~d["correct"].astype(bool)]
+    row = {"model": name, "n_questions": len(d),
+           "R1_accuracy": round(float(d["correct"].mean()), 3),
+           "n_errors": len(e)}
+    for k in ETYPES:
+        row[f"share_{k}"] = round(float((e["et"] == k).mean()), 3) if len(e) else np.nan
+    # AUROC splits
+    y = (~d["correct"].astype(bool)).astype(int).values
+    cg = d[~d["ncg"]]
+    ncgs = d[d["ncg"]]
+    cc = d[(~d["ncg"]) & (~d["pnc_pred"])]
+
+    def _auc(sub):
+        yy = (~sub["correct"].astype(bool)).astype(int).values
+        ss = sub["p_noncommit"].values
+        n1, n0 = int(yy.sum()), len(yy) - int(yy.sum())
+        if n1 == 0 or n0 == 0 or len(sub) < 8:
+            return np.nan
+        rr = stats.rankdata(ss)
+        return round(float((rr[yy == 1].sum() - n1 * (n1 + 1) / 2) / (n1 * n0)), 3)
+
+    row["AUROC_pNC_all"] = _auc(d)
+    row["AUROC_pNC_committed_gold"] = _auc(cg)
+    row["AUROC_pNC_noncommit_gold"] = _auc(ncgs)
+    row["AUROC_pNC_commit_cell_NONMECHANICAL"] = _auc(cc)
+    hedged = ncgs[ncgs["pnc_pred"]]
+    row["correct_noncommit_rate"] = (round(float(hedged["correct"].mean()), 3)
+                                     if len(hedged) else np.nan)
+    summ_rows.append(row)
+decomp_summary = pd.DataFrame(summ_rows)
 
 # ── Sheet 3: disagreements only ─────────────────────────────────────────
 dis = main[main["commitment_disagreement"] == "YES"][[
@@ -163,7 +248,11 @@ legend = pd.DataFrame([
     ("<annot>_label/_commitment/_conf/_notes", "Each annotator's raw judgement. fable = analyst self-audit (non-blinded; blanks fall back to schema). codex/antigravity = independent BLINDED external raters (139/139). human = partial (~38/139)."),
     ("majority_commitment", "Majority over fable(+schema fallback)/codex/antigravity; tie -> schema"),
     ("commitment_disagreement", "YES if the 3 covered annotators do not all agree on commitment"),
-    ("model_predictions sheet", "Each debate model's final-round predicted label, correctness (Y/N), and p_noncommit vs the gold"),
+    ("model_predictions sheet", "Each debate model's final-round predicted label, correctness (Y/N), p_noncommit, and error type vs the gold"),
+    ("<model>_errtype", "Non-commitment decomposition class: hedge_collision (committed gold, non-committal prediction) | wrong_direction_commitment (committed gold, committed but wrong) | overcommitment (non-committal gold, committed prediction) | wrong_noncommit_type (both non-committal, wrong one) | correct_committed | correct_noncommit"),
+    ("<model>_cell", "Commitment cell: {committed_gold|noncommit_gold}__{committed_pred|noncommit_pred}. The committed_gold__committed_pred cell is the NON-MECHANICAL one (p_noncommit not definitionally tied to the outcome)"),
+    ("error_decomposition sheet", "Per-question x per-model decomposition detail (prediction, is-noncommit flag, cell, error type)"),
+    ("decomposition_summary sheet", "Per-model error-type shares + p_noncommit AUROC splits. Key row: AUROC_pNC_commit_cell_NONMECHANICAL ~0.40-0.45 (chance) in every model = p_noncommit carries NO wrong-direction signal"),
     ("NOTE", "Reanalysis snapshot 2026-07-18. Codex vs Antigravity commit agreement 86.3%, Cohen kappa 0.590; Fleiss 0.531. Hedge-collision conclusion survives all annotator versions."),
 ], columns=["column", "meaning"])
 
@@ -182,6 +271,8 @@ DISFILL = PatternFill("solid", fgColor="FCE4D6")
 with pd.ExcelWriter(OUT, engine="openpyxl") as xw:
     main.to_excel(xw, sheet_name="gold_and_annotators", index=False)
     models.to_excel(xw, sheet_name="model_predictions", index=False)
+    decomposition.to_excel(xw, sheet_name="error_decomposition", index=False)
+    decomp_summary.to_excel(xw, sheet_name="decomposition_summary", index=False)
     dis.to_excel(xw, sheet_name="commitment_disagreements", index=False)
     legend.to_excel(xw, sheet_name="legend", index=False)
     for sh in xw.book.worksheets:
@@ -209,6 +300,27 @@ with pd.ExcelWriter(OUT, engine="openpyxl") as xw:
         if ws.cell(r, dcol).value == "YES":
             for c in range(1, ws.max_column + 1):
                 ws.cell(r, c).fill = DISFILL
+
+    # colour-code error types so the decomposition is scannable
+    ETFILL = {
+        "hedge_collision": PatternFill("solid", fgColor="FFC7CE"),        # red
+        "wrong_direction_commitment": PatternFill("solid", fgColor="FFEB9C"),  # amber
+        "overcommitment": PatternFill("solid", fgColor="D9D2E9"),         # purple
+        "wrong_noncommit_type": PatternFill("solid", fgColor="F4CCCC"),   # pink
+        "correct_committed": PatternFill("solid", fgColor="C6EFCE"),      # green
+        "correct_noncommit": PatternFill("solid", fgColor="D9EAD3"),      # light green
+    }
+    for sheet in ("model_predictions", "error_decomposition"):
+        ws = xw.book[sheet]
+        headers = [c.value for c in ws[1]]
+        for i, h in enumerate(headers, 1):
+            if not (h and str(h).endswith("_errtype")):
+                continue
+            for r in range(2, ws.max_row + 1):
+                cell = ws.cell(r, i)
+                f = ETFILL.get(str(cell.value))
+                if f:
+                    cell.fill = f
 
 print(f"wrote {OUT}")
 print(f"  gold_and_annotators: {len(main)} rows x {len(main.columns)} cols; "
