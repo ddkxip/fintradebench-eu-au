@@ -5,6 +5,12 @@ Parse 99.8% overall; zero failed questions; gemma4 + qwen3:8b ≈ 14h total.
 
 ## 1. The AU-reduction law is now highly significant — the program's anchor result
 
+> **SCOPED (5th model, HF_GEMMA4_31B_FULL_FINDINGS.md):** holds for the four
+> models with AU headroom, but `gemma4-31b-it` (R1 AU 0.012, 77% degenerate)
+> shows dAU n.s. and dEU *up*. Corrected: debate reduces within-agent
+> instability **where it exists**; on near-deterministic agents it increases
+> between-agent divergence instead.
+
 Debate (one exchange round) reduces within-agent instability in both
 models: **dAU gemma4 −0.091 (Wilcoxon p = 8.9e-09), qwen3 −0.070
 (p = 3.3e-07)**, while dEU ≈ 0 (p = 0.80/0.86). With the gemini-16 result

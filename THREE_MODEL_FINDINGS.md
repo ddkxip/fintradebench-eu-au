@@ -66,7 +66,9 @@ The clean two-regime narrative:
   disagreements with the gold and evidence-caution abstentions —
   accuracy does not rise.
 
-Plus the universal AU-reduction law across regimes. This is a richer and
+Plus the AU-reduction law across regimes (now scoped to models with AU
+headroom — gemma4-31b-it is the boundary case; see
+HF_GEMMA4_31B_FULL_FINDINGS.md). This is a richer and
 more defensible contribution than either "attractor" or "capability
 fixes it" alone — and it surfaces a benchmark-side insight: several
 gemini "errors" are epistemically defensible readings (F31 abstention;

@@ -122,6 +122,7 @@ main = pd.DataFrame(rows)
 # ── Sheet 2: model predictions ──────────────────────────────────────────
 MODELS = [("ea_full_gemma4", "gemma4"), ("ea_full_qwen3", "qwen3_8b"),
           ("ea_full_hf_qwen36_27b_fp8", "qwen3.6_27b"),
+          ("ea_full_hf_gemma_4_31B_it", "gemma4_31b_it"),
           ("gemini_subset16", "gemini_3.1_pro")]
 mp = {s.question_id: {"question_id": s.question_id, "lane": s.lane,
                       "gold_label": s.gold_label,

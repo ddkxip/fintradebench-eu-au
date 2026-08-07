@@ -70,7 +70,7 @@ claim; treat the model×lane breakdown as exploratory.
 |---|---|
 | p_noncommit predicts error (net of TU, lane) | **CONFIRMED, both models, FDR** |
 | Categorical > distributional uncertainty | **CONFIRMED** (TU null/inverted) |
-| Debate reduces AU | **CONFIRMED** (Wilcoxon p<1e-6 both; 3-model) |
+| Debate reduces AU | **CONFIRMED where AU headroom exists** (p<1e-6 both here; 4/5 models). Exception: gemma4-31b-it (near-deterministic, dAU n.s., dEU up) — see HF_GEMMA4_31B_FULL_FINDINGS.md |
 | Debate improvement predictable from uncertainty | **REJECTED** (Q4 all null) |
 | T-higher-AU | **gemma-only**, survives matched-K; qwen null |
 | FT-higher-EU | **REJECTED** both models |

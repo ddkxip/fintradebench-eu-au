@@ -190,6 +190,14 @@ EU; (iii) p_noncommit is a hedge-collision detector with no
 committed-cell signal; (iv) T-lane errors are dominated by
 wrong-direction commitment, invisible to every uncertainty signal.
 
+> **CORRECTION (5th model, see HF_GEMMA4_31B_FULL_FINDINGS.md):** claim (ii)
+> as stated is too strong. `gemma4-31b-it` shows dAU = −0.005 (n.s.) and a
+> *significant* dEU = +0.036 — because it has no AU headroom (R1 AU 0.012,
+> 77% degenerate rows). Corrected law: **debate reduces within-agent
+> instability where such instability exists; where agents are already
+> near-deterministic it instead increases between-agent divergence (EU).**
+> Claims (i), (iii), (iv) hold across all five models.
+
 ---
 
 ## Paper impact (tables/figures updated)
