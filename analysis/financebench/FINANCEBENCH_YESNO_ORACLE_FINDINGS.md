@@ -165,3 +165,35 @@ narrowed claim in §7.2 stands and is carried into
 All other numbers in this document were re-verified against the raw rows and
 reproduce exactly (R0 acc 0.595, R1 0.351, 24 errors = 19 hedge collision /
 5 wrong direction / 0 overcommitment, all-questions AUROC 0.955).
+
+---
+
+## 10. RETRACTION of the §7.2 mechanism (2026-08, reanalysis)
+
+**§7.2 claimed the FinTradeBench-vs-FinanceBench committed-cell gap was a
+*variance* artifact — that residual hedge mass predicts wrong-direction
+errors when it has variance. That claim is refuted by our own data and is
+withdrawn.**
+
+Testing it directly across 14 FinTradeBench cells (4 models x their
+lane-level subsets), with committed-cell AUROC against residual hedge-mass
+sd:
+
+- within FinTradeBench: Spearman **rho = -0.029, p = 0.92** (no relationship)
+- all 15 cells incl. FinanceBench: rho = 0.164, p = 0.56
+- aggregate-only (5 points): rho = 0.50, p = 0.39 -- driven entirely by the
+  single FinanceBench point, and not significant
+- direct counterexamples: qwen3:8b [FT] has sd **0.220** (vs FinanceBench's
+  0.255) yet AUROC **0.222**, far *below* chance; gemma4-31b-it overall has
+  sd 0.202 with AUROC 0.437
+- sd and mean correlate at **0.96**, so "variance, not mean" was never a
+  separable claim in the first place
+
+Data: `analysis/fig3_committed_cell_data.csv`.
+
+**What stands instead:** the committed-cell result differs between the two
+benchmarks (FinTradeBench 0.40-0.45 across four models; FinanceBench 0.815
+[0.631, 0.958]), and the cause is **unidentified** -- confounded with task
+format, answer space, agent design, and n. Reported as an open question, not
+a mechanism. See `paper/figures/fig3_committed_cell.py` for the figure and
+`RECOMMENDED_PAPER_DIRECTION_EU_AU.md` §3.

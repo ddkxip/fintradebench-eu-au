@@ -393,16 +393,36 @@ of errors and aggregate AUROC reaches $0.955$. But it \emph{overturns} the
 gives AUROC $0.815$ (bootstrap $95\%$ CI $[0.631, 0.958]$, excluding
 chance).
 
-The mechanism is variance, not mean. In the main benchmark, committed
-predictions carried almost no residual hedge mass (e.g.\ mean $0.079$, sd
-$0.174$), so there was nothing to rank and chance-level AUROC was
-mechanically forced. In the probe, systems often commit while retaining
-substantial hedge mass (mean $0.247$, sd $0.255$), and wrong answers carry
-roughly three times the hedge mass of right ones. The correct claim is
-therefore scoped: \emph{$p_{\mathrm{nc}}$ carries wrong-direction signal
-only when residual non-commitment mass has meaningful variance}; in the
-near-degenerate regimes typical of small open-weights models it does not,
-which is why it can appear to be a pure hedge-collision detector.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig3_committed_cell.pdf}
+\caption{Committed-cell AUROC with bootstrap $95\%$ CIs. Every
+FinTradeBench estimate straddles chance regardless of model scale; the
+FinanceBench estimate excludes it. The cause of the gap is not identified
+(\S\ref{sec:boundary}).}
+\label{fig:boundary}
+\end{figure}
+
+We tested the obvious explanation and it fails. One might expect the
+FinTradeBench cells to be uninformative because committed predictions there
+retain almost no residual hedge mass (mean $0.079$, sd $0.174$ for
+\textsc{qwen3:8b}) versus the probe (mean $0.247$, sd $0.255$), so that
+there is simply nothing to rank. But within FinTradeBench, across four
+models and their lane-level subsets ($14$ cells), the correlation between
+residual hedge-mass dispersion and committed-cell AUROC is
+$\rho = -0.03$ ($p = 0.92$); cells with dispersion equal to the probe's
+still sit at or below chance (e.g.\ one lane-level cell with sd $0.220$ has
+AUROC $0.222$). Dispersion and mean are themselves collinear
+($\rho = 0.96$), so they are not separable explanations.
+
+We therefore report the discrepancy without a mechanism
+(Figure~\ref{fig:boundary}). The honest claim is that \emph{the absence of a
+wrong-direction signal is not a stable property of $p_{\mathrm{nc}}$}: it
+holds across four models on one benchmark and fails on another, and the
+difference is confounded with task format, answer space, agent roles, and
+sample size. Establishing what drives it requires matched runs that vary
+these factors one at a time, which we flag as the primary open question
+rather than resolving by post-hoc selection among correlated candidates.
 
 \section{Discussion}
 

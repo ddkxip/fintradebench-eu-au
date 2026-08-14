@@ -68,25 +68,33 @@ that same cell gives AUROC **0.815**, and the bootstrap CI I computed for
 this doc is **[0.631, 0.958] — excluding 0.5** (n=18, 5 errors; small but
 significant).
 
-The mechanism is visible in the variance, not the mean: in FinTradeBench,
-committed predictions carried almost no residual hedge mass (qwen3:8b: mean
-pNC 0.079, sd 0.174), so there was nothing to rank and chance-level AUROC was
-**mechanically forced**. On FinanceBench the system often commits while
-retaining real hedge mass (mean 0.247, sd 0.255), and that residual is
-informative — wrong answers carry ~3× the hedge mass of right ones (0.490 vs
-0.154).
+**⚠ THE VARIANCE MECHANISM PREVIOUSLY ASSERTED HERE IS RETRACTED (2026-08).**
+This section originally claimed the gap was explained by residual
+hedge-mass *variance* (chance-level AUROC being "mechanically forced" where
+committed predictions hold no hedge mass). Tested directly, that fails:
 
-**Required claim narrowing (adopt this wording):**
+- within FinTradeBench (14 cells = 4 models × lane subsets):
+  Spearman(sd, committed-cell AUROC) = **−0.029, p = 0.92**
+- all 15 cells: 0.164, p = 0.56; aggregate-only 5 points: 0.50, p = 0.39
+  (driven entirely by the lone FinanceBench point, n.s.)
+- counterexample: qwen3:8b [FT] has sd **0.220** (≈ FinanceBench's 0.255)
+  with AUROC **0.222** — far *below* chance
+- sd and mean correlate at **0.96**: "variance not mean" was never separable
 
-> Within the committed cell, `p_noncommit` carries wrong-direction signal
-> **only when residual non-commitment mass has meaningful variance**. In the
-> near-degenerate regimes typical of small open-weights models on
-> FinTradeBench that variance vanishes and the signal is unavailable — which
-> is why it there appeared to be a pure hedge-collision detector.
+Data: `analysis/fig3_committed_cell_data.csv`; retraction recorded in
+`analysis/financebench/FINANCEBENCH_YESNO_ORACLE_FINDINGS.md` §10.
 
-This is a better result than the original: it converts an absolute claim into
-a scoped one with a stated mechanism and a boundary case on an independent
-benchmark. **Do not report the original unqualified version.**
+**Correct claim (adopt this wording):**
+
+> The absence of a wrong-direction signal in the committed cell is **not a
+> stable property of `p_noncommit`**. It holds across four models on
+> FinTradeBench (AUROC 0.40–0.45) and fails on FinanceBench (0.815,
+> CI [0.631, 0.958]). The difference is confounded with task format, answer
+> space, agent design, and sample size, and we do not identify its cause.
+
+Report it as an **open question with a figure**, not as a mechanism.
+Resolving it needs matched runs varying one factor at a time — the
+single most valuable follow-up experiment in the programme.
 
 **Second FinanceBench caveat (agent design, not a law):** that run paired an
 `evidence_accountant` with a deliberately insufficiency-hunting
