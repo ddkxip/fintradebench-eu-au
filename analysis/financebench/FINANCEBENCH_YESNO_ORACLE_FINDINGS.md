@@ -145,3 +145,23 @@ evidence does support a verdict. 79.2% of errors are hedge collisions.
 separate the skeptic artifact from a genuine debate effect; (2) the 27B
 run on the cluster for the headline number; (3) bootstrap CI on the
 committed-cell AUROC.
+
+---
+
+## 9. Bootstrap CI on the committed-cell AUROC (added 2026-08, reanalysis)
+
+The §7.2 claim needed the CI flagged as missing in §8. Computed from
+`results/financebench_yesno_oracle_local_qwen3_8b/rows.csv` (system rows only):
+
+- committed-gold & committed-pred cell: **n=18, 5 errors, AUROC = 0.815**
+- **bootstrap 95% CI = [0.631, 0.958]** (5,000 resamples) — **excludes 0.5**
+- residual hedge mass: correct rows mean pNC 0.154, wrong rows 0.490
+
+So the divergence from FinTradeBench's chance-level committed cell is
+**statistically significant despite the small n**, not a sampling fluke. The
+narrowed claim in §7.2 stands and is carried into
+`RECOMMENDED_PAPER_DIRECTION_EU_AU.md` §3 as the generalization boundary.
+
+All other numbers in this document were re-verified against the raw rows and
+reproduce exactly (R0 acc 0.595, R1 0.351, 24 errors = 19 hedge collision /
+5 wrong direction / 0 overcommitment, all-questions AUROC 0.955).

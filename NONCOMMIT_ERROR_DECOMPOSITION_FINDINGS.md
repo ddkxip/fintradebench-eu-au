@@ -1,5 +1,15 @@
 # NONCOMMIT_ERROR_DECOMPOSITION_FINDINGS
 
+> **⚠ NARROWED by an independent benchmark — see
+> `RECOMMENDED_PAPER_DIRECTION_EU_AU.md` §3 and
+> `analysis/financebench/FINANCEBENCH_YESNO_ORACLE_FINDINGS.md` §7.2.** The
+> "no wrong-direction signal in the committed cell" result is a **degeneracy
+> artifact**, not a property of p_noncommit: on FinanceBench (qwen3:8b, same
+> model) that cell gives AUROC 0.815, CI [0.631, 0.958], because committed
+> predictions there retain *variance* in residual hedge mass (sd 0.255 vs
+> 0.174 here, means 0.247 vs 0.079). Correct claim: the signal is available
+> only when residual non-commitment mass has meaningful variance.
+
 > **EXTENDED to 4 models — see
 > `analysis/noncommit_error_decomposition_allmodels.md`.** Adding
 > qwen3.6-27b and gemma4-31b-it: hedge_collision is the modal error type in

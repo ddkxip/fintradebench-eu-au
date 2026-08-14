@@ -5,6 +5,10 @@ Parse 99.8% overall; zero failed questions; gemma4 + qwen3:8b ≈ 14h total.
 
 ## 1. The AU-reduction law is now highly significant — the program's anchor result
 
+> **Consolidated claim set now lives in
+> `RECOMMENDED_PAPER_DIRECTION_EU_AU.md`** (result inventory with evidence
+> grades, incl. the FinanceBench generalization boundary).
+
 > **SCOPED (5th model, HF_GEMMA4_31B_FULL_FINDINGS.md):** holds for the four
 > models with AU headroom, but `gemma4-31b-it` (R1 AU 0.012, 77% degenerate)
 > shows dAU n.s. and dEU *up*. Corrected: debate reduces within-agent
