@@ -1,0 +1,458 @@
+%% Categorical, Not Distributional — initial draft
+%% Target: ACM Web Conference (TheWebConf) 2027 — see paper/README.md for a
+%% venue-fit note and the alternative-venue plan.
+%% Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+\documentclass[sigconf,nonacm]{acmart}
+
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{Categorical, Not Distributional: How Multi-Agent Financial Reasoners
+Express Uncertainty}
+
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \country{}
+}
+
+\begin{abstract}
+Multi-agent debate is increasingly proposed as a way to make large language
+model (LLM) reasoning more reliable, and uncertainty quantification (UQ) is
+the natural instrument for checking whether it works. We study both on
+gold-anchored financial reasoning questions and find that the standard UQ
+lens is mismatched to how these systems actually behave. Rather than
+spreading probability mass across answers, multi-agent financial reasoners
+converge---with high self-consistency---on \emph{non-committal labels}
+(\texttt{mixed}, \texttt{conditional}, \texttt{insufficient\_data}). We
+quantify this by pairing an exact total\,=\,aleatoric\,+\,epistemic entropy
+decomposition over schema-constrained answer spaces with a first-class
+non-commitment mass, $p_{\mathrm{nc}}$, and evaluating 139 expert-labelled
+questions across four open-weights models plus an API model. Four results
+follow. (i) The dominant failure mode is a \emph{hedge collision}---the
+system declines to commit while the reference answer is directional---at
+$50.6\%$--$67.0\%$ of all errors. (ii) $p_{\mathrm{nc}}$ predicts error
+(AUROC $0.64$--$0.72$), but decomposition shows this is a sign-flipping
+interaction rather than a general uncertainty signal: its slope reverses on
+questions whose reference answer is itself non-committal. (iii) Whether a
+system hedges is a model$\times$question-type property, not a capability
+level: the cross-signal lane is the highest-hedging lane in all five models
+tested, including ones that commit confidently elsewhere. (iv) Controlled
+evidence interventions---removing the single most important expert
+indicator, injecting cross-signal conflict, dialling the horizon---fail to
+move the uncertainty channels, and injected conflict \emph{lowers} measured
+disagreement as both agents retreat to a shared hedge. We further show, on a
+second benchmark, that the apparent absence of a directional error signal in
+$p_{\mathrm{nc}}$ is a degeneracy artifact that disappears when residual
+non-commitment mass has variance. Together these results argue that
+uncertainty in deployed multi-agent reasoners should be measured
+categorically, and that entropy-style decompositions can be uninformative
+precisely where such systems fail.
+\end{abstract}
+
+\keywords{large language models, multi-agent debate, uncertainty
+quantification, financial reasoning, evaluation}
+
+\maketitle
+
+\section{Introduction}
+
+A now-standard recipe for improving LLM reliability is to have several model
+instances argue: multi-agent debate. A parallel literature quantifies model
+uncertainty, typically by treating the model as a distribution over answers
+and measuring entropy or its decomposition into epistemic and aleatoric
+parts. Combining the two is attractive---uncertainty should tell us when
+debate helps, and debate should reduce the reducible part of uncertainty.
+
+We test that combination in a domain where it matters and where reference
+answers exist: financial reasoning over company fundamentals and trading
+signals. Our starting instrument is the standard one. For a question $q$
+with a finite answer space $\mathcal{Y}$, $N$ agents produce label
+distributions $p_i$ estimated by self-consistency; the system mixture is
+$\bar p = \frac{1}{N}\sum_i p_i$ and
+
+\begin{equation}
+\underbrace{H(\bar p)}_{\mathrm{TU}} =
+\underbrace{\tfrac{1}{N}\textstyle\sum_i H(p_i)}_{\mathrm{AU}} +
+\underbrace{\mathrm{TU}-\mathrm{AU}}_{\mathrm{EU}},
+\label{eq:decomp}
+\end{equation}
+
+where EU is the generalized Jensen--Shannon divergence among agents.
+
+The instrument turns out to be poorly matched to the phenomenon. In our
+runs, the systems are frequently \emph{near-deterministic}: up to
+$77\%$ of question--model cells have $\mathrm{TU}=0$ exactly, meaning every
+decode of every agent produced the same label. What varies is not how
+probability is spread but \emph{which} label the system settles on---and
+very often that label is a non-committal one. We therefore promote the mass
+a system places on non-committal labels,
+\begin{equation}
+p_{\mathrm{nc}}(q) = \sum_{y \in \mathcal{N}(q)} \bar p(y),
+\end{equation}
+with $\mathcal{N}(q)$ the question's non-committal labels, to a first-class
+quantity alongside \eqref{eq:decomp}.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+\item A gold-anchored evaluation of categorical versus distributional
+uncertainty in multi-agent financial reasoning: 139 expert-labelled
+questions, canonical answer schemas, four open-weights models (plus an API
+model), self-consistency estimation with $K{=}10$--$20$.
+\item The \emph{hedge collision} result: non-commitment against a
+directional reference answer is the modal error type in every model, and the
+error structure is question-type dependent (fundamental/hybrid lanes fail by
+hedging; the trading lane fails by committing to the wrong entity).
+\item A precise account of what $p_{\mathrm{nc}}$ does and does not detect,
+including a sign-flipping interaction and---via a second benchmark---the
+degeneracy condition under which its apparent limitation disappears.
+\item A controlled intervention suite showing that the uncertainty channels
+are not evidence-responsive in the hedging regime, including the result that
+injected cross-signal conflict \emph{reduces} measured epistemic
+uncertainty.
+\item An independent blinded re-annotation of the commitment labels
+(Cohen's $\kappa=0.59$) demonstrating that the conclusions do not depend on
+contestable labelling decisions.
+\end{enumerate}
+
+\section{Related Work}
+
+\paragraph{Multi-agent debate.} Debate among LLM instances has been proposed
+to improve factuality and reasoning~\cite{du2023debate}. Recent work
+questions when it helps, showing that debate dynamics are largely fixed in
+early rounds and that homogeneous panels can fail to improve expected
+correctness. Work on consensus pathologies documents false consensus and
+conformity, including counterfactual comparisons against no-communication
+controls~\cite{cagecal2026,flips2026}. Our transitions taxonomy deliberately
+mirrors those categories so that our rates are comparable; our contribution
+is their \emph{domain- and source-conditional} structure, and the finding
+that in the hedging regime consensus forms \emph{before} debate.
+
+\paragraph{Uncertainty quantification for LLMs.} Semantic
+entropy~\cite{kuhn2023semantic,farquhar2024detecting} and
+self-consistency~\cite{wang2023selfconsistency} estimate uncertainty by
+sampling; calibration of verbalized confidence is known to be
+weak~\cite{xiong2024canllms}; ensemble decompositions separate epistemic
+from aleatoric components~\cite{depeweg2018decomposition}. Closest to us,
+recent work decomposes debate uncertainty into epistemic gain and aleatoric
+cost on mathematical reasoning~\cite{egac2026}, and source-conditioned
+evaluation shows UQ methods degrade away from the uncertainty source they
+were designed for~\cite{whydontyouknow2026}. We differ in domain, in
+anchoring every quantity to expert reference answers, and---centrally---in
+showing that in this setting the informative variance is categorical rather
+than distributional.
+
+\paragraph{Financial LLM agents.} Multi-agent systems for finance are
+typically evaluated on returns or task accuracy~\cite{tradingagents2024,
+findebate2025}. We are not proposing a system: we treat an intentionally
+simple two-analyst debate as an object of measurement, and ask what its
+uncertainty signals mean.
+
+\section{Setup}
+
+\subsection{Benchmark and answer schemas}
+
+We use a financial reasoning benchmark of expert-audited questions over
+NASDAQ-100 companies with three question types (``lanes''): fundamentals
+(F), trading signals (T), and hybrid cross-signal reasoning (FT). Each
+question ships with a gold long-form response and an expert-specified set of
+required indicators.
+
+Distribution-level scoring requires a finite answer space, so we construct a
+canonical \textsc{AnswerSchema} per question: an answer type, an exhaustive
+and mutually exclusive label set, a gold label, and a verbatim quote from
+the gold response supporting that label. Of 150 questions, 139 reduce
+cleanly; 11 are excluded (unordered multi-entity screening answers and one
+degenerate gold). Non-commitment is a first-class outcome: the gold label is
+itself non-committal on $15.8\%$ ($22/139$) of questions, so hedging is
+sometimes the \emph{correct} answer, not a failure.
+
+\subsection{Agents, evidence, and estimation}
+
+Two agents---a Fundamental analyst and a Trading-Signal analyst---answer
+each question from an \emph{oracle evidence pack} reconstructed with the
+benchmark's own context builder (windowed price/indicator values and
+period-median fundamentals). Retrieval is deliberately excluded from the
+headline condition so that debate is measured conditional on fixed evidence.
+Agents never see the gold response.
+
+Following a reliability study on this stack, agent distributions are
+estimated by \emph{self-consistency frequencies} over $K$ decodes at
+$\tau{=}0.7$ rather than verbalized probabilities, which we found heavily
+heaped (70\% of emitted values on a $0.05$ grid) and barely more informative
+than replicate noise. We use $K{=}10$ (F, FT) and $K{=}20$ (T, which is
+noisier), apply a Miller--Madow correction to plug-in entropies, and report
+per-lane results rather than pooling naively.
+
+Round~0 is independent; in round~1 each agent sees the opponent's modal
+label and rationale and may revise. Metrics are computed at both rounds.
+
+\subsection{Error taxonomy}
+
+Given a gold label $y^\ast$ and system prediction $\hat y$, and writing
+$\mathcal{N}$ for the non-committal labels, each scored item falls into one
+cell of a $2\times2$ commitment grid. Errors partition into: \emph{hedge
+collision} ($y^\ast \notin \mathcal{N}$, $\hat y \in \mathcal{N}$);
+\emph{wrong-direction commitment} (both committed, $\hat y \neq y^\ast$);
+\emph{overcommitment} ($y^\ast \in \mathcal{N}$, $\hat y \notin
+\mathcal{N}$); and \emph{wrong non-commitment type} (both non-committal but
+different). Two cells are deterministic by construction---a non-committal
+prediction cannot match a committed gold---so the \emph{committed-gold and
+committed-prediction} cell is the one in which $p_{\mathrm{nc}}$ is not
+definitionally tied to the outcome. We rely on it throughout as the
+non-mechanical test.
+
+\section{Experiments}
+
+We report four open-weights models at full scale (139 questions, both
+rounds): two small (\textsc{gemma4}, \textsc{qwen3:8b}) and two mid-size
+(\textsc{qwen3.6-27b}, \textsc{gemma4-31b-it}), plus a 16-question subset on
+an API model (\textsc{gemini-3.1-pro}) reported separately and never pooled.
+Parse rates are $99.8\%$ or above. Beyond the natural runs we conduct: a
+controlled intervention suite (evidence removal with a matched placebo,
+cross-signal conflict injection, horizon dialling); an independent blinded
+re-annotation of gold commitment; and an auxiliary probe on a second
+benchmark.
+
+\section{Results}
+
+\subsection{Uncertainty is categorical, and errors are hedge collisions}
+
+Table~\ref{tab:decomp} gives the error decomposition. Hedge collision is the
+modal error type in \emph{every} model, at $50.6\%$--$67.0\%$ of errors
+(pooled $57.2\%$). The structure is strongly lane-dependent: pooled across
+models, $71\%$ of F-lane and $76\%$ of FT-lane errors are hedge collisions,
+whereas $77\%$ of T-lane errors are wrong-direction commitments. The two
+lanes fail in different ways, and only one of those ways is visible to a
+non-commitment signal.
+
+\begin{table}[t]
+\caption{Error decomposition (final round, share of errors). HC = hedge
+collision, WD = wrong-direction commitment, OC = overcommitment, WN = wrong
+non-commitment type.}
+\label{tab:decomp}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+model & acc. & HC & WD & OC & WN \\
+\midrule
+\textsc{gemma4}        & 0.281 & 0.670 & 0.240 & 0.030 & 0.060 \\
+\textsc{qwen3:8b}      & 0.403 & 0.554 & 0.349 & 0.084 & 0.012 \\
+\textsc{qwen3.6-27b}   & 0.432 & 0.532 & 0.304 & 0.101 & 0.063 \\
+\textsc{gemma4-31b-it} & 0.446 & 0.506 & 0.312 & 0.104 & 0.078 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Hedging is not intrinsically wrong. On the $22$ questions whose gold is
+itself non-committal, a hedging system is correct $57\%$--$93\%$ of the
+time. The pathology is hedging on the $84\%$ of questions whose reference
+answer is directional.
+
+\subsection{What $p_{\mathrm{nc}}$ actually detects}
+
+$p_{\mathrm{nc}}$ predicts error well in aggregate (AUROC $0.636$--$0.721$
+across the four models) and survives controls: in a logistic model with
+total uncertainty, lane, and model, clustered by primary ticker, its
+coefficient is significant under Benjamini--Hochberg correction. But a
+single-slope model is misspecified. Adding an interaction with whether the
+gold is itself non-committal (Table~\ref{tab:interaction}) reverses the
+slope---$+5.12$ on committed-gold questions versus $-8.90$ on
+non-committal-gold questions---and raises pseudo-$R^2$ from $0.152$ to
+$0.388$ ($n{=}556$; interaction $p=1.7\times10^{-10}$).
+
+\begin{table}[t]
+\caption{Error $\sim$ uncertainty, pooled over four models, cluster-robust
+by ticker ($n{=}556$). Only key coefficients shown.}
+\label{tab:interaction}
+\small
+\begin{tabular}{lrr}
+\toprule
+term & coef. & $p$ \\
+\midrule
+$p_{\mathrm{nc}}$                       & $+5.12$  & $8.3\times10^{-13}$ \\
+gold is non-committal                   & $+9.18$  & $9.3\times10^{-9}$ \\
+$p_{\mathrm{nc}} \times$ gold non-comm. & $-14.02$ & $1.7\times10^{-10}$ \\
+total uncertainty (TU)                  & $-2.04$  & $0.018$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Critically, much of the aggregate signal is \emph{mechanical}: a
+non-committal prediction cannot match a committed gold. In the
+non-mechanical cell (committed gold \emph{and} committed prediction),
+AUROC falls to $0.403$--$0.446$ in all four models---at or below chance.
+On these data, conditional on the system taking a position, the residual
+hedge mass says nothing about whether the position is right. Section~\ref{sec:boundary}
+shows this conclusion is regime-dependent, not a property of the signal.
+
+\subsection{Regimes are model$\times$lane, not capability levels}
+
+A natural hypothesis is that hedging is a small-model pathology cured by
+capability. The data reject the simple version. Table~\ref{tab:lane} shows
+that the FT (cross-signal) lane has the highest non-commitment mass in
+\emph{all five} models. The two mid-size models commit confidently on F
+(accuracy $0.55$--$0.61$, the best F-lane results we observe, exceeding the
+API model) while simultaneously hedging on FT ($p_{\mathrm{nc}}=0.73$
+and $0.74$). Capability buys commitment on single-signal questions and does
+not buy it where fundamentals and price action must be reconciled---the
+same condition our conflict intervention manipulates directly
+(\S\ref{sec:interventions}).
+
+\begin{table}[t]
+\caption{Final-round $p_{\mathrm{nc}}$ by lane. FT is the highest-hedging
+lane in every model.}
+\label{tab:lane}
+\small
+\begin{tabular}{lrrr}
+\toprule
+model & F & FT & T \\
+\midrule
+\textsc{gemma4}        & 0.70 & 0.97 & 0.14 \\
+\textsc{qwen3:8b}      & 0.57 & 0.72 & 0.08 \\
+\textsc{qwen3.6-27b}   & 0.30 & 0.74 & 0.05 \\
+\textsc{gemma4-31b-it} & 0.46 & 0.73 & 0.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Debate reduces instability only where instability exists}
+
+In three of four models, one debate round significantly reduces AU
+($-0.070$ to $-0.149$; Wilcoxon $p<10^{-6}$) while leaving EU flat. The
+fourth is instructive: \textsc{gemma4-31b-it} shows no AU reduction
+($-0.005$, n.s.) and instead a \emph{significant EU increase}
+($+0.036$, $p=0.035$). Its agents are already near-deterministic (final-round
+AU $0.012$; $77\%$ of cells with $\mathrm{TU}=0$), so there is no
+within-agent instability left to remove and debate instead pushes the
+frameworks apart. We therefore state the regularity with its scope
+condition: \emph{debate reduces within-agent instability where such
+instability exists; where agents are already near-deterministic it increases
+between-agent divergence instead.}
+
+Two further debate results matter for practice. First, false consensus is
+real but modest ($1.4\%$--$7.9\%$ of questions) and, in the most hedging
+models, structurally pre-empted---consensus forms \emph{before} debate,
+on non-committal labels. Second, and more consequential: \emph{no} round-0
+uncertainty quantity, and no uncertainty delta, predicts whether debate will
+improve the gold-label probability (all $p>0.34$). Uncertainty cannot be
+used to route debate on these data.
+
+\subsection{Uncertainty channels are not evidence-responsive}
+\label{sec:interventions}
+
+We ran randomized, paired interventions against the stored oracle baseline
+($30$ F/FT questions): removing the highest-priority \emph{present} expert
+indicator; a matched placebo removing an equally-sized non-expert indicator;
+coherently rewriting the trading channel to oppose the fundamental lean; and
+dialling the stated horizon between three months and five years with
+evidence fixed.
+
+None of the pre-registered on-target predictions is confirmed. Removing the
+most important indicator produces no selective movement in any channel, and
+the diagonal-versus-placebo contrast is null on every metric---the
+uncertainty does not track \emph{which} evidence is present. Dialling the
+horizon flips $3/30$ verdicts. Most informative is conflict injection:
+prediction was that explicit cross-signal contradiction would raise EU;
+instead EU \emph{falls} ($-0.041$, bootstrap CI excluding $0$) and the
+gold-label probability drops, because both agents retreat to the \emph{same}
+non-committal label and therefore agree \emph{more}. The debate looks most
+consensual exactly when the evidence is most contradictory.
+
+We report these nulls as a boundary on construct validity: in the hedging
+regime, the entropy decomposition is a stable stylistic property of the
+system rather than an evidence-driven measurement.
+
+\subsection{The commitment labels are not the load-bearing assumption}
+
+Because our taxonomy rests on classifying each gold as committed or not, we
+had two independent annotators re-adjudicate all 139 golds from a
+\emph{blinded} sheet (question, answer space, and the gold's own text; no
+schema label, no prior classification). They agreed with each other on
+$86.3\%$ of commitment calls (Cohen's $\kappa = 0.590$; Fleiss $\kappa =
+0.531$ over three annotators) and disagreed with the schema in opposite
+directions---one reading two-dimension ``mixed'' golds as committed, the
+other reading multi-entity screening golds as non-committal. Under every
+annotator's labels, the majority vote, and a strict blinded consensus,
+hedge collision remains the modal error type ($0.468$--$0.670$) and the
+non-mechanical cell remains at chance. Moderate $\kappa$ is honest---the
+judgement is genuinely borderline at the margin---but the conclusions are
+invariant to it.
+
+\subsection{A generalization boundary}
+\label{sec:boundary}
+
+An auxiliary probe on a second benchmark (37 yes/no questions answered from
+human-annotated oracle evidence, same \textsc{qwen3:8b} model) replicates the
+central phenomenon even more strongly: hedge collision accounts for $79.2\%$
+of errors and aggregate AUROC reaches $0.955$. But it \emph{overturns} the
+``no directional signal'' reading of \S5.2: there, the non-mechanical cell
+gives AUROC $0.815$ (bootstrap $95\%$ CI $[0.631, 0.958]$, excluding
+chance).
+
+The mechanism is variance, not mean. In the main benchmark, committed
+predictions carried almost no residual hedge mass (e.g.\ mean $0.079$, sd
+$0.174$), so there was nothing to rank and chance-level AUROC was
+mechanically forced. In the probe, systems often commit while retaining
+substantial hedge mass (mean $0.247$, sd $0.255$), and wrong answers carry
+roughly three times the hedge mass of right ones. The correct claim is
+therefore scoped: \emph{$p_{\mathrm{nc}}$ carries wrong-direction signal
+only when residual non-commitment mass has meaningful variance}; in the
+near-degenerate regimes typical of small open-weights models it does not,
+which is why it can appear to be a pure hedge-collision detector.
+
+\section{Discussion}
+
+Our results suggest a reframing for anyone measuring uncertainty in deployed
+multi-agent reasoners. The quantity that predicts failure here is not how
+uncertain the system \emph{is} but \emph{what it says when it is uncertain}.
+Because non-commitment is a discrete lexical choice, a system can be
+maximally self-consistent (zero entropy) and maximally uninformative at the
+same time---a state that entropy-based UQ scores as confident.
+
+This has three practical consequences. First, monitoring non-commitment mass
+is a cheap and effective triage signal wherever reference answers are mostly
+directional---but it is a hedge-collision detector, not a general error
+predictor, and it is blind to the wrong-entity errors that dominate the
+trading lane. Second, the routing intuition---spend more compute where
+uncertainty is high---is unsupported here: nothing in the uncertainty
+profile predicts whether debate will help. Third, benchmark designers should
+treat non-commitment as a scored outcome with its own gold labels, as it is
+sometimes the correct answer; otherwise systems are penalized for
+appropriate caution and rewarded for overconfident guessing.
+
+\section{Limitations}
+
+Reference answers are ex-post benchmark labels, not market truth;
+correctness means agreement with an expert-audited conclusion given the same
+evidence. Commitment labelling is moderately reliable ($\kappa \approx
+0.53$--$0.59$), and we report invariance to it rather than claiming
+objectivity. Pooled rows are not independent (each question appears once per
+model), so per-model results are primary and regressions cluster by ticker.
+EU is computed over $N{=}2$ framework agents---a single edge, not a graph.
+The intervention suite ran on one model at $n{=}30$ and its causal nulls are
+scoped to the hedging regime. The second-benchmark probe is small ($n{=}37$,
+one model) and its debate arm used an asymmetric agent pair; a
+neutral-agent control is underway and any cross-benchmark debate claim
+should wait for it.
+
+\section{Conclusion}
+
+Multi-agent financial reasoners express uncertainty categorically rather
+than distributionally. Measured against expert reference answers, their
+dominant failure is declining to commit when the reference answer is
+directional; whether they hedge depends on the question type as much as on
+model capability; debate reduces within-agent instability only where such
+instability exists and cannot be routed by uncertainty; and controlled
+evidence interventions leave the uncertainty channels unmoved, including a
+conflict manipulation that \emph{reduces} apparent disagreement. We release
+the answer schemas, intervention suite, and per-question decompositions to
+support replication.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}
