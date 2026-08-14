@@ -1,0 +1,13 @@
+financebench_id,round,K,gold_label,parse_rate,model,run_id,evidence_field,agent,predicted,correct,p_noncommit,tu,au,eu,p_sys
+financebench_id_00499,0,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_a,yes,False,0.0,,,,"{""yes"": 1.0, ""no"": 0.0, ""insufficient_data"": 0.0}"
+financebench_id_00499,0,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_b,yes,False,0.0,,,,"{""yes"": 1.0, ""no"": 0.0, ""insufficient_data"": 0.0}"
+financebench_id_00499,0,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,system,yes,False,0.0,-0.0,0.0,-0.0,"{""yes"": 1.0, ""no"": 0.0, ""insufficient_data"": 0.0}"
+financebench_id_00499,1,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_a,yes,False,0.0,,,,"{""yes"": 1.0, ""no"": 0.0, ""insufficient_data"": 0.0}"
+financebench_id_00499,1,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_b,yes,False,0.0,,,,"{""yes"": 1.0, ""no"": 0.0, ""insufficient_data"": 0.0}"
+financebench_id_00499,1,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,system,yes,False,0.0,-0.0,0.0,-0.0,"{""yes"": 1.0, ""no"": 0.0, ""insufficient_data"": 0.0}"
+financebench_id_00807,0,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_a,insufficient_data,False,1.0,,,,"{""yes"": 0.0, ""no"": 0.0, ""insufficient_data"": 1.0}"
+financebench_id_00807,0,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_b,insufficient_data,False,1.0,,,,"{""yes"": 0.0, ""no"": 0.0, ""insufficient_data"": 1.0}"
+financebench_id_00807,0,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,system,insufficient_data,False,1.0,-0.0,0.0,-0.0,"{""yes"": 0.0, ""no"": 0.0, ""insufficient_data"": 1.0}"
+financebench_id_00807,1,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_a,insufficient_data,False,1.0,,,,"{""yes"": 0.0, ""no"": 0.0, ""insufficient_data"": 1.0}"
+financebench_id_00807,1,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,evidence_accountant_b,insufficient_data,False,1.0,,,,"{""yes"": 0.0, ""no"": 0.0, ""insufficient_data"": 1.0}"
+financebench_id_00807,1,10,no,1.0,ollama:qwen3:8b,financebench_yesno_homog_local_qwen3_8b,evidence_text,system,insufficient_data,False,1.0,-0.0,0.0,-0.0,"{""yes"": 0.0, ""no"": 0.0, ""insufficient_data"": 1.0}"

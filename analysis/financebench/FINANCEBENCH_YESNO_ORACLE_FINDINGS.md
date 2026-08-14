@@ -197,3 +197,26 @@ benchmarks (FinTradeBench 0.40-0.45 across four models; FinanceBench 0.815
 format, answer space, agent design, and n. Reported as an open question, not
 a mechanism. See `paper/figures/fig3_committed_cell.py` for the figure and
 `RECOMMENDED_PAPER_DIRECTION_EU_AU.md` §3.
+
+---
+
+## 11. §7.1 CONFIRMED as an artifact by the neutral-agent control (2026-08)
+
+§7.1 flagged the accuracy collapse as "partly my design, not a law of
+nature" and required a neutral-agent control. That control is now run
+(`FINANCEBENCH_AGENTSET_CONTROL_FINDINGS.md`) and confirms the flag:
+
+| arm | R0 acc | R1 acc | dCorrect | rescues/losses |
+|---|---|---|---|---|
+| skeptic (this doc) | 0.595 | 0.351 | -0.243 (p=0.012) | 1/10 |
+| neutral (control)  | 0.595 | **0.649** | **+0.054** | 3/1 |
+
+With two substantive agents the accountant's hedge rate is flat
+(0.216 -> 0.216) and its accuracy *rises*; the collapse in §7.1 was the
+skeptic transmitting insufficiency bias. **The `1 rescue / 10 losses` and
+`dNC +0.128` results in this document are properties of the asymmetric pair
+and must not be cited as general debate effects.**
+
+The §10 retraction stands; §11 additionally shows the committed-cell
+outlier is partly agent-design-driven (neutral arm: 0.576, CI [0.360,
+0.822], includes chance).

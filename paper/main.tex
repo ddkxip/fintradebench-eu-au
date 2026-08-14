@@ -415,14 +415,21 @@ still sit at or below chance (e.g.\ one lane-level cell with sd $0.220$ has
 AUROC $0.222$). Dispersion and mean are themselves collinear
 ($\rho = 0.96$), so they are not separable explanations.
 
-We therefore report the discrepancy without a mechanism
-(Figure~\ref{fig:boundary}). The honest claim is that \emph{the absence of a
-wrong-direction signal is not a stable property of $p_{\mathrm{nc}}$}: it
-holds across four models on one benchmark and fails on another, and the
-difference is confounded with task format, answer space, agent roles, and
-sample size. Establishing what drives it requires matched runs that vary
-these factors one at a time, which we flag as the primary open question
-rather than resolving by post-hoc selection among correlated candidates.
+A matched control isolates one factor. The probe above paired the analyst
+with a deliberately insufficiency-hunting \emph{skeptic}; FinTradeBench's
+two agents are both substantive. Re-running the probe with a symmetric
+substantive pair---same benchmark, model, evidence, $K$, and schemas,
+changing only the second agent's role---moves the committed-cell estimate to
+$0.576$ with CI $[0.360, 0.822]$, which \emph{includes} chance
+(Figure~\ref{fig:boundary}). The two FinanceBench arms' intervals overlap
+substantially, so we do not claim they differ; what we can say is that the
+above-chance result appears only under the asymmetric configuration, and the
+arm methodologically comparable to FinTradeBench behaves like FinTradeBench.
+
+The honest claim is therefore that \emph{the absence of a wrong-direction
+signal is not a stable property of $p_{\mathrm{nc}}$, and agent design is one
+identified source of that instability}. Whether task format or answer space
+also matter remains open and requires the same matched treatment.
 
 \section{Discussion}
 

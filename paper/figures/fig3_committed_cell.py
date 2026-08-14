@@ -86,15 +86,21 @@ for run, m in FULL:
     rows.append(dict(bench="FinTradeBench", label=m, n=len(cc),
                      auc=auroc(y, cc.p_noncommit.values), lo=lo, hi=hi))
 
-d = pd.read_csv(REPO / "results" /
-                "financebench_yesno_oracle_local_qwen3_8b" / "rows.csv")
-s = d[(d.agent == "system") & (d["round"] == 1)].copy()
 NC = {"insufficient_data"}
-cc = s[(~s.gold_label.astype(str).isin(NC)) & (~s.predicted.astype(str).isin(NC))]
-y = (~cc.correct.astype(bool)).astype(int).values
-lo, hi = boot(y, cc.p_noncommit.values)
-rows.append(dict(bench="FinanceBench", label="qwen3:8b", n=len(cc),
-                 auc=auroc(y, cc.p_noncommit.values), lo=lo, hi=hi))
+FB = [("financebench_yesno_oracle_local_qwen3_8b", "qwen3:8b (skeptic pair)"),
+      ("financebench_yesno_neutral_local_qwen3_8b", "qwen3:8b (neutral pair)")]
+for run, lab in FB:
+    p = REPO / "results" / run / "rows.csv"
+    if not p.exists():
+        continue
+    d = pd.read_csv(p)
+    s = d[(d.agent == "system") & (d["round"] == 1)].copy()
+    cc = s[(~s.gold_label.astype(str).isin(NC))
+           & (~s.predicted.astype(str).isin(NC))]
+    y = (~cc.correct.astype(bool)).astype(int).values
+    lo, hi = boot(y, cc.p_noncommit.values)
+    rows.append(dict(bench="FinanceBench", label=lab, n=len(cc),
+                     auc=auroc(y, cc.p_noncommit.values), lo=lo, hi=hi))
 
 df = pd.DataFrame(rows).iloc[::-1].reset_index(drop=True)  # FB on top
 
@@ -103,7 +109,7 @@ mpl.rcParams.update({
     "xtick.major.width": 0.6, "ytick.major.width": 0.6,
     "pdf.fonttype": 42, "ps.fonttype": 42,
 })
-fig, ax = plt.subplots(figsize=(5.4, 2.5))
+fig, ax = plt.subplots(figsize=(5.4, 2.9))
 
 # chance reference — the only thing the reader must compare against
 ax.axvline(0.5, color="#444444", lw=0.9, ls="--", zorder=1)
@@ -123,8 +129,9 @@ for i, r in df.iterrows():
 
 ax.set_yticks(range(len(df)))
 ax.set_yticklabels([f"{r.label}" for _, r in df.iterrows()], fontsize=8.5)
-ax.set_xlabel("AUROC of $p_{\\mathrm{nc}}$ for error, committed-gold "
-              "$\\wedge$ committed-prediction cell", fontsize=8.5)
+ax.set_xlabel("AUROC of $p_{\\mathrm{nc}}$ for error\n"
+              "(committed-gold $\\wedge$ committed-prediction cell)",
+              fontsize=8.5)
 ax.set_xlim(0.0, 1.12)
 ax.set_ylim(-0.6, len(df) + 0.35)  # blank band at top for the legend
 ax.set_xticks([0.0, 0.25, 0.5, 0.75, 1.0])

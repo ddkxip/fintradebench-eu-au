@@ -305,7 +305,9 @@ def main() -> None:
 
     # ── preflight: one live call, fail LOUDLY before spending the run ───
     print(f"[preflight] testing backend with 1 call to {a.model} ...", flush=True)
-    probe = build_prompts(schs[0], a.evidence_field)["evidence_accountant"]
+    # probe with whichever agent is first in the SELECTED set (agent names
+    # differ per --agent-set; hardcoding one breaks the homogeneous arm)
+    probe = build_prompts(schs[0], a.evidence_field)[next(iter(AGENTS))]
     try:
         raw = chat(probe["system"], probe["user"], model=a.model, timeout=180)
     except Exception as exc:
