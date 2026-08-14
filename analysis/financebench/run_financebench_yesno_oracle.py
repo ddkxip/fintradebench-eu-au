@@ -44,22 +44,51 @@ ANSWER_SPACE = ["yes", "no", "insufficient_data"]
 NONCOMMIT_SET = {"insufficient_data"}
 TAU = 0.7
 
-AGENTS = {
-    "evidence_accountant": (
-        "You are the Evidence Accountant. Your job is to determine whether "
-        "the PROVIDED EVIDENCE directly supports a 'yes' or a 'no' answer to "
-        "the question. You read the evidence literally and quantitatively: "
-        "locate the specific figures, line items or statements that bear on "
-        "the question and follow them to a conclusion."
-    ),
-    "skeptical_auditor": (
-        "You are the Skeptical Auditor. Your job is to test whether the "
-        "PROVIDED EVIDENCE is actually sufficient to answer the question, and "
-        "whether any yes/no conclusion would be overstated. You look for "
-        "missing periods, missing line items, definitional mismatches between "
-        "the question and the evidence, and unsupported inferential leaps."
-    ),
+_ACCOUNTANT = (
+    "You are the Evidence Accountant. Your job is to determine whether "
+    "the PROVIDED EVIDENCE directly supports a 'yes' or a 'no' answer to "
+    "the question. You read the evidence literally and quantitatively: "
+    "locate the specific figures, line items or statements that bear on "
+    "the question and follow them to a conclusion."
+)
+_SKEPTIC = (
+    "You are the Skeptical Auditor. Your job is to test whether the "
+    "PROVIDED EVIDENCE is actually sufficient to answer the question, and "
+    "whether any yes/no conclusion would be overstated. You look for "
+    "missing periods, missing line items, definitional mismatches between "
+    "the question and the evidence, and unsupported inferential leaps."
+)
+# Neutral counterpart: a SECOND substantive analyst. It differs from the
+# accountant in analytical LENS (interpretive/contextual vs literal/
+# quantitative) but has the SAME epistemic stance — it neither hunts for
+# insufficiency (as the skeptic does) nor is pushed toward committing. The
+# shared RULES block already governs when to answer insufficient_data, so
+# the role text deliberately says nothing about sufficiency thresholds.
+_ANALYST = (
+    "You are the Financial Analyst. Your job is to determine what the "
+    "PROVIDED EVIDENCE implies for the question, reading the figures in "
+    "their business and reporting context: what the line items represent, "
+    "how they relate to one another, and what conclusion they point to for "
+    "the entity and period the question asks about."
+)
+
+AGENT_SETS = {
+    # original (asymmetric): substantive analyst + insufficiency-hunting skeptic
+    "skeptic": {"evidence_accountant": _ACCOUNTANT,
+                "skeptical_auditor": _SKEPTIC},
+    # CONTROL 1 — heterogeneous but symmetric: two substantive analysts,
+    # matched to 'skeptic' on agent count and perspective diversity, differing
+    # only in that neither is insufficiency-biased. Isolates the skeptic bias.
+    "neutral": {"evidence_accountant": _ACCOUNTANT,
+                "financial_analyst": _ANALYST},
+    # CONTROL 2 — homogeneous: two identical accountants. Separates the effect
+    # of role DIVERSITY from the effect of role BIAS.
+    "homogeneous": {"evidence_accountant_a": _ACCOUNTANT,
+                    "evidence_accountant_b": _ACCOUNTANT},
 }
+
+# selected at runtime by --agent-set; downstream code reads this dict only
+AGENTS = dict(AGENT_SETS["skeptic"])
 
 RULES = (
     "\n\nSTRICT RULES:\n"
@@ -224,10 +253,19 @@ def main() -> None:
     ap.add_argument("--evidence-field", default="evidence_text",
                     choices=["evidence_text", "evidence_full_page"])
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--agent-set", default="skeptic", choices=list(AGENT_SETS),
+                    help="skeptic = original asymmetric pair; neutral = two "
+                         "substantive analysts (control for skeptic bias); "
+                         "homogeneous = two identical accountants")
     ap.add_argument("--dry-run", action="store_true",
                     help="print prompts for the first N examples; no model calls")
     ap.add_argument("--dry-run-n", type=int, default=3)
     a = ap.parse_args()
+
+    # bind the selected agent pair for the whole run
+    global AGENTS
+    AGENTS = dict(AGENT_SETS[a.agent_set])
+    print(f"[agents] set={a.agent_set} -> {list(AGENTS)}")
 
     schs = [json.loads(l) for l in SCHEMAS.read_text(encoding="utf-8").splitlines() if l.strip()]
 
@@ -396,7 +434,7 @@ def main() -> None:
         "rounds": a.rounds, "evidence_field": a.evidence_field,
         "n_examples": len(schs), "answer_space": ANSWER_SPACE,
         "noncommit_set": sorted(NONCOMMIT_SET),
-        "agents": list(AGENTS), "workers": a.workers,
+        "agent_set": a.agent_set, "agents": list(AGENTS), "workers": a.workers,
         "seconds": round(time.time() - t0, 1),
     }, indent=1), encoding="utf-8")
     print(f"DONE in {(time.time()-t0)/60:.1f} min -> {rows_path}")
