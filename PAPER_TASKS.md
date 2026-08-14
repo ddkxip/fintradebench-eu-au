@@ -1,0 +1,128 @@
+# PAPER_TASKS — TheWebConf 2027 (abstract 11 Oct, paper 18 Oct 2026)
+
+Ordered by *risk-reduction per unit effort*. P0 = submission is unsafe
+without it. P1 = materially improves accept odds. P2 = strengthens if time
+allows. P3 = future work / rebuttal ammunition.
+
+---
+
+## P0 — must do before submitting
+
+**1. Verify every GROUP B citation.** `refs.bib` splits established works
+(GROUP A) from ones surfaced by literature search during the project
+(GROUP B). The GROUP B entries currently have **no author fields** — left
+blank deliberately rather than invented, so bibtex warns. Each arXiv ID,
+title and author list must be checked against the actual listing. Do not
+submit on search-result provenance. *(~1–2 h, blocking.)*
+
+**2. Expand 5 pp → the CFP limit.** Check the exact TheWebConf 2027 limit
+(historically ~9 pp + unlimited refs). Priority order for the added space:
+Figures 1–2 (task 3), a worked example of each failure mode (task 5), a
+proper Related Work expansion, and a reproducibility appendix.
+
+**3. Decide the self-citation policy.** The benchmark paper is under review
+at ACL ARR. Under double-blind, cite it as third-party work
+(`\cite{fintradebench2026}` with neutral phrasing) and make sure no sentence
+implies authorship. Also confirm ARR/TheWebConf dual-submission rules are
+satisfied — this paper must be a clearly distinct contribution (it is: the
+benchmark is an instrument here, not the contribution), but state that
+explicitly in the response-to-reviewers if asked.
+
+**4. Verify the CFP itself.** Page limit, anonymity rules, whether an
+abstract is binding, appendix policy, artifact/reproducibility track.
+
+---
+
+## P1 — materially improves the paper
+
+**5. Build Figures 1 and 2.**
+- *Fig 1 — the regime map.* Heatmap of $p_{\mathrm{nc}}$, 5 systems × 3
+  lanes. This is the paper's most striking single visual: FT is the
+  highest-hedging lane in every system.
+- *Fig 2 — the interaction.* Error rate vs $p_{\mathrm{nc}}$, split by
+  whether the reference answer is settled. Makes the sign flip visible
+  instead of table-only.
+Reuse `paper/figures/fig3_committed_cell.py` conventions (Okabe-Ito,
+shape+hue identity, greyscale-safe).
+
+**6. Add a qualitative failure-mode figure or box.** One real question per
+mode, with the evidence, the reference answer, and the system's response.
+Reviewers in a Web/Responsible-AI venue respond strongly to seeing the
+actual user-facing harm; right now the paper is all aggregate statistics.
+Candidates already identified: F25 (insufficiency is correct), FT9
+(two-dimension hedge), T11/T2 (wrong-ticker commitment).
+
+**7. Strengthen the Web framing in Related Work.** Currently thin. Add a
+paragraph situating the work against trustworthy/responsible information
+access and web-scale QA reliability. This is the section a sceptical
+reviewer will check for "does this author know the venue".
+
+**8. Reproducibility appendix.** Model digests, $K$, $\tau$, seeds, run
+manifests (all already in `results/manifests/`), schema construction
+procedure, and the released-artifact list. Cheap, and TheWebConf reviewers
+increasingly ask.
+
+**9. Tighten the abstract.** Currently dense and long. Lead with the
+deployment claim ("debate buys stability, not correctness"), then the
+mechanism, then the three harms. Aim for ~200 words.
+
+---
+
+## P2 — strengthens if time allows
+
+**10. Pool the second benchmark's arms into the main narrative properly.**
+Right now FinanceBench appears in §5.6 and §5.8 as separate threads. One
+consolidated "external validity" subsection would read better.
+
+**11. Statistical hardening.** Bootstrap CIs on the error-decomposition
+shares (currently point estimates); a sensitivity table for the
+$\varepsilon$ thresholds in the transition taxonomy; report the
+majority-vote-commitment version of Table 1 in an appendix.
+
+**12. A second model on the intervention suite.** The causal nulls (§5.5)
+currently rest on one model at $n{=}30$. A second model would let you say
+"replicated" rather than "scoped to one model" — the single most likely
+reviewer complaint about that section.
+
+**13. Lenient-scoring appendix.** Strict vs alias-credited accuracy,
+especially for T-lane screening (0.43 → 0.78–0.85). Pre-empts "your
+screening scoring is too harsh".
+
+---
+
+## P3 — future work / rebuttal ammunition
+
+**14. Retrieval (RAG) arm.** Deliberately excluded from the headline to
+avoid confounding. Reviewers *will* ask whether the findings hold with
+retrieval. Having even a small arm ready for rebuttal is valuable; running
+it fully is a follow-up paper.
+
+**15. Identify the remaining driver of the §5.8 open question.** Agent
+asymmetry is now identified; task format and answer space are not. Matched
+runs varying one factor at a time.
+
+**16. T-lane schema revision.** Both blinded annotators independently read
+multi-entity screening references as non-committal (10 questions). A
+set-valued scoring treatment would tighten the benchmark. Conclusions
+already survive either labelling, so this is quality not rescue.
+
+**17. Larger API-model coverage.** The Gemini subset is 16 questions and
+should not be quoted as a result; a ≥50-question run would let it enter the
+main tables.
+
+**18. Multi-round debate.** Everything here is one exchange round. Whether
+the stability-without-correctness pattern compounds or reverses over more
+rounds is open.
+
+---
+
+## Things NOT to do (tested and rejected)
+
+- Do **not** revive the "residual hedge-mass variance" explanation for the
+  §5.8 gap — refuted ($\rho = -0.03$, $p = 0.92$ within-benchmark); see
+  `FINANCEBENCH_YESNO_ORACLE_FINDINGS.md` §10.
+- Do **not** cite the FinanceBench "1 rescue / 10 losses" as a general
+  debate effect — it is an artifact of the asymmetric skeptic pair (§11).
+- Do **not** claim $p_{\mathrm{nc}}$ is a general error predictor, or that
+  debate reduces AU unconditionally (both narrowed by our own data).
+- Do **not** claim the FinanceBench arms differ pairwise — CIs overlap.
