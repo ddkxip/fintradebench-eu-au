@@ -68,6 +68,19 @@ for i, s in enumerate(eligible, 1):
     except Exception as exc:
         print(f"  ERROR {s.question_id}: {exc} — continuing", flush=True)
         continue
+    # Never write silence: a run whose decodes all failed (e.g. an
+    # unsupported --model prefix returning HTTP 400) previously still wrote
+    # result-shaped rows with parse_rate 0. Abort loudly instead.
+    if all(float(r.get("parse_rate", 0)) == 0.0 for r in rows):
+        first_err = next((x["raw_text"] for x in raw_sink
+                          if str(x.get("raw_text", "")).startswith("__ERROR__")),
+                         "(no __ERROR__ text captured)")
+        raise SystemExit(
+            f"\n[ABORT] {s.question_id}: every decode failed to parse "
+            f"(parse_rate 0). Nothing was written for this question.\n"
+            f"first error: {first_err}\n"
+            f"Check --model: this runner supports 'vertex:<model>' or an "
+            f"Ollama model name; other prefixes are sent to Ollama verbatim.")
     for r in rows:
         r["model"] = args.model
     pd.DataFrame(rows).to_csv(rows_path, mode="a",

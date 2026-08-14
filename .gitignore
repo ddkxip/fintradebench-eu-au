@@ -3,3 +3,6 @@ __pycache__/
 results/raw/
 .venv/
 data/financebench_*.jsonl
+
+# quarantined invalid runs (kept locally for audit, not published)
+results/_quarantine/

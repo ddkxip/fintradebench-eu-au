@@ -47,12 +47,26 @@ abstract is binding, appendix policy, artifact/reproducibility track.
   It now doubles as the visual proof of the "much of the signal is
   mechanical" claim.
 
-**6. Add a qualitative failure-mode figure or box.** One real question per
-mode, with the evidence, the reference answer, and the system's response.
-Reviewers in a Web/Responsible-AI venue respond strongly to seeing the
-actual user-facing harm; right now the paper is all aggregate statistics.
-Candidates already identified: F25 (insufficiency is correct), FT9
-(two-dimension hedge), T11/T2 (wrong-ticker commitment).
+**6. ~~Add a qualitative failure-mode figure or box.~~ DONE.** Table 2, a
+two-column box with one worked question per mode, verbatim from the run
+logs: F43 (hedge collision), F21 (wrong-direction), F40 (overcommitment),
+F3 (correct non-commitment). The fourth row is the argument, not decoration —
+it is *mechanically indistinguishable* from row 1 (same output shape, same
+$p_{\mathrm{nc}}$, opposite correctness), which is the visual proof that a
+hedging-rate monitor cannot separate them.
+- The originally-planned exemplars were **all rejected on verification**:
+  FT16 had an empty evidence pack, F50's reference is contradicted by its own
+  evidence, T11/T2 are set-collapse artifacts. See
+  `REFERENCE_QUALITY_AUDIT.md`. Verify exemplars against the released pack
+  before using them.
+
+**6b. NEW P1 — a full reference-answer audit.** The targeted audit found one
+reference (F50) whose stated justification is arithmetically contradicted by
+the released indicators, and one (T19) that is direction-ambiguous. Neither
+rate is established. A systematic pass over all 139 references, checking each
+`gold_label_evidence` claim against the pack, would either clear the set or
+produce a correction table. Cheap insurance against a reviewer finding what
+I found.
 
 **7. Strengthen the Web framing in Related Work.** Currently thin. Add a
 paragraph situating the work against trustworthy/responsible information
@@ -128,3 +142,13 @@ rounds is open.
 - Do **not** claim $p_{\mathrm{nc}}$ is a general error predictor, or that
   debate reduces AU unconditionally (both narrowed by our own data).
 - Do **not** claim the FinanceBench arms differ pairwise — CIs overlap.
+- Do **not** cite **F50** as a wrong-direction/model-error example — the
+  reference's own justification ("APP has the highest ROA") is contradicted
+  by the released table (NVDA 0.2131 > APP 0.1489). The models' unanimous
+  NVDA is defensible there. Use **F21** instead.
+- Do **not** report T-lane wrong-direction (77%) as clean model error —
+  48.6% of those errors name an entity the reference itself endorses. Report
+  it as an upper bound. See `REFERENCE_QUALITY_AUDIT.md`.
+- Do **not** run `run_ea_full.py --model hf:<name>` — there is no `hf:`
+  backend; it silently 400s against Ollama. The runner now aborts on a
+  zero-parse question instead of writing empty rows.

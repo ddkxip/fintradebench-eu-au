@@ -50,11 +50,39 @@ who checked would have found it.
    (`--only` flag added to `analysis/run_ea_full.py`, results to
    `evfix_<model>` run ids, originals preserved for audit).
 
-## Reporting position until the re-run lands
+## RESOLVED (2026-08-14) — final reporting position
 
-Report the **populated-pack** figures as headline (hedge collision 0.515) and
-disclose the excluded questions, rather than quoting the inflated 0.572. Once
-the re-run completes, the corrected full-139 numbers replace both.
+The re-run completed for the two locally-servable models. The two HF models
+(`qwen3.6-27b-fp8`, `gemma4-31b-it`) were run on external infrastructure and
+**cannot be re-run with current tooling** — `run_ea_full.py` has no `hf:`
+backend. (An attempt to force it produced a run in which every decode
+returned HTTP 400; that run is quarantined under `results/_quarantine/`, and
+the runner now aborts on a zero-parse question rather than writing
+result-shaped rows. See PAPER_TASKS "Things NOT to do".)
+
+**Headline is therefore the 122-question populated-pack subset**, which is
+bug-free for all four models and apples-to-apples:
+
+| model | acc | HC | WD | OC | WN |
+|---|---|---|---|---|---|
+| gemma4 | 0.320 | 0.663 | 0.277 | 0.036 | 0.024 |
+| qwen3:8b | 0.418 | 0.493 | 0.408 | 0.085 | 0.014 |
+| qwen3.6-27b | 0.492 | 0.484 | 0.371 | 0.129 | 0.016 |
+| gemma4-31b-it | 0.500 | 0.443 | 0.393 | 0.131 | 0.033 |
+| **pooled** | 0.432 | **0.531** [0.43, 0.63] | 0.357 | 0.090 | 0.022 |
+
+**The bug did not drive the finding.** Add-back check on the two re-runnable
+models, comparing 122q subset → corrected 139q → buggy 139q:
+
+| model | 122q subset | 139q corrected | 139q with bug |
+|---|---|---|---|
+| gemma4 | 0.663 | 0.681 | 0.670 |
+| qwen3:8b | 0.493 | 0.519 | 0.554 |
+
+The correction moves hedge collision by ≤3.5 points and **in opposite
+directions** for the two models. Hedge collision remains modal in every model
+under every treatment. The original inflated pooled figure (0.572) and the
+interim populated-pack figure (0.515) are both superseded by **0.531**.
 
 ## Lesson for the paper
 

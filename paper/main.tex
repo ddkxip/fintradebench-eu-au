@@ -37,9 +37,9 @@ probability across alternatives. We introduce non-commitment mass,
 $p_{\mathrm{nc}}$, alongside an exact aleatoric/epistemic entropy
 decomposition, and characterise three user-facing failure modes:
 \emph{hedge collision}, where the system declines to answer a question the
-reference answer settles ($50.6$--$67.0\%$ of all errors); \emph{wrong-direction
+reference answer settles ($44.3$--$66.3\%$ of all errors); \emph{wrong-direction
 commitment}, confident but incorrect entity selection, which dominates
-screening-style queries ($77\%$ of their errors) and is invisible to every
+screening-style queries (up to $77\%$ of their errors) and is invisible to every
 uncertainty channel we measure; and \emph{overcommitment} on questions whose
 correct answer is genuinely a refusal. Which mode a system exhibits is a
 property of the model \emph{and} the query type, not of model scale: the
@@ -131,9 +131,9 @@ promote \emph{non-commitment mass} $p_{\mathrm{nc}}$---the probability the
 system places on non-committal responses---to a first-class quantity, and
 partition errors accordingly. \emph{Hedge collision} (the system declines;
 the reference answer settles) is the modal error in every model, at
-$50.6$--$67.0\%$. \emph{Wrong-direction commitment} (the system confidently
-names the wrong company) dominates screening-style queries, at $77\%$ of
-their errors, and is invisible to every uncertainty channel we measure.
+$44.3$--$66.3\%$. \emph{Wrong-direction commitment} (the system confidently
+names the wrong company) dominates screening-style queries, at up to $77\%$
+of their errors, and is invisible to every uncertainty channel we measure.
 \emph{Overcommitment} (the system answers where the correct response is a
 refusal) is rarer but is the mode a naive ``reduce hedging'' intervention
 would inflate---non-commitment is the \emph{correct} answer on $15.8\%$ of
@@ -314,26 +314,43 @@ divergence instead.}
 \subsection{Failures are categorical, and mostly non-answers}
 
 Table~\ref{tab:decomp} decomposes errors. Hedge collision is modal in every
-model ($50.6$--$67.0\%$; pooled $57.2\%$), and the profile is strongly
-query-type dependent: pooled across models, $71\%$ of F-lane and $76\%$ of
-FT-lane errors are hedge collisions, whereas $77\%$ of T-lane (screening)
-errors are wrong-direction commitments. The two lanes fail in different ways,
-and only one of those ways is a non-answer.
+model ($44.3$--$66.3\%$; pooled $53.1\%$, CI $[0.43,0.63]$), and the profile
+is strongly query-type dependent: pooled across models, $71\%$ of F-lane and
+$76\%$ of FT-lane errors are hedge collisions, whereas $77\%$ of T-lane
+(screening) errors are wrong-direction commitments. The two lanes fail in
+different ways, and only one of those ways is a non-answer.
+
+That T-lane figure, however, overstates genuine model error, and we say so
+rather than bank it. Screening questions have set-valued expert answers that
+our schema collapses to a single label, so a system naming a different member
+of the endorsed set is scored wrong. Testing this mechanically---does the
+model's answer appear in the reference's \emph{own} written
+justification?---$48.6\%$ ($36/74$) of T-lane wrong-direction errors name an
+entity the reference explicitly endorses, against $1/27$ in the F and FT
+lanes. T-lane wrong-direction counts should therefore be read as an upper
+bound; the F/FT lanes, where our worked example sits, are unaffected. This
+independently confirms, by a reproducible test, what two blinded annotators
+concluded by reading (\S\ref{sec:robust}).
 
 \begin{table}[t]
-\caption{Error decomposition (final round, share of errors). HC = hedge
-collision, WD = wrong-direction commitment, OC = overcommitment, WN = wrong
-non-commitment type.}
+\caption{Error decomposition (final round, share of errors) on the 122
+questions whose evidence packs are populated for all four systems. HC =
+hedge collision, WD = wrong-direction commitment, OC = overcommitment, WN =
+wrong non-commitment type. Bracketed interval is a question-clustered
+bootstrap on HC ($4000$ resamples).}
 \label{tab:decomp}
 \small
 \begin{tabular}{lrrrrr}
 \toprule
 model & acc. & HC & WD & OC & WN \\
 \midrule
-\textsc{gemma4}        & 0.281 & 0.670 & 0.240 & 0.030 & 0.060 \\
-\textsc{qwen3:8b}      & 0.403 & 0.554 & 0.349 & 0.084 & 0.012 \\
-\textsc{qwen3.6-27b}   & 0.432 & 0.532 & 0.304 & 0.101 & 0.063 \\
-\textsc{gemma4-31b-it} & 0.446 & 0.506 & 0.312 & 0.104 & 0.078 \\
+\textsc{gemma4}        & 0.320 & 0.663 & 0.277 & 0.036 & 0.024 \\
+\textsc{qwen3:8b}      & 0.418 & 0.493 & 0.408 & 0.085 & 0.014 \\
+\textsc{qwen3.6-27b}   & 0.492 & 0.484 & 0.371 & 0.129 & 0.016 \\
+\textsc{gemma4-31b-it} & 0.500 & 0.443 & 0.393 & 0.131 & 0.033 \\
+\midrule
+pooled & 0.432 & \textbf{0.531} & 0.357 & 0.090 & 0.022 \\
+       &       & \small[0.43,0.63] & & & \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -344,7 +361,77 @@ the time. The pathology is hedging on the $84\%$ of questions the evidence
 does settle---which is why a blunt ``penalise hedging'' fix would trade one
 failure mode for another.
 
+Table~\ref{tab:failures} makes the modes concrete with one worked question
+each, drawn verbatim from the run logs. The final row is the control: it is
+the behaviour we want, and from outside the system it is indistinguishable
+from the first row.
+
+\begin{table*}[t]
+\caption{One worked example per failure mode, verbatim from the run logs
+(final round). Evidence values are the released indicators the agents
+actually saw. The last row is \emph{correct} non-commitment: note that it is
+mechanically indistinguishable from the hedge collision in row~1---same
+output shape, same $p_{\mathrm{nc}}$, opposite correctness. This is why a
+hedging-rate monitor cannot separate them, and why $p_{\mathrm{nc}}$ must be
+read jointly with whether the reference is settled (\S\ref{sec:monitor}).}
+\label{tab:failures}
+\small
+\begin{tabular}{@{}p{2.35cm}p{3.95cm}p{2.3cm}p{3.25cm}p{3.85cm}@{}}
+\toprule
+Mode & Question and evidence seen & Reference & System output & User-facing harm \\
+\midrule
+
+\textbf{Hedge collision} \newline (F43) &
+\emph{``Is Apple's dividend safe given its high debt load as of Q3 2025?''}
+\newline Pack: AAPL debt/assets $0.307$, debt/equity $1.545$,
+cash flow/assets $0.084$, dividend yield $0.0013$. &
+\textbf{yes} --- the debt load ``does not present an immediate threat to
+the payout''. &
+\textsc{gemma4}, \textsc{qwen3:8b} $\rightarrow$ \texttt{mixed},
+$p_{\mathrm{nc}}{=}1.00$. \textsc{gemma4}'s two agents split $0.50/0.50$
+across \emph{two different} non-committal labels: $EU{=}0.69$ carrying no
+information. Both larger models answer \texttt{yes}. &
+A direct, answerable question returns a non-answer. The user cannot tell
+this apart from a genuine data gap, and receives no route to the answer the
+evidence supports. \\
+\addlinespace
+
+\textbf{Wrong-direction} \newline \textbf{commitment} \newline (F21) &
+\emph{``Is Microsoft cheaper or more expensive than Apple in September
+2025?''} \newline Pack: book/price MSFT $0.0929$ vs.\ AAPL $0.0220$. &
+\textbf{MSFT} is cheaper (higher book-to-price). &
+3 of 4 models $\rightarrow$ \texttt{AAPL}, $p_{\mathrm{nc}}{=}0.00$,
+$EU{=}0.00$. The one correct model is \emph{equally} certain ($0.95$). &
+The comparison is inverted and delivered with total confidence. Certainty is
+identical for the right and the wrong answer, so no uncertainty signal
+separates them. \\
+\addlinespace
+
+\textbf{Overcommitment} \newline (F40) &
+\emph{``Which streaming company uses capital more efficiently: Netflix or
+Roku?''} \newline Pack: NFLX fundamentals present; ROKU block reads
+\texttt{No data file available}. &
+\textbf{insufficient\_data} --- no Roku data to compare against. &
+3 of 4 models commit to \texttt{NFLX} (two at $p_{\mathrm{nc}}{=}0.00$).
+Only \textsc{gemma4} abstains ($p_{\mathrm{nc}}{=}0.85$). &
+The system manufactures a two-sided comparison from one-sided evidence. The
+user is never told the comparison was impossible as posed. \\
+\addlinespace
+
+\textbf{Correct non-commitment} \newline (F3) &
+\emph{``How does Tesla's profitability compare to traditional
+automakers?''} \newline Pack: TSLA only; no peer fundamentals in window. &
+\textbf{insufficient\_data} --- no peer metrics for a relative comparison. &
+4 of 4 models $\rightarrow$ \texttt{insufficient\_data}
+($p_{\mathrm{nc}}{=}0.85$--$1.00$). &
+None: this is the desired behaviour. But its output signature is identical
+to row~1, which is precisely the measurement problem. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
 \subsection{What a non-commitment monitor can and cannot detect}
+\label{sec:monitor}
 
 $p_{\mathrm{nc}}$ predicts error well in aggregate (AUROC $0.636$--$0.721$)
 and survives controls: in a logistic model with total uncertainty, lane and
@@ -477,6 +564,7 @@ nothing.} A ``devil's advocate'' agent, a common design pattern, is the
 specific configuration to avoid.
 
 \subsection{Robustness of the labelling}
+\label{sec:robust}
 
 Because the taxonomy rests on classifying each reference answer as settled or
 not, two independent annotators re-adjudicated all 139 from a \emph{blinded}
