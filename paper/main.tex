@@ -373,41 +373,57 @@ total uncertainty (TU)                   & $-2.04$  & $0.018$ \\
 \end{table}
 
 Much of the aggregate signal is moreover \emph{mechanical}: a non-committal
-answer cannot match a settled reference. In the non-mechanical cell, AUROC
-falls to $0.403$--$0.446$ in all four models---at or below chance. Conditional
-on the system taking a position, residual hedge mass says nothing about
-whether that position is right. \emph{A non-commitment monitor is a
-non-answer detector, not a misinformation detector}---and misinformation is
-the more consequential harm.
+answer cannot match a settled reference. Figure~\ref{fig:interaction} makes
+the extent of this explicit by plotting the empirical error rate per
+$p_{\mathrm{nc}}$ stratum and marking the points whose outcome is forced by
+construction. The dramatic reversal lives almost entirely in the forced
+region; where the answer type could match the reference type, the error rate
+is essentially flat ($0.30$--$0.42$ across three strata spanning most of the
+$p_{\mathrm{nc}}$ range). Consistently, in the non-mechanical cell AUROC
+falls to $0.403$--$0.446$ in all four models---at or below chance.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig2_interaction.pdf}
+\caption{Error rate by non-commitment stratum, split by whether the
+reference answer is settled. Hollow crossed markers denote cells whose
+outcome is forced by construction (answer type cannot match reference type);
+filled markers are empirical. Wilson $95\%$ CIs; cell counts above each
+point. The apparent interaction is largely definitional, and where it is
+not, $p_{\mathrm{nc}}$ is close to uninformative.}
+\label{fig:interaction}
+\end{figure}
+
+Conditional on the system taking a position, then, residual hedge mass says
+little about whether that position is right. \emph{A non-commitment monitor
+is a non-answer detector, not a misinformation detector}---and misinformation
+is the more consequential harm.
 
 \subsection{Failure profile is model$\times$query-type, not scale}
 
 One might hope hedging is a small-model pathology that capability cures. It
-is not. Table~\ref{tab:lane} shows the FT (cross-signal) lane carries the
-highest non-commitment mass in \emph{all five} systems. Both mid-size models
-commit confidently on F---accuracy $0.55$--$0.61$, the best F-lane results we
-observe, exceeding the API model---while simultaneously hedging on FT
-($p_{\mathrm{nc}} = 0.73$, $0.74$). Capability buys commitment on
-single-signal queries and does not buy it where fundamentals and price action
-must be reconciled: precisely the queries a user is most likely to bring to
-an assistant rather than a screener.
+is not. Figure~\ref{fig:regime} maps non-commitment mass over systems and
+query lanes: the FT (cross-signal) lane carries the highest mass in
+\emph{all five} systems. Both mid-size models commit confidently on
+F---accuracy $0.55$--$0.61$, the best F-lane results we observe, exceeding the
+API model---while simultaneously hedging on FT ($p_{\mathrm{nc}} = 0.73$,
+$0.74$). Capability buys commitment on single-signal queries and does not buy
+it where fundamentals and price action must be reconciled: precisely the
+queries a user is most likely to bring to an assistant rather than to a
+screener. The failure profile is therefore a property of the
+model \emph{and} the query, which matters operationally---a service cannot
+infer its own reliability from the model it deploys without knowing the query
+mix.
 
-\begin{table}[t]
-\caption{Final-round $p_{\mathrm{nc}}$ by query lane. FT is the
-highest-hedging lane in every system.}
-\label{tab:lane}
-\small
-\begin{tabular}{lrrr}
-\toprule
-model & F & FT & T \\
-\midrule
-\textsc{gemma4}        & 0.70 & 0.97 & 0.14 \\
-\textsc{qwen3:8b}      & 0.57 & 0.72 & 0.08 \\
-\textsc{qwen3.6-27b}   & 0.30 & 0.74 & 0.05 \\
-\textsc{gemma4-31b-it} & 0.46 & 0.73 & 0.12 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.86\columnwidth]{figures/fig1_regime_map.pdf}
+\caption{Non-commitment mass $p_{\mathrm{nc}}$ by system and query lane
+(F = fundamentals, FT = cross-signal hybrid, T = screening), final round.
+Hedging concentrates on cross-signal queries in every system, independent of
+scale.}
+\label{fig:regime}
+\end{figure}
 
 \subsection{The uncertainty channels are not evidence-responsive}
 

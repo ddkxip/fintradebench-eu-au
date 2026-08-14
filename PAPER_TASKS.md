@@ -35,15 +35,17 @@ abstract is binding, appendix policy, artifact/reproducibility track.
 
 ## P1 — materially improves the paper
 
-**5. Build Figures 1 and 2.**
-- *Fig 1 — the regime map.* Heatmap of $p_{\mathrm{nc}}$, 5 systems × 3
-  lanes. This is the paper's most striking single visual: FT is the
-  highest-hedging lane in every system.
-- *Fig 2 — the interaction.* Error rate vs $p_{\mathrm{nc}}$, split by
-  whether the reference answer is settled. Makes the sign flip visible
-  instead of table-only.
-Reuse `paper/figures/fig3_committed_cell.py` conventions (Okabe-Ito,
-shape+hue identity, greyscale-safe).
+**5. ~~Build Figures 1 and 2.~~ DONE.**
+- *Fig 1 — regime map* (`figures/fig1_regime_map.py`): sequential
+  single-hue heatmap, 5 systems × 3 lanes, FT column boxed. Replaced the
+  old lane table (same data + gemini row, strictly more informative).
+- *Fig 2 — the interaction* (`figures/fig2_interaction.py`): error rate by
+  $p_{\mathrm{nc}}$ stratum split by reference type, Wilson CIs, with
+  **mechanically-forced cells marked hollow+crossed**. Built this way
+  because the interaction turned out to be largely *definitional* — a smooth
+  curve would have sold a definitional step as a discovered relationship.
+  It now doubles as the visual proof of the "much of the signal is
+  mechanical" claim.
 
 **6. Add a qualitative failure-mode figure or box.** One real question per
 mode, with the evidence, the reference answer, and the system's response.
