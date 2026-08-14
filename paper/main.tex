@@ -415,21 +415,52 @@ still sit at or below chance (e.g.\ one lane-level cell with sd $0.220$ has
 AUROC $0.222$). Dispersion and mean are themselves collinear
 ($\rho = 0.96$), so they are not separable explanations.
 
-A matched control isolates one factor. The probe above paired the analyst
-with a deliberately insufficiency-hunting \emph{skeptic}; FinTradeBench's
-two agents are both substantive. Re-running the probe with a symmetric
-substantive pair---same benchmark, model, evidence, $K$, and schemas,
-changing only the second agent's role---moves the committed-cell estimate to
-$0.576$ with CI $[0.360, 0.822]$, which \emph{includes} chance
-(Figure~\ref{fig:boundary}). The two FinanceBench arms' intervals overlap
-substantially, so we do not claim they differ; what we can say is that the
-above-chance result appears only under the asymmetric configuration, and the
-arm methodologically comparable to FinTradeBench behaves like FinTradeBench.
+Matched controls isolate the factor. The probe above paired the analyst with
+a deliberately insufficiency-hunting \emph{skeptic}; FinTradeBench's two
+agents are both substantive. Holding benchmark, model, evidence, $K$ and
+schemas fixed and changing \emph{only} the second agent's role, the
+committed-cell estimate moves to $0.576$ $[0.360, 0.822]$ for a symmetric
+substantive pair and $0.478$ $[0.429, 0.500]$ for two identical
+analysts---both consistent with chance, and both matching all four
+FinTradeBench models (Figure~\ref{fig:boundary}). The above-chance estimate
+appears \emph{only} in the asymmetric configuration. Adjacent intervals
+overlap, so we do not claim pairwise significance; the pattern across three
+configurations of one benchmark is the evidence.
 
-The honest claim is therefore that \emph{the absence of a wrong-direction
-signal is not a stable property of $p_{\mathrm{nc}}$, and agent design is one
-identified source of that instability}. Whether task format or answer space
-also matter remains open and requires the same matched treatment.
+The claim we therefore make is that \emph{the absence of a wrong-direction
+signal is not a stable property of $p_{\mathrm{nc}}$, and agent design---not
+benchmark identity---is the identified source of that instability}. Whether
+task format or answer space matter independently remains open.
+
+\subsection{Agent asymmetry, not debate, drives the harm}
+
+The same three arms settle a second question. Debate on the probe originally
+appeared strongly harmful ($\Delta$correct $-0.243$, $p{=}0.012$; one rescue
+against ten losses). That effect is entirely attributable to the skeptic:
+
+\begin{center}
+\small
+\begin{tabular}{lrrr}
+\toprule
+agent pair & $R_0$ acc & $R_1$ acc & rescue/loss \\
+\midrule
+asymmetric (skeptic)     & 0.595 & 0.351 & 1 / 10 \\
+heterogeneous, symmetric & 0.595 & \textbf{0.649} & 3 / 1 \\
+homogeneous (identical)  & 0.622 & 0.622 & 1 / 1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The mechanism is visible per agent: with the skeptic, the competent analyst
+is pulled onto its hedging (hedge rate $0.216 \rightarrow 0.541$, accuracy
+$0.622 \rightarrow 0.324$) while the skeptic barely moves; with a symmetric
+partner the same analyst's hedge rate is unchanged ($0.216 \rightarrow
+0.216$) and its accuracy rises. The homogeneous arm is inert on every
+quantity we track---$\Delta$correct exactly $0.000$, $\Delta p_{\mathrm{nc}}
+= -0.005$---so the modest gain in the heterogeneous arm requires genuine
+perspective diversity, not merely a second voice. Role \emph{bias} does
+large harm; role \emph{diversity} does small good; role \emph{duplication}
+does nothing.
 
 \section{Discussion}
 

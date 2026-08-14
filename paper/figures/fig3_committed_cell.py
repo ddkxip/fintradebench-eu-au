@@ -88,7 +88,8 @@ for run, m in FULL:
 
 NC = {"insufficient_data"}
 FB = [("financebench_yesno_oracle_local_qwen3_8b", "qwen3:8b (skeptic pair)"),
-      ("financebench_yesno_neutral_local_qwen3_8b", "qwen3:8b (neutral pair)")]
+      ("financebench_yesno_neutral_local_qwen3_8b", "qwen3:8b (neutral pair)"),
+      ("financebench_yesno_homog_local_qwen3_8b", "qwen3:8b (homogeneous)")]
 for run, lab in FB:
     p = REPO / "results" / run / "rows.csv"
     if not p.exists():
@@ -109,7 +110,7 @@ mpl.rcParams.update({
     "xtick.major.width": 0.6, "ytick.major.width": 0.6,
     "pdf.fonttype": 42, "ps.fonttype": 42,
 })
-fig, ax = plt.subplots(figsize=(5.4, 2.9))
+fig, ax = plt.subplots(figsize=(5.4, 3.2))
 
 # chance reference — the only thing the reader must compare against
 ax.axvline(0.5, color="#444444", lw=0.9, ls="--", zorder=1)

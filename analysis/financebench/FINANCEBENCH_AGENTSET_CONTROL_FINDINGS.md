@@ -1,16 +1,24 @@
 # FinanceBench agent-set control — the collapse was the skeptic, not debate
 
 Full tables: `FINANCEBENCH_AGENTSET_CONTROL.md` (regenerate with
-`analyze_agentset_control.py`). All arms: qwen3:8b, oracle `evidence_text`,
-K=10, 1 debate round, identical 37 yes/no schemas — **only the agent pair
-differs**. The homogeneous arm is still running.
+`analyze_agentset_control.py`). All three arms complete: qwen3:8b, oracle
+`evidence_text`, K=10, 1 debate round, identical 37 yes/no schemas — **only
+the agent pair differs**.
 
 ## Verdict: **skeptic-driven** (pre-registered rule, fired cleanly)
 
 | arm | R0 acc | R1 acc | dCorrect | rescues / losses |
 |---|---|---|---|---|
-| skeptic (original) | 0.595 | 0.351 | **−0.243** (p=0.012) | 1 / 10 |
-| neutral (control) | 0.595 | **0.649** | **+0.054** | 3 / 1 |
+| skeptic (asymmetric) | 0.595 | 0.351 | **−0.243** (p=0.012) | 1 / 10 |
+| neutral (heterogeneous, symmetric) | 0.595 | **0.649** | **+0.054** | 3 / 1 |
+| homogeneous (identical) | 0.622 | 0.622 | **0.000** | 1 / 1 |
+
+**Three-way decomposition.** Role *bias* does large harm (−0.243); role
+*diversity* does small good (+0.054); role *duplication* does nothing at all
+(0.000, and ΔpNC −0.005). The homogeneous arm is the cleanest null in the
+programme — both identical analysts hold hedge rate at exactly 0.216 → 0.216
+across the debate round. So the neutral arm's modest gain **requires genuine
+perspective diversity**, not merely a second voice.
 
 Identical round-0 accuracy (0.595) in both arms is a useful sanity check:
 the shared Evidence Accountant behaves the same pre-debate, so the arms
@@ -89,3 +97,38 @@ benchmark was inflated by the skeptic.
 4. Pending: the homogeneous arm (two identical accountants) separates role
    *diversity* from role *bias*; it will say whether the neutral arm's small
    gain needs two perspectives or merely two non-skeptical ones.
+
+---
+
+## Update — homogeneous arm complete (2026-08)
+
+```
+                    arm  R0_acc  R1_acc  dCorrect  resc/loss   dNC  commit_cell_AUROC        CI
+     skeptic (asymm.)    0.595   0.351    -0.243      1/10   +0.128              0.815  [.63,.96]
+    neutral (hetero.)    0.595   0.649    +0.054       3/1   -0.023              0.576  [.36,.82]
+homogeneous (identical)  0.622   0.622    +0.000       1/1   -0.005              0.478  [.43,.50]
+```
+
+Per-agent, homogeneous arm — total inertia:
+
+```
+                         acc    pNC  hedge_rate
+evidence_accountant_a R0  0.622  0.224     0.216
+                      R1  0.622  0.219     0.216
+evidence_accountant_b R0  0.595  0.224     0.216
+                      R1  0.622  0.219     0.216
+```
+
+**Committed-cell consequence.** Two independent *symmetric* configurations
+on FinanceBench (neutral 0.576, homogeneous 0.478) both sit at chance,
+matching all four FinTradeBench models (0.403–0.446). Only the asymmetric
+skeptic arm exceeds it (0.815). Since benchmark, model, questions, evidence
+and K are held fixed across the three arms, **agent asymmetry — not
+benchmark identity — is the identified driver** of the Figure 3 outlier.
+This is a considerably stronger statement than the one-control version.
+
+Caveat: adjacent CIs overlap, so no pairwise-significance claim is made; the
+evidence is the pattern across three configurations. Also note that in the
+homogeneous arm EU measures sampling divergence between two instances of the
+same prompt, not framework disagreement, so its near-zero EU is expected by
+construction rather than informative.

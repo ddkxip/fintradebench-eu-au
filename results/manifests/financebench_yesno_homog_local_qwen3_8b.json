@@ -1,0 +1,24 @@
+{
+ "run_id": "financebench_yesno_homog_local_qwen3_8b",
+ "model": "ollama:qwen3:8b",
+ "k": 10,
+ "tau": 0.7,
+ "rounds": 1,
+ "evidence_field": "evidence_text",
+ "n_examples": 37,
+ "answer_space": [
+  "yes",
+  "no",
+  "insufficient_data"
+ ],
+ "noncommit_set": [
+  "insufficient_data"
+ ],
+ "agent_set": "homogeneous",
+ "agents": [
+  "evidence_accountant_a",
+  "evidence_accountant_b"
+ ],
+ "workers": 4,
+ "seconds": 2988.5
+}
