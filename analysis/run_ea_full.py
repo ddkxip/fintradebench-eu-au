@@ -27,7 +27,11 @@ ap.add_argument("--model", required=True)
 ap.add_argument("--run-id", required=True)
 ap.add_argument("--k-t", type=int, default=20)
 ap.add_argument("--k-f", type=int, default=10)
+ap.add_argument("--only", default="",
+                help="comma-separated question_ids to run (e.g. the 17 whose "
+                     "evidence packs were empty before the 2026-08 alias fix)")
 args = ap.parse_args()
+ONLY = {q.strip() for q in args.only.split(",") if q.strip()}
 
 K_BY_LANE = {"F": args.k_f, "FT": args.k_f, "T": args.k_t}
 
@@ -41,6 +45,10 @@ rows_path = out_dir / "rows.csv"
 schemas = load_schemas()
 eligible = sorted((s for s in schemas.values() if s.headline_eligible),
                   key=lambda x: x.question_id)
+if ONLY:
+    eligible = [s for s in eligible if s.question_id in ONLY]
+    print(f"[--only] restricted to {len(eligible)} questions: "
+          f"{[s.question_id for s in eligible]}")
 done: set[str] = set()
 if rows_path.exists():
     done = set(pd.read_csv(rows_path)["question_id"].unique())

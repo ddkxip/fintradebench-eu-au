@@ -66,6 +66,28 @@ NAME_TO_TICKER = {
     "lam research": "LRCX", "marvell": "MRVL", "cintas": "CTAS",
     "verisk": "VRSK", "fastenal": "FAST", "coca-cola europacific": "CCEP",
     "roper": "ROP",
+    # --- 2026-08 coverage fix ---------------------------------------------
+    # An audit found 21/139 headline questions produced EMPTY evidence packs
+    # because the company was absent from this map (no ticker detected -> no
+    # context built). Models then correctly answered "insufficient_data",
+    # which the taxonomy mis-scored as a hedge collision. Every entry below
+    # was verified to have a data file in COMBINED_DIR; see
+    # analysis/evidence_pack_audit.csv and tests/test_evidence_coverage.py.
+    "starbucks": "SBUX", "cisco": "CSCO", "paypal": "PYPL", "adobe": "ADBE",
+    "texas instruments": "TXN", "pepsi": "PEP", "pepsico": "PEP",
+    "palo alto": "PANW", "palo alto networks": "PANW", "comcast": "CMCSA",
+    "intel": "INTC", "kraft heinz": "KHC", "keurig": "KDP",
+    "monster": "MNST", "atlassian": "TEAM", "thomson reuters": "TRI",
+    "warner bros": "WBD", "palantir": "PLTR", "doordash": "DASH",
+    "crowdstrike": "CRWD", "mercadolibre": "MELI", "copart": "CPRT",
+    "asml": "ASML", "applied materials": "AMAT", "kla": "KLAC",
+    "axon": "AXON", "lululemon": "LULU", "trade desk": "TTD",
+    "dexcom": "DXCM", "intuitive surgical": "ISRG", "charter": "CHTR",
+    "fortinet": "FTNT", "intuit": "INTU", "globalfoundries": "GFS",
+    "ge healthcare": "GEHC", "electronic arts": "EA",
+    "microstrategy": "MSTR", "xcel": "XEL",
+    # NOTE: Moderna (MRNA) is deliberately NOT added — it has no data file,
+    # which is exactly why FT19's reference answer is "insufficient_data".
 }
 
 
