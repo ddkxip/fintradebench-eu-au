@@ -577,6 +577,23 @@ collision remains modal ($0.468$--$0.670$) and the non-mechanical cell remains
 at chance. Moderate $\kappa$ is honest---the judgement is genuinely
 borderline at the margin---but the conclusions are invariant to it.
 
+We also audited the reference answers themselves against the evidence packs,
+since our error taxonomy inherits any defect in them. Four mechanical checks
+over all 139: is an explicit superlative claim contradicted by the released
+indicators; is the reference entity absent from the pack; does the reference
+name more than one entity from the answer space; and does every cited figure
+appear in the pack. Two references ($1.4\%$) state a superlative that the
+released table falsifies---in both, the models' scored-wrong answer is the
+one satisfying the reference's own stated criterion. No reference entity is
+missing data. Six numeric flags are window-definition or derived-quantity
+artifacts on inspection, save one (an entity whose cited leverage ratios
+differ materially from the pack, though its label survives either set). We
+report these rather than repair them: at $1.4\%$ they do not move any
+finding, and the honest statement is that the reference set is sound on the
+claims that can be checked mechanically. Judgement claims (``best
+risk--reward setup'') and direction-ambiguous questions are outside what
+these checks can reach.
+
 \subsection{External validity and an open question}
 
 \begin{figure}[t]
@@ -636,8 +653,14 @@ opposite of what a high-stakes information service should optimise.
 
 Reference answers are expert-audited benchmark labels, not market outcomes;
 correctness means agreement with an expert conclusion given the same
-evidence. Commitment labelling is moderately reliable ($\kappa \approx
-0.53$--$0.59$); we report invariance rather than claiming objectivity. Pooled
+evidence. Our audit of them (\S\ref{sec:robust}) covers mechanically
+checkable claims only, and $1.4\%$ fail; it cannot adjudicate judgement
+claims, so the true rate of contestable references is a lower bound.
+Screening-lane references are set-valued and our schema collapses them,
+which is why we report T-lane wrong-direction counts as an upper bound
+rather than a measurement. Commitment labelling is moderately reliable
+($\kappa \approx 0.53$--$0.59$); we report invariance rather than claiming
+objectivity. Pooled
 rows are not independent (each question appears once per model), so per-model
 results are primary and regressions cluster by ticker. EU is computed over
 $N{=}2$ agents---a single edge, not a graph. The intervention suite ran on one

@@ -80,11 +80,77 @@ are defensible. Not used as an exemplar.
 
 ---
 
-## Scope of this audit
+---
 
-This was a **targeted** audit of exemplar candidates plus one mechanical
-sweep of wrong-direction errors — not a full re-verification of all 139
-reference answers. The set-collapse rate is measured and reproducible; the
-F50 arithmetic error is a single confirmed instance found by hand, and I do
-**not** claim a rate for reference errors generally. A full reference audit
-remains open (see PAPER_TASKS).
+## 3. FULL 139-REFERENCE AUDIT (completed 2026-08-14)
+
+`analysis/reference_answer_audit.py` checks every headline-eligible
+reference against the evidence pack the agents actually saw:
+
+| check | result |
+|---|---|
+| **B.** superlative claim contradicted by the pack | **2 / 139 (1.4%)** |
+| **C.** reference entity absent from the pack | 0 |
+| **D.** set-collapse (reference names >1 answer-space entity) | 27 / 139 (19%) |
+| **A.** numeric provenance flags | 6 (5 benign, see below) |
+
+### The 2 confirmed contradictions
+
+Both are the same class: an **explicit "highest X" claim falsified by the
+released table**. In both, the models' "wrong" answer is the one that
+satisfies the reference's own stated criterion.
+
+**F50** — "AppLovin ... ROA at 14.89% (highest)". NVDA is at $0.2131$ vs
+APP's $0.1489$. All four models answered NVDA.
+
+**T9** — "Tesla ... an OBV of 22.96 Billion, the highest among all ranked
+tickers". NVDA's OBV is $166.28$ B, over 7x TSLA's. Three of four models
+answered NVDA.
+
+**Precise reading.** In both cases the *stated justification* is falsified.
+Whether the *label* is wrong is a separate question: APP genuinely does have
+the highest ROE ($0.827$), and T9's question asks about volume confirmation
+"for their price moves", which a normalised reading of OBV might support —
+but the reference states no normalisation. So: justification falsified, label
+contestable. Do not describe these as "wrong gold labels" in the paper.
+
+### Numeric provenance (check A) — 5 of 6 are benign
+
+F31, F5, F8, T19 cite figures that differ from the pack in the 2nd–3rd
+decimal (window-definition differences: the references quote a specific
+as-of date, the pack takes a median over the parsed window). T21's "23.93%
+above its 20-day moving average" is a *derived* quantity the checker cannot
+see, and it is exactly right: $(36.83 - 29.719)/29.719 = 23.93\%$.
+
+The one substantive case is **F14** (PayPal): the reference cites
+debt/assets $4.05\%$ and debt/equity $15.99\%$; the pack shows $11.70\%$ and
+$47.17\%$. The gap is far beyond rounding. The label (`no`, not
+overleveraged) survives either set of figures, so this is a provenance
+mismatch rather than a labelling error — but it should be disclosed.
+
+### Checker validation
+
+The first version of check B produced 5 flags, **3 of them false
+positives**, because a superlative attached to a composite concept inverts
+the indicator direction ("strongest balance sheet" = *lowest* debt/equity;
+"most oversold" = *lowest* RSI). Hand-verified against the packs: F12 (GOOGL
+*is* argmin debt/equity) and T35 (TRI *is* argmin RSI) are correct
+references, and T19 never claims highest RSI at all. The check now fires
+only when a superlative directly qualifies a named indicator. All four
+hand-checked cases now classify correctly.
+
+### Bottom line
+
+At $1.4\%$, the F50 error was **not the tip of an iceberg** — the reference
+set is broadly sound on the claims that can be checked mechanically. The
+material issue for the paper is not reference errors but **set-collapse in
+the T lane** (§1), which is a schema-construction choice of ours, not a
+defect in the expert answers.
+
+### Scope and limits
+
+These checks cover claims that are mechanically verifiable against the pack:
+explicit superlatives, cited figures, entity presence, and multi-entity
+naming. They do **not** cover judgement claims ("best risk-reward setup"),
+direction-ambiguous questions (T19), or reasoning that is valid but
+unstated. A reference can pass all four checks and still be contestable.

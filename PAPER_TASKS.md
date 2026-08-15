@@ -60,13 +60,17 @@ hedging-rate monitor cannot separate them.
   `REFERENCE_QUALITY_AUDIT.md`. Verify exemplars against the released pack
   before using them.
 
-**6b. NEW P1 — a full reference-answer audit.** The targeted audit found one
-reference (F50) whose stated justification is arithmetically contradicted by
-the released indicators, and one (T19) that is direction-ambiguous. Neither
-rate is established. A systematic pass over all 139 references, checking each
-`gold_label_evidence` claim against the pack, would either clear the set or
-produce a correction table. Cheap insurance against a reviewer finding what
-I found.
+**6b. ~~A full reference-answer audit.~~ DONE.**
+`analysis/reference_answer_audit.py`, all 139, four mechanical checks.
+Result: **2/139 (1.4%)** state a superlative the released table falsifies
+(F50, T9); 0 missing entities; 27/139 set-collapse (25 of them T-lane); 6
+numeric flags of which 5 are window/derived artifacts. The reference set is
+**broadly sound** — F50 was not the tip of an iceberg. Written into
+§\ref{sec:robust} and Limitations. Detail in `REFERENCE_QUALITY_AUDIT.md`.
+- Note: the checker's first version had 3 false positives out of 5 because
+  composite superlatives invert indicator polarity ("strongest balance
+  sheet" = *lowest* debt/equity). Hand-verify any new flag before believing
+  it.
 
 **7. Strengthen the Web framing in Related Work.** Currently thin. Add a
 paragraph situating the work against trustworthy/responsible information
@@ -122,9 +126,23 @@ multi-entity screening references as non-committal (10 questions). A
 set-valued scoring treatment would tighten the benchmark. Conclusions
 already survive either labelling, so this is quality not rescue.
 
-**17. Larger API-model coverage.** The Gemini subset is 16 questions and
-should not be quoted as a result; a ≥50-question run would let it enter the
-main tables.
+**17. Larger API-model coverage — IN PROGRESS.** The Gemini subset is 16
+questions and should not be quoted as a result. A full 139-question run is
+staged and ready:
+
+```
+python analysis/run_ea_full.py --model vertex:gemini-3.1-pro-preview \
+    --run-id gemini_full139
+```
+
+**Blocked on credentials only.** `gcloud auth print-access-token` fails with
+"Reauthentication failed. cannot prompt during non-interactive execution".
+Run `gcloud auth login` in an interactive terminal, then launch the command
+above. It is resumable per question, so an interrupted run continues where
+it stopped. Expect ~3.5–4 h (the 16-question subset took 24 min at K=10; the
+full run is K=10 F/FT and K=20 T per the G0 rule, ≈9.4x the sample budget).
+Use a **new run id** — do not append to `gemini_subset16`, which used K=10
+uniform and must stay intact for audit.
 
 **18. Multi-round debate.** Everything here is one exchange round. Whether
 the stability-without-correctness pattern compounds or reverses over more

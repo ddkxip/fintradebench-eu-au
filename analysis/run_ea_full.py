@@ -55,6 +55,7 @@ if rows_path.exists():
     print(f"[{args.run_id}] resuming: {len(done)}/{len(eligible)} done")
 
 t0 = time.time()
+failed: list[str] = []
 for i, s in enumerate(eligible, 1):
     if s.question_id in done:
         continue
@@ -75,12 +76,20 @@ for i, s in enumerate(eligible, 1):
         first_err = next((x["raw_text"] for x in raw_sink
                           if str(x.get("raw_text", "")).startswith("__ERROR__")),
                          "(no __ERROR__ text captured)")
-        raise SystemExit(
-            f"\n[ABORT] {s.question_id}: every decode failed to parse "
-            f"(parse_rate 0). Nothing was written for this question.\n"
-            f"first error: {first_err}\n"
-            f"Check --model: this runner supports 'vertex:<model>' or an "
-            f"Ollama model name; other prefixes are sent to Ollama verbatim.")
+        # Nothing is written, so a later resume retries this question. A
+        # systematic cause (bad --model, expired credentials) shows up as
+        # every question failing in a row; a transient one self-heals.
+        failed.append(s.question_id)
+        print(f"  [SKIP-NO-PARSE] {s.question_id}: every decode failed to "
+              f"parse. Nothing written; resume will retry.\n"
+              f"    first error: {first_err[:200]}", flush=True)
+        if len(failed) >= 5:
+            raise SystemExit(
+                f"\n[ABORT] {len(failed)} questions failed to parse "
+                f"({failed[:8]}...). This looks systematic, not transient.\n"
+                f"Check --model: this runner supports 'vertex:<model>' or an "
+                f"Ollama model name; other prefixes go to Ollama verbatim.")
+        continue
     for r in rows:
         r["model"] = args.model
     pd.DataFrame(rows).to_csv(rows_path, mode="a",
@@ -95,5 +104,6 @@ for i, s in enumerate(eligible, 1):
     "digest": ollama_digest() if not args.model.startswith("vertex:") else "api",
     "k_by_lane": K_BY_LANE, "tau": TAU, "workers": WORKERS, "rounds": 1,
     "n_questions": len(eligible), "seconds": round(time.time() - t0, 1),
+    "failed_no_parse": failed,
 }, indent=1), encoding="utf-8")
 print(f"[{args.run_id}] ALL DONE in {(time.time()-t0)/3600:.1f}h")
