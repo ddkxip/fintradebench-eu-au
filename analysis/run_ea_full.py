@@ -51,7 +51,17 @@ if ONLY:
           f"{[s.question_id for s in eligible]}")
 done: set[str] = set()
 if rows_path.exists():
-    done = set(pd.read_csv(rows_path)["question_id"].unique())
+    # Read the done-set with the csv module, not pandas: a run that already
+    # contains a ragged block (pre-fix failure-branch rows) makes
+    # pd.read_csv raise ParserError, which would make the run unresumable
+    # precisely when resuming matters most.
+    import csv as _csv
+    with rows_path.open(newline="", encoding="utf-8") as _f:
+        _rd = _csv.reader(_f)
+        _hdr = next(_rd, None)
+        if _hdr:
+            _i = _hdr.index("question_id")
+            done = {r[_i] for r in _rd if len(r) > _i and r[_i]}
     print(f"[{args.run_id}] resuming: {len(done)}/{len(eligible)} done")
 
 t0 = time.time()

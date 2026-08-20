@@ -174,6 +174,19 @@ def modal_label_and_rationale(recs: list, schema: AnswerSchema) -> tuple[str, st
     return modal, ""
 
 
+# Canonical metric keys emitted on the success path. Used to pad the
+# failure path so every row has the same schema (see run_question).
+_ROW_METRIC_KEYS = (
+    "gold_scoreable", "tu", "au", "eu", "tu_mm", "au_mm", "eu_mm",
+    "tu_norm", "au_norm", "eu_norm", "eu_tu_ratio", "predicted",
+    "p_noncommit", "p_noncommit_fundamental", "p_noncommit_trading",
+    "p_sys", "agent_entropy_fundamental", "agent_entropy_trading",
+    "k_eff_fundamental", "k_eff_trading", "gold_prob", "correct",
+    "brier", "nll", "agent_gold_prob_fundamental",
+    "agent_gold_prob_trading",
+)
+
+
 def run_question(schema: AnswerSchema, k: int, rounds: int = 1,
                  raw_sink: list | None = None, model: str = MODEL,
                  extra_instruction: str = "", pack: EvidencePack | None = None,
@@ -268,5 +281,14 @@ def run_question(schema: AnswerSchema, k: int, rounds: int = 1,
             })
         else:
             row["error"] = "agent distribution unavailable (parse failure)"
+        # Keep the row schema RECTANGULAR. The success and failure branches
+        # above set different keys; appending both to one CSV with a fixed
+        # header silently misaligns every column of the failing question
+        # (observed on FT36 in gemini_full139: a 38-column block written
+        # under a 37-column header). Fill the union with None so every row
+        # a run ever emits has identical keys in identical order.
+        row.setdefault("error", None)
+        for _k in _ROW_METRIC_KEYS:
+            row.setdefault(_k, None)
         rows.append(row)
     return rows
