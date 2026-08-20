@@ -1,0 +1,16 @@
+{
+ "run_id": "gemini_pilot3",
+ "model": "vertex:gemini-3-flash-preview",
+ "digest": "api",
+ "k_by_lane": {
+  "F": 10,
+  "FT": 10,
+  "T": 20
+ },
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "n_questions": 3,
+ "seconds": 190.9,
+ "failed_no_parse": []
+}

@@ -29,17 +29,28 @@ def access_token() -> str:
     return tok
 
 
+# Thinking budget. The Ollama path runs the open-weights models with
+# "think": False, so an API model left on default (extended) thinking is NOT
+# a matched comparison -- test-time reasoning would be confounded with model
+# identity. Set FTB_THINKING_BUDGET=0 to match; leave unset for the model
+# default. Note only flash-tier models accept 0; both Pro models reject it.
+THINKING_BUDGET = os.environ.get("FTB_THINKING_BUDGET", "")
+
+
 def chat_vertex(system: str, user: str, model: str,
                 temperature: float = 0.7, timeout: int = 120,
                 max_retries: int = 4) -> str:
+    gen_cfg = {
+        "temperature": float(temperature),
+        "maxOutputTokens": 2000,
+        "responseMimeType": "application/json",
+    }
+    if THINKING_BUDGET != "":
+        gen_cfg["thinkingConfig"] = {"thinkingBudget": int(THINKING_BUDGET)}
     payload = {
         "systemInstruction": {"parts": [{"text": system}]},
         "contents": [{"role": "user", "parts": [{"text": user}]}],
-        "generationConfig": {
-            "temperature": float(temperature),
-            "maxOutputTokens": 2000,
-            "responseMimeType": "application/json",
-        },
+        "generationConfig": gen_cfg,
     }
     url = ENDPOINT.format(project=PROJECT, model=model)
     last_err = None
