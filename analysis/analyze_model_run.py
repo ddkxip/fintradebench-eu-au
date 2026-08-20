@@ -37,7 +37,16 @@ ALL_RUNS = [
     ("ea_full_qwen3", "qwen3:8b", 139),
     ("ea_full_hf_qwen36_27b_fp8", "qwen3.6-27b", 139),
     ("ea_full_hf_gemma_4_31B_it", "gemma4-31b-it", 139),
-    ("gemini_subset16", "gemini-3.1-pro", 16),
+    # NOTE ON THE TWO GEMINI ROWS. They are NOT interchangeable.
+    #   gemini_subset16   ran with the Vertex default (extended thinking),
+    #                     which is UNMATCHED against every other row here --
+    #                     the Ollama path uses "think": False. It also covers
+    #                     only 16 questions. Keep for provenance; do not quote.
+    #   gemini_full139    ran with thinkingBudget=0, matching the local
+    #                     models' no-reasoning config. This is the row that
+    #                     belongs in the paper's cross-model table.
+    ("gemini_subset16", "gemini-3.1-pro (think, 16q)", 16),
+    ("gemini_full139", "gemini-3-flash", 139),
 ]
 JUDGMENT_TYPES = ["yes_no_mixed", "supportive_judgment", "graded_judgment",
                   "valuation_judgment", "category_choice"]
