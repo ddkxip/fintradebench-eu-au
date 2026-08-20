@@ -66,6 +66,9 @@ def test_existing_result_csvs_are_rectangular():
     #                            depends on it. Left as-is for provenance.
     # New runs must be rectangular; anything not listed here is a failure.
     KNOWN_RAGGED = {"hedge_probe", "ec_interventions_gemma4"}
+    # gemini_full139 was normalized to a 38-col canonical schema
+    # (error inserted before model) after the runner fix; it must
+    # stay rectangular, so it is deliberately NOT allowlisted.
     bad = {}
     for p in sorted((repo / "results").glob("*/rows.csv")):
         if "_quarantine" in str(p) or p.parent.name in KNOWN_RAGGED:

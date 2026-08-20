@@ -311,10 +311,32 @@ the two frameworks apart. The regularity is therefore scope-conditioned:
 where agents are already near-deterministic it increases between-agent
 divergence instead.}
 
+\subsection{Capability changes what debate does}
+\label{sec:capability}
+
+The four open-weights systems above motivate the stability-not-correctness
+reading. A fifth system qualifies it. Running \textsc{gemini-3-flash} over
+the same 139 questions, with test-time reasoning \emph{disabled} so its
+inference-time budget matches the others, debate raises strict accuracy from
+$0.504$ to $0.590$: $16$ questions are rescued and $4$ lost, an exact
+binomial $p = 0.012$. No open-weights system approaches this
+(best: \textsc{gemma4-31b-it}, $+0.036$, $7$ rescued and $2$ lost,
+$p = 0.18$). It is also the only system whose non-commitment \emph{falls}
+across the round ($\Delta p_{\mathrm{nc}} = -0.046$; all four others rise).
+
+We therefore narrow the central claim rather than restate it: debate buys
+stability without correctness \emph{in the capability regime where these
+systems are typically deployed}, and begins to buy correctness once
+participants are strong enough to move each other. This is a boundary
+condition on the deployment advice, not a rescue of debate---the same system
+still commits the modal failure below, and its non-mechanical-cell AUROC
+($0.455$) remains at chance, so the monitoring conclusion is untouched.
+
 \subsection{Failures are categorical, and mostly non-answers}
 
 Table~\ref{tab:decomp} decomposes errors. Hedge collision is modal in every
-model ($44.3$--$66.3\%$; pooled $53.1\%$, CI $[0.43,0.63]$), and the profile
+open-weights model ($44.3$--$66.3\%$; pooled with the API model $52.0\%$, CI
+$[0.42,0.62]$), and the profile
 is strongly query-type dependent: pooled across models, $71\%$ of F-lane and
 $76\%$ of FT-lane errors are hedge collisions, whereas $77\%$ of T-lane
 (screening) errors are wrong-direction commitments. The two lanes fail in
@@ -337,7 +359,7 @@ concluded by reading (\S\ref{sec:robust}).
 questions whose evidence packs are populated for all four systems. HC =
 hedge collision, WD = wrong-direction commitment, OC = overcommitment, WN =
 wrong non-commitment type. Bracketed interval is a question-clustered
-bootstrap on HC ($4000$ resamples).}
+bootstrap on HC ($4000$ resamples). $\dagger$~API model, run with test-time reasoning \emph{disabled} so its inference-time budget matches the open-weights systems.}
 \label{tab:decomp}
 \small
 \begin{tabular}{lrrrrr}
@@ -348,9 +370,10 @@ model & acc. & HC & WD & OC & WN \\
 \textsc{qwen3:8b}      & 0.418 & 0.493 & 0.408 & 0.085 & 0.014 \\
 \textsc{qwen3.6-27b}   & 0.492 & 0.484 & 0.371 & 0.129 & 0.016 \\
 \textsc{gemma4-31b-it} & 0.500 & 0.443 & 0.393 & 0.131 & 0.033 \\
+\textsc{gemini-3-flash}$^\dagger$ & 0.574 & 0.462 & 0.423 & 0.096 & 0.019 \\
 \midrule
-pooled & 0.432 & \textbf{0.531} & 0.357 & 0.090 & 0.022 \\
-       &       & \small[0.43,0.63] & & & \\
+pooled & 0.461 & \textbf{0.520} & 0.368 & 0.091 & 0.021 \\
+       &       & \small[0.42,0.62] & & & \\
 \bottomrule
 \end{tabular}
 \end{table}
