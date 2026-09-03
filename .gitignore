@@ -12,3 +12,6 @@ results/_quarantine/
 /FinQA-main/
 /ConvFinQA-main/
 /data/convfinqa_extract/
+
+# AI reviewer output — collected per run, not source
+analysis/hedgeqa_collection/ai_review/responses/*.jsonl

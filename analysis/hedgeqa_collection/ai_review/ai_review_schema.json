@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HedgeQA AI-assisted review record",
+  "description": "One JSON object per reviewed item, emitted as JSONL. These are AI-ASSISTED AUDIT LABELS, not human ground truth: they are used to locate disagreement for a human to adjudicate, never to promote an item on their own.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "hedgeqa_id",
+    "reviewer_name",
+    "reviewer_gold_label",
+    "reviewer_gold_commitment",
+    "evidence_sufficient_for_gold",
+    "transformation_valid",
+    "masked_variant_valid",
+    "keep_or_exclude",
+    "confidence",
+    "rationale_short"
+  ],
+  "properties": {
+    "hedgeqa_id": {
+      "type": "string",
+      "pattern": "^hqa_[A-Z]+_[0-9a-f]{8}(_masked)?$",
+      "description": "Copied verbatim from the batch item. Must match exactly."
+    },
+    "reviewer_name": {
+      "type": "string",
+      "enum": ["gemini_antigravity", "chatgpt_codex"],
+      "description": "Which AI reviewer produced this record. One value per file."
+    },
+    "reviewer_gold_label": {
+      "type": "string",
+      "description": "The label YOU chose, which must be a member of the item's answer_space. Decide before considering what our pipeline may have chosen; you were not shown it."
+    },
+    "reviewer_gold_commitment": {
+      "type": "string",
+      "enum": ["committed", "noncommitted", "ambiguous_exclude"],
+      "description": "Whether the answer the evidence supports settles the question (committed), declines to settle it (noncommitted), or is too ambiguous to score (ambiguous_exclude)."
+    },
+    "evidence_sufficient_for_gold": {
+      "type": "string",
+      "enum": ["yes", "no", "unclear"],
+      "description": "Does the provided evidence support reaching your label? For a controlled-insufficient variant, 'no' is the expected and correct answer."
+    },
+    "transformation_valid": {
+      "type": "string",
+      "enum": ["yes", "no", "not_applicable", "unclear"],
+      "description": "For numeric_to_directional: does the stated source arithmetic license a direction, with the operand order checked and the question direction-neutral? Use not_applicable when transformation_type is 'none' or the item is a masked variant."
+    },
+    "masked_variant_valid": {
+      "type": "string",
+      "enum": ["yes", "no", "not_applicable", "unclear"],
+      "description": "For evidence_masked_insufficient only. 'yes' = you tried and could NOT answer from the remaining evidence, so the insufficiency is genuine. 'no' = you found a route to the answer; name it in flags. Use not_applicable for every non-masked item."
+    },
+    "keep_or_exclude": {
+      "type": "string",
+      "enum": ["keep", "exclude"],
+      "description": "Whether this item should stay in the collection. When in doubt, exclude."
+    },
+    "exclusion_reason": {
+      "type": "string",
+      "description": "Required when keep_or_exclude is 'exclude'; empty string otherwise. State the specific defect, not a restatement of the verdict.",
+      "default": ""
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Your confidence in reviewer_gold_label. 'low' on a keep is a signal for human adjudication, so use it honestly rather than defensively."
+    },
+    "rationale_short": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 400,
+      "description": "One or two sentences citing the specific evidence line or figure that decided it. Do not restate the question."
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "answer_reconstructible",
+          "rollforward_reconstruction",
+          "total_minus_components",
+          "figure_repeated_elsewhere",
+          "direction_stated_in_prose",
+          "adjacent_period_proxy",
+          "evidence_gutted",
+          "operand_order_suspect",
+          "question_presupposes_direction",
+          "cross_sectional_not_temporal",
+          "label_outside_answer_space",
+          "two_labels_equally_supported",
+          "wrong_entity_or_period",
+          "answer_stated_verbatim_in_evidence",
+          "question_ambiguous",
+          "evidence_truncated",
+          "other"
+        ]
+      },
+      "description": "Zero or more short tags. Use 'other' only with an explanation in rationale_short.",
+      "default": []
+    }
+  }
+}
