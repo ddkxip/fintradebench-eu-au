@@ -175,6 +175,10 @@ this directory.
 | `test_masking.py` | asserts each masking guard can actually fire |
 | `HEDGEQA_COLLECTION_SCOPING.md` | generated report — do not hand-edit |
 | `HEDGEQA_QA_AUDIT.md` | QA audit: counts, baselines, validator results, review risks |
+| `build_core_collection.py` | assembles the 368-item reviewable core |
+| `HEDGEQA_CORE_SELECTION.md` | what the core contains and why |
+| `HEDGEQA_CORE_REVIEW_PROTOCOL.md` | how a reviewer validates an item |
+| `hedgeqa_core_v0_1_manual_review.csv` | the core review sheet, risk-ordered |
 | `hedgeqa_v0_1_manual_review.csv` | two-reviewer adjudication sheet |
 
 ## Status
@@ -183,6 +187,15 @@ this directory.
 deterministic and every structural invariant holds, but 323 items carry a
 constructed gold label that no automated check can certify, and no item is
 `manually_validated` yet.
+
+**Start with the core.** `HedgeQA-Core-v0.1` (368 items,
+`data/hedgeqa/hedgeqa_core_v0_1_candidates.jsonl`) is the reviewable subset:
+small enough to check by hand in about a week, no benchmark above 27%,
+evidence sharing down from 36.7% to 10.9%. Review it using
+`HEDGEQA_CORE_REVIEW_PROTOCOL.md` before running anything. Note it is a
+*deliberately biased* subsample — shorter evidence was preferred — so
+re-measure on the full collection before generalising (see
+`HEDGEQA_CORE_SELECTION.md` §10).
 
 ## Before using this for a result
 
