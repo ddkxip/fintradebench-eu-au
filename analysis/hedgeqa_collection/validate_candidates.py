@@ -37,6 +37,9 @@ FILES = ["fintradebench_candidates.jsonl", "financebench_candidates.jsonl",
 # constructed gold label is right.
 NEVER_AUTO = {"evidence_masked_insufficient"}
 
+HELD_NOTE = ("structurally valid; held for human review because the "
+             "gold label is constructed")
+
 
 def run(write: bool = False):
     grand = collections.Counter()
@@ -62,9 +65,12 @@ def run(write: bool = False):
                 excluded += 1
             elif it.transformation_type in NEVER_AUTO:
                 it.validation_status = "candidate"
-                it.notes = ((it.notes or "") +
-                            " | structurally valid; held for human review "
-                            "because the gold label is constructed")
+                # Append once. This ran unconditionally before, so every
+                # re-run duplicated the phrase and changed the file hash --
+                # a rebuild then looked non-deterministic when only the
+                # bookkeeping was.
+                if HELD_NOTE not in (it.notes or ""):
+                    it.notes = ((it.notes + " | ") if it.notes else "") + HELD_NOTE
                 held += 1
             else:
                 it.validation_status = "auto_validated"

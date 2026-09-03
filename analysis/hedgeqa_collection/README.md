@@ -174,7 +174,15 @@ this directory.
 | `build_scoping_report.py` | regenerates the scoping report from disk |
 | `test_masking.py` | asserts each masking guard can actually fire |
 | `HEDGEQA_COLLECTION_SCOPING.md` | generated report — do not hand-edit |
+| `HEDGEQA_QA_AUDIT.md` | QA audit: counts, baselines, validator results, review risks |
 | `hedgeqa_v0_1_manual_review.csv` | two-reviewer adjudication sheet |
+
+## Status
+
+**CANDIDATE-ONLY — not validated.** See `HEDGEQA_QA_AUDIT.md`. The build is
+deterministic and every structural invariant holds, but 323 items carry a
+constructed gold label that no automated check can certify, and no item is
+`manually_validated` yet.
 
 ## Before using this for a result
 
