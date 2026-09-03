@@ -6,3 +6,9 @@ data/financebench_*.jsonl
 
 # quarantined invalid runs (kept locally for audit, not published)
 results/_quarantine/
+
+# vendored third-party corpora (large; fetch from official releases)
+/TAT-QA-master/
+/FinQA-main/
+/ConvFinQA-main/
+/data/convfinqa_extract/
