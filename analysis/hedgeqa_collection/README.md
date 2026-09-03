@@ -73,7 +73,7 @@ which.
 
 ## Current state (v0.1)
 
-**988 items across all five sources.**
+**1,358 items across all five sources.**
 
 | source | selected | eligible pool | transformation | where the data lives |
 |---|---|---|---|---|
@@ -81,47 +81,60 @@ which.
 | FinanceBench | 59 | 59 | 36 none + 23 masked | `data/financebench_open_source.jsonl` |
 | TAT-QA | 400 | 2,697 | numeric→directional | `TAT-QA-master/dataset_raw/` |
 | FinQA | 400 | 1,385 | numeric→directional | `FinQA-main/dataset/` |
-| ConvFinQA | 30 | 930 | numeric→directional | `ConvFinQA-main/data.zip` |
+| ConvFinQA | 400 | 930 | numeric→directional | `ConvFinQA-main/data.zip` |
 
 ### Guarding against a degenerate baseline
 
 The direction labels in these corpora are skewed (TAT-QA ~62% `increased`,
 FinQA ~64%, ConvFinQA ~71%). Sampled proportionally, a system that always
 answers `increased` would score around 63% **without reasoning at all**, and
-the diagnostic would be passable for the wrong reason.
+the diagnostic would be passable for the wrong reason. Head slices are also
+not samples: these corpora group questions by filing, so the first N
+over-represents a handful of documents.
 
-The TAT-QA and FinQA builders therefore draw a **seeded, label-stratified**
+All three directional builders therefore draw a **seeded, label-stratified**
 sample (`transforms.stratified_sample`): take every item from scarce classes,
-then fill equally from abundant ones. Realised majority-class baselines:
+then fill equally from abundant ones.
 
-| source | majority-class baseline |
+| source | n | majority-class baseline |
+|---|---|---|
+| FinTradeBench | 99 | 14.1% |
+| FinanceBench | 59 | 42.4% |
+| TAT-QA | 400 | 40.5% |
+| FinQA | 400 | 49.0% |
+| ConvFinQA | 400 | 49.8% |
+
+No component is now passable by guessing a single label. Caps are
+CLI-adjustable:
+
+```bash
+python analysis/hedgeqa_collection/build_from_tatqa.py     --max-items 800
+python analysis/hedgeqa_collection/build_from_finqa.py     --max-items 600
+python analysis/hedgeqa_collection/build_from_convfinqa.py --max-items 534
+```
+
+`roughly_unchanged` is genuinely rare upstream (76 / 9 / 2 items exist in
+the whole eligible pool for TAT-QA / FinQA / ConvFinQA), so every available
+one is taken and none of the three can be balanced three ways.
+
+### A consequence of scaling up: non-committal dilution
+
+The directional benchmarks are almost entirely committed, so growing them
+lowers the collection-wide non-committal share:
+
+| collection size | non-committal gold |
 |---|---|
-| TAT-QA | 40.5% |
-| FinQA | 49.0% |
-| **ConvFinQA** | **76.7% — not yet stratified** |
+| 308 items | 15% |
+| 1,358 items | **9.5%** |
 
-**ConvFinQA is a known weak point.** Its 30 items are a head slice, not a
-balanced draw, so its majority-class baseline is worse than the corpus prior.
-Its eligible pool is 930 turns and a balanced draw could yield ~534 items at
-roughly 50/50. Fixing it is one line — pass its items through
-`stratified_sample` as the other two builders do, and raise `MAX_ITEMS`.
-Until then, **do not read ConvFinQA accuracy as evidence of anything**;
-report it with its baseline alongside.
-
-Caps are CLI-adjustable:
-
-```bash
-python analysis/hedgeqa_collection/build_from_tatqa.py --max-items 800
-python analysis/hedgeqa_collection/build_from_finqa.py  --max-items 600
-```
-
-ConvFinQA ships zipped; extract before building:
-
-```bash
-python -c "import zipfile; z=zipfile.ZipFile('ConvFinQA-main/data.zip');   z.extract('data/train.json','data/convfinqa_extract');   z.extract('data/dev.json','data/convfinqa_extract')"
-```
-
-Each builder also accepts a manually placed copy under `data/<name>/`.
+This is expected, not a defect — but it matters for how the collection is
+read. The 23 controlled-insufficient variants are now ~1.7% of the whole, so
+**a pooled overcommitment rate would be estimated from very few items**. Two
+consequences follow, both already required elsewhere in this README:
+report per benchmark, and treat overcommitment and wrong-non-committal-type
+as FinanceBench/FinTradeBench measurements rather than collection-wide ones.
+If a larger non-committal stratum is needed, the lever is more masked
+variants, not more directional items.
 
 ## Pipeline
 

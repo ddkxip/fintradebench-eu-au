@@ -169,48 +169,48 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 
 ## convfinqa
 
-**Loaded:** 30 | **Candidate-included:** 30 | **Excluded:** 0
+**Loaded:** 400 | **Candidate-included:** 400 | **Excluded:** 0
 
-- answer_type: `directional_change`=30
-- gold commitment: `committed`=30
-- transformation: `numeric_to_directional`=30
-- evidence length (chars): min 702, p25 1704, median 3313, p75 4659, max 6308
+- answer_type: `directional_change`=400
+- gold commitment: `committed`=398, `noncommitted`=2
+- transformation: `numeric_to_directional`=400
+- evidence length (chars): min 467, p25 2946, median 3862, p75 4669, max 11446
 
 ### Top 20 clean candidates
 
 | hedgeqa_id | source_id | gold | commitment | ev.chars | question |
 |---|---|---|---|---|---|
-| `hqa_CFQ_fc3687f2` | Single_MO/2017/page_10.pdf-4#turn0 | `increased` | committed | 6308 | what is the net change in the weight of smokeless products in operating income from 2015 t... |
-| `hqa_CFQ_34caba0f` | Single_BLK/2017/page_35.pdf-4#turn0 | `increased` | committed | 5836 | what is the net change in value of the balance of asset allocation from 2016 to 2017? |
-| `hqa_CFQ_277039c7` | Single_RCL/2006/page_37.pdf-2#turn0 | `decreased` | committed | 5584 | what was the change in cash and cash equivalents from 2005 to 2006? |
-| `hqa_CFQ_85a962ed` | Single_JPM/2013/page_104.pdf-2#turn0 | `increased` | committed | 5552 | what was the net change in value of litigation reserves during 2012? |
-| `hqa_CFQ_81bdb026` | Double_CB/2008/page_144.pdf#turn1 | `decreased` | committed | 5340 | Conversation so far:
-Q1: how much did the pre-tax impact on equity of hypothetical 10 perc... |
-| `hqa_CFQ_05176fdc` | Single_GS/2014/page_62.pdf-2#turn0 | `decreased` | committed | 5137 | what is the net change in standardized rwas from 2013 to 2014? |
-| `hqa_CFQ_a371bd0b` | Single_IP/2007/page_19.pdf-2#turn0 | `increased` | committed | 4692 | what was the change in industry segment operating profits from 2006 to 2007, in millions? |
-| `hqa_CFQ_7220bdb5` | Double_ADBE/2009/page_98.pdf#turn0 | `decreased` | committed | 4659 | what is the net change in the balance of other assets from 2008 to 2009? |
-| `hqa_CFQ_98c83053` | Single_LKQ/2018/page_102.pdf-2#turn1 | `increased` | committed | 4389 | Conversation so far:
-Q1: what was the rental expense in 2018 less that in 2017?
-
-Question:... |
-| `hqa_CFQ_5f6a9d48` | Single_ADI/2009/page_90.pdf-3#turn0 | `increased` | committed | 4345 | what was the net change in the value of the balance from 2007 to 2009? |
-| `hqa_CFQ_17973088` | Single_RE/2012/page_31.pdf-3#turn0 | `decreased` | committed | 4133 | what was the change in net reserves from 2011 to 2012? |
-| `hqa_CFQ_61e57398` | Single_AAPL/2010/page_42.pdf-2#turn0 | `increased` | committed | 3977 | what was the change in total other income and expense from 2008 to 2009? |
-| `hqa_CFQ_ce87f69b` | Single_ILMN/2006/page_86.pdf-3#turn1 | `increased` | committed | 3924 | Conversation so far:
-Q1: what was the difference in net revenues from 2005 to 2006?
+| `hqa_CFQ_81a94134` | Double_PPG/2011/page_28.pdf#turn0 | `decreased` | committed | 11446 | what was the change in trade receivables from customers between 2010 and 2011? |
+| `hqa_CFQ_932a0cc9` | Single_ADBE/2011/page_101.pdf-3#turn1 | `increased` | committed | 9145 | Conversation so far:
+Q1: what was the change in the balance of unrecognized tax benefits d... |
+| `hqa_CFQ_b1c7ecf6` | Single_FITB/2008/page_69.pdf-4#turn0 | `decreased` | committed | 7791 | what was the change in capital expenditures from 2007 to 2008, in millions? |
+| `hqa_CFQ_1e08e855` | Single_ZBH/2018/page_34.pdf-2#turn0 | `decreased` | committed | 7482 | what was the change in cash flows used in investing activities from 2016 to 2017? |
+| `hqa_CFQ_67e85a4e` | Single_AAP/2011/page_63.pdf-3#turn0 | `increased` | committed | 7459 | what was the net change in the value of ne inventories at lifo during the year? |
+| `hqa_CFQ_fce3ccdf` | Single_AAP/2011/page_63.pdf-3#turn1 | `increased` | committed | 7459 | Conversation so far:
+Q1: what was the net change in the value of ne inventories at lifo du... |
+| `hqa_CFQ_ae0ae06d` | Double_VRTX/2006/page_71.pdf#turn1 | `increased` | committed | 7278 | Conversation so far:
+Q1: what was the difference in cash equivalents and marketable securi... |
+| `hqa_CFQ_565e2694` | Double_FITB/2013/page_84.pdf#turn0 | `increased` | committed | 7233 | what was the change in the average price paid per share from 2012 to 2013? |
+| `hqa_CFQ_9b784a4a` | Single_BLK/2016/page_79.pdf-1#turn0 | `increased` | committed | 6981 | what is the net change in value of total liquidity resources from 2015 to 2016? |
+| `hqa_CFQ_c77453fc` | Single_C/2008/page_189.pdf-3#turn1 | `increased` | committed | 6908 | Conversation so far:
+Q1: what was the net change in total assets from 2007 to 2008?
 
 Quest... |
-| `hqa_CFQ_c0b312bb` | Single_IQV/2018/page_59.pdf-2#turn0 | `decreased` | committed | 3804 | what was the change in benefits obligations from 2018 to 2019, in millions? |
-| `hqa_CFQ_5d56c63b` | Double_MAS/2012/page_92.pdf#turn1 | `increased` | committed | 3499 | Conversation so far:
-Q1: what was the difference in the company 2019s warranty liability b... |
-| `hqa_CFQ_022a963e` | Single_DRE/2007/page_39.pdf-4#turn0 | `increased` | committed | 3127 | what was the net change in value of recurring tenant improvements from 2006 to 2007? |
-| `hqa_CFQ_e07d420c` | Single_MRO/2009/page_127.pdf-1#turn1 | `increased` | committed | 2438 | Conversation so far:
-Q1: what was the net difference in asset retirement obligations betwe... |
-| `hqa_CFQ_a1555abc` | Single_GS/2013/page_47.pdf-2#turn1 | `increased` | committed | 2411 | Conversation so far:
-Q1: what was the difference in total staff between the year ended dec... |
-| `hqa_CFQ_c29e75b7` | Single_AAL/2015/page_51.pdf-3#turn0 | `increased` | committed | 1902 | what was the change in value of american airlines stock over the 4 year period? |
-| `hqa_CFQ_d71f2261` | Single_AAL/2015/page_51.pdf-3#turn1 | `increased` | committed | 1902 | Conversation so far:
-Q1: what was the change in value of american airlines stock over the ... |
+| `hqa_CFQ_d0d9812f` | Double_C/2008/page_189.pdf#turn1 | `increased` | committed | 6908 | Conversation so far:
+Q1: by how much did the available-for-sale securities change between ... |
+| `hqa_CFQ_73b09f1c` | Single_BLK/2017/page_81.pdf-4#turn0 | `increased` | committed | 6825 | what is the net change of the balance of cash and cash equivalents during 2017? |
+| `hqa_CFQ_55d3d921` | Double_ETR/2007/page_36.pdf#turn0 | `increased` | committed | 6558 | what was the change in other income for the utility from 2005 to 2006? |
+| `hqa_CFQ_129ffea3` | Single_C/2009/page_141.pdf-2#turn0 | `increased` | committed | 6446 | what was the change in additions for new sales from 2008 to 2009, in millions? |
+| `hqa_CFQ_467fc2ff` | Single_EXPD/2017/page_30.pdf-2#turn0 | `increased` | committed | 6405 | what was the change in the value of the expeditors international of washington inc . consi... |
+| `hqa_CFQ_47d46a7e` | Single_C/2008/page_193.pdf-2#turn0 | `decreased` | committed | 6293 | what was the net change in proceeds from new securitizations from 2007 to 2008? |
+| `hqa_CFQ_65c7d9ad` | Single_DISCA/2017/page_41.pdf-3#turn0 | `decreased` | committed | 6185 | what is the net change in the value of an investment on disca common stock from 2012 to 20... |
+| `hqa_CFQ_8d066153` | Single_DISCA/2017/page_41.pdf-3#turn1 | `decreased` | committed | 6185 | Conversation so far:
+Q1: what is the net change in the value of an investment on disca com... |
+| `hqa_CFQ_838c7659` | Single_ZBH/2008/page_86.pdf-4#turn1 | `increased` | committed | 6142 | Conversation so far:
+Q1: what is the net change in total rent expense from 2007 to 2008?
+
+... |
+| `hqa_CFQ_b24e5374` | Single_MO/2014/page_11.pdf-3#turn0 | `decreased` | committed | 6123 | what is the net change in income for smokeless product, relative to total income, from 201... |
 
 ### Risks / caveats
 - Conversational turns are not self-contained. Only the first two turns are eligible, and prior turns are inlined verbatim so the item reads standalone.
@@ -218,14 +218,14 @@ Q1: what was the change in value of american airlines stock over the ... |
 
 ## Assembled collection: `data/hedgeqa/hedgeqa_v0_1_candidates.jsonl`
 
-**988 items.**
+**1358 items.**
 
-- by benchmark: `finqa`=400, `tatqa`=400, `fintradebench`=99, `financebench`=59, `convfinqa`=30
-- by commitment: `committed`=861, `noncommitted`=127
-- by transformation: `numeric_to_directional`=830, `none`=135, `evidence_masked_insufficient`=23
-- by answer_type: `directional_change`=830, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
+- by benchmark: `convfinqa`=400, `finqa`=400, `tatqa`=400, `fintradebench`=99, `financebench`=59
+- by commitment: `committed`=1229, `noncommitted`=129
+- by transformation: `numeric_to_directional`=1200, `none`=135, `evidence_masked_insufficient`=23
+- by answer_type: `directional_change`=1200, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
 
-Non-committal gold rate is 127/988 = 13%; 23 of those are constructed masked variants. Without them the rate would be 104/965 = 11%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
+Non-committal gold rate is 129/1358 = 9%; 23 of those are constructed masked variants. Without them the rate would be 106/1335 = 8%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
 
 ## Collection-level caveats
 

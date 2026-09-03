@@ -25,11 +25,16 @@ self-contained, which HedgeQA requires:
 
 Oracle evidence is the item's own pre_text + table + post_text.
 
+The eligible pool is drawn seeded and label-stratified, because the
+ConvFinQA direction prior is ~71% "increased" -- a proportional draw
+would let "always answer increased" score 71% with no reasoning.
+
 Usage: python analysis/hedgeqa_collection/build_from_convfinqa.py
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -40,14 +45,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from hedgeqa_schema import HedgeQAItem, make_id, write_jsonl  # noqa: E402
 from transforms import (clean_ws, numeric_to_directional,  # noqa: E402
-                        table_to_text)
+                        stratified_sample, table_to_text)
 
 SEARCH_DIRS = [REPO / "data" / "convfinqa_extract" / "data",
                REPO / "data" / "convfinqa"]
 CANDIDATE_FILES = ["train.json", "dev.json"]
 OUT = REPO / "data" / "hedgeqa" / "candidates" / "convfinqa_candidates.jsonl"
 
-MAX_ITEMS = 30
+DEFAULT_MAX_ITEMS = 400
 SHORT_HISTORY_TURNS = 2      # turn index 0 or 1 only -- "short history"
 
 
@@ -60,7 +65,7 @@ def _find_source():
     return None
 
 
-def build():
+def build(max_items=DEFAULT_MAX_ITEMS):
     src = _find_source()
     if src is None:
         print("[convfinqa] SOURCE NOT PRESENT — no candidates emitted.")
@@ -73,7 +78,7 @@ def build():
 
     data = json.loads(src.read_text(encoding="utf-8"))
     items = []
-    stats = {"conversations": 0, "turns_seen": 0, "kept": 0,
+    stats = {"conversations": 0, "turns_seen": 0, "eligible": 0, "kept": 0,
              "skip_too_deep": 0, "skip_not_change": 0,
              "skip_no_evidence": 0, "skip_no_answer": 0}
 
@@ -137,11 +142,15 @@ def build():
                 original_question=turn,
                 derivation=deriv + f" History handling: {hist_note}.",
                 notes=f"exe_ans={answers[i]!r}; {hist_note}"))
-            stats["kept"] += 1
-            if stats["kept"] >= MAX_ITEMS:
-                break
-        if stats["kept"] >= MAX_ITEMS:
-            break
+            stats["eligible"] += 1
+
+    # Same reasoning as TAT-QA/FinQA: the ConvFinQA direction prior is ~71%
+    # "increased", and conversations are grouped by filing, so a head slice
+    # is neither balanced nor a sample. Draw seeded and label-stratified.
+    items, realised = stratified_sample(items, lambda x: x.gold_label,
+                                        max_items)
+    stats["kept"] = len(items)
+    stats["gold_balance"] = realised
 
     n = write_jsonl(items, OUT)
     print(f"[convfinqa] wrote {n} rows -> {OUT.relative_to(REPO)}")
@@ -151,4 +160,6 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--max-items", type=int, default=DEFAULT_MAX_ITEMS)
+    build(max_items=ap.parse_args().max_items)
