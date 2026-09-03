@@ -37,6 +37,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from hedgeqa_schema import HedgeQAItem, make_id, write_jsonl  # noqa: E402
+from masked_variants import build_masked_variants  # noqa: E402
 from transforms import (clean_ws, numeric_to_directional,  # noqa: E402
                         stratified_sample, table_to_text)
 
@@ -48,6 +49,7 @@ CANDIDATE_FILES = ["tatqa_dataset_train.json", "tatqa_dataset_dev.json",
 OUT = REPO / "data" / "hedgeqa" / "candidates" / "tatqa_candidates.jsonl"
 
 DEFAULT_MAX_ITEMS = 400
+DEFAULT_MASKED_ITEMS = 100
 
 
 def _find_source():
@@ -59,7 +61,8 @@ def _find_source():
     return None
 
 
-def build(max_items=DEFAULT_MAX_ITEMS):
+def build(max_items=DEFAULT_MAX_ITEMS,
+          masked_items=DEFAULT_MASKED_ITEMS):
     src = _find_source()
     if src is None:
         print("[tatqa] SOURCE NOT PRESENT — no candidates emitted.")
@@ -71,7 +74,7 @@ def build(max_items=DEFAULT_MAX_ITEMS):
         return []
 
     data = json.loads(src.read_text(encoding="utf-8"))
-    items = []
+    items, maskpool = [], []
     stats = {"loaded": 0, "eligible": 0, "kept": 0, "skip_not_arithmetic": 0,
              "skip_not_change": 0, "skip_no_evidence": 0}
 
@@ -117,12 +120,24 @@ def build(max_items=DEFAULT_MAX_ITEMS):
                 notes=f"source answer={q.get('answer')!r} "
                       f"scale={q.get('scale')!r} "
                       f"answer_from={q.get('answer_from')!r}"))
+            maskpool.append({
+                "source_id": uid, "question": q.get("question", ""),
+                "evidence": evidence, "program": q.get("derivation", ""),
+                "provenance": "TAT-QA item-local table + paragraphs",
+                "original_question": q.get("question", "")})
             stats["eligible"] += 1
 
     items, realised = stratified_sample(items, lambda x: x.gold_label,
                                         max_items)
     stats["kept"] = len(items)
     stats["gold_balance"] = realised
+
+    # Masked variants come from items NOT selected above, so a masked and a
+    # natural item never share one evidence document (see masked_variants).
+    used = {i.source_id for i in items}
+    items += build_masked_variants([r for r in maskpool
+                                    if r["source_id"] not in used],
+                                   "tatqa", masked_items, stats)
 
     n = write_jsonl(items, OUT)
     print(f"[tatqa] wrote {n} rows -> {OUT.relative_to(REPO)}")
@@ -134,4 +149,7 @@ def build(max_items=DEFAULT_MAX_ITEMS):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-items", type=int, default=DEFAULT_MAX_ITEMS)
-    build(max_items=ap.parse_args().max_items)
+    ap.add_argument("--masked-items", type=int,
+                    default=DEFAULT_MASKED_ITEMS)
+    a = ap.parse_args()
+    build(max_items=a.max_items, masked_items=a.masked_items)

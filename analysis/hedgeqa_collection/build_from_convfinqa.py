@@ -44,6 +44,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from hedgeqa_schema import HedgeQAItem, make_id, write_jsonl  # noqa: E402
+from masked_variants import build_masked_variants  # noqa: E402
 from transforms import (clean_ws, numeric_to_directional,  # noqa: E402
                         stratified_sample, table_to_text)
 
@@ -53,6 +54,7 @@ CANDIDATE_FILES = ["train.json", "dev.json"]
 OUT = REPO / "data" / "hedgeqa" / "candidates" / "convfinqa_candidates.jsonl"
 
 DEFAULT_MAX_ITEMS = 400
+DEFAULT_MASKED_ITEMS = 100
 SHORT_HISTORY_TURNS = 2      # turn index 0 or 1 only -- "short history"
 
 
@@ -65,7 +67,8 @@ def _find_source():
     return None
 
 
-def build(max_items=DEFAULT_MAX_ITEMS):
+def build(max_items=DEFAULT_MAX_ITEMS,
+          masked_items=DEFAULT_MASKED_ITEMS):
     src = _find_source()
     if src is None:
         print("[convfinqa] SOURCE NOT PRESENT — no candidates emitted.")
@@ -77,7 +80,7 @@ def build(max_items=DEFAULT_MAX_ITEMS):
         return []
 
     data = json.loads(src.read_text(encoding="utf-8"))
-    items = []
+    items, maskpool = [], []
     stats = {"conversations": 0, "turns_seen": 0, "eligible": 0, "kept": 0,
              "skip_too_deep": 0, "skip_not_change": 0,
              "skip_no_evidence": 0, "skip_no_answer": 0}
@@ -142,6 +145,11 @@ def build(max_items=DEFAULT_MAX_ITEMS):
                 original_question=turn,
                 derivation=deriv + f" History handling: {hist_note}.",
                 notes=f"exe_ans={answers[i]!r}; {hist_note}"))
+            maskpool.append({
+                "source_id": sid, "question": qtext, "evidence": evidence,
+                "program": prog,
+                "provenance": "ConvFinQA item-local pre_text + table + post_text",
+                "original_question": turn})
             stats["eligible"] += 1
 
     # Same reasoning as TAT-QA/FinQA: the ConvFinQA direction prior is ~71%
@@ -151,6 +159,11 @@ def build(max_items=DEFAULT_MAX_ITEMS):
                                         max_items)
     stats["kept"] = len(items)
     stats["gold_balance"] = realised
+
+    used = {i.source_id for i in items}
+    items += build_masked_variants([r for r in maskpool
+                                    if r["source_id"] not in used],
+                                   "convfinqa", masked_items, stats)
 
     n = write_jsonl(items, OUT)
     print(f"[convfinqa] wrote {n} rows -> {OUT.relative_to(REPO)}")
@@ -162,4 +175,7 @@ def build(max_items=DEFAULT_MAX_ITEMS):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-items", type=int, default=DEFAULT_MAX_ITEMS)
-    build(max_items=ap.parse_args().max_items)
+    ap.add_argument("--masked-items", type=int,
+                    default=DEFAULT_MASKED_ITEMS)
+    a = ap.parse_args()
+    build(max_items=a.max_items, masked_items=a.masked_items)

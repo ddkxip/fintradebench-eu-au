@@ -73,68 +73,74 @@ which.
 
 ## Current state (v0.1)
 
-**1,358 items across all five sources.**
+**1,658 items across all five sources.**
 
-| source | selected | eligible pool | transformation | where the data lives |
+| source | natural | masked | eligible pool | transformation |
 |---|---|---|---|---|
-| FinTradeBench | 99 | 108 | none | `schemas/answer_schemas.jsonl` |
-| FinanceBench | 59 | 59 | 36 none + 23 masked | `data/financebench_open_source.jsonl` |
-| TAT-QA | 400 | 2,697 | numeric→directional | `TAT-QA-master/dataset_raw/` |
-| FinQA | 400 | 1,385 | numeric→directional | `FinQA-main/dataset/` |
-| ConvFinQA | 400 | 930 | numeric→directional | `ConvFinQA-main/data.zip` |
+| FinTradeBench | 99 | – | 108 | none |
+| FinanceBench | 36 | 23 | 59 | none + masked |
+| TAT-QA | 400 | 100 | 2,697 | numeric→directional |
+| FinQA | 400 | 100 | 1,385 | numeric→directional |
+| ConvFinQA | 400 | 100 | 930 | numeric→directional |
 
 ### Guarding against a degenerate baseline
 
 The direction labels in these corpora are skewed (TAT-QA ~62% `increased`,
-FinQA ~64%, ConvFinQA ~71%). Sampled proportionally, a system that always
-answers `increased` would score around 63% **without reasoning at all**, and
-the diagnostic would be passable for the wrong reason. Head slices are also
-not samples: these corpora group questions by filing, so the first N
-over-represents a handful of documents.
-
-All three directional builders therefore draw a **seeded, label-stratified**
-sample (`transforms.stratified_sample`): take every item from scarce classes,
-then fill equally from abundant ones.
+FinQA ~64%, ConvFinQA ~71%), and head slices are not samples — the corpora
+group questions by filing. All three directional builders therefore draw a
+**seeded, label-stratified** sample (`transforms.stratified_sample`).
 
 | source | n | majority-class baseline |
 |---|---|---|
 | FinTradeBench | 99 | 14.1% |
 | FinanceBench | 59 | 42.4% |
-| TAT-QA | 400 | 40.5% |
-| FinQA | 400 | 49.0% |
-| ConvFinQA | 400 | 49.8% |
+| TAT-QA | 500 | 32.4% |
+| FinQA | 500 | 39.2% |
+| ConvFinQA | 500 | 39.8% |
 
-No component is now passable by guessing a single label. Caps are
-CLI-adjustable:
+No component is passable by guessing a single label. Caps are CLI-adjustable:
 
 ```bash
-python analysis/hedgeqa_collection/build_from_tatqa.py     --max-items 800
-python analysis/hedgeqa_collection/build_from_finqa.py     --max-items 600
-python analysis/hedgeqa_collection/build_from_convfinqa.py --max-items 534
+python analysis/hedgeqa_collection/build_from_tatqa.py --max-items 800 --masked-items 200
 ```
 
-`roughly_unchanged` is genuinely rare upstream (76 / 9 / 2 items exist in
-the whole eligible pool for TAT-QA / FinQA / ConvFinQA), so every available
-one is taken and none of the three can be balanced three ways.
+### Masking beyond FinanceBench
 
-### A consequence of scaling up: non-committal dilution
+Masking now covers the directional benchmarks too, which are a **better**
+target than FinanceBench's yes/no items: TAT-QA ships an explicit
+`derivation` and FinQA/ConvFinQA a `program`, so the figures the answer
+depends on are stated rather than inferred from prose. Their answer space
+already contains `insufficient_data`, so a masked variant needs no new label.
 
-The directional benchmarks are almost entirely committed, so growing them
-lowers the collection-wide non-committal share:
+This lifts the non-committal share from **9.5% to 25.9%** (429/1,658), with
+323 masked variants.
 
-| collection size | non-committal gold |
-|---|---|
-| 308 items | 15% |
-| 1,358 items | **9.5%** |
+Directional masked variants are drawn from pool items **not** selected as
+natural items, so no masked/natural pair shares an evidence document.
+Pairing would correlate their errors and make any CI over pooled items too
+narrow.
 
-This is expected, not a defect — but it matters for how the collection is
-read. The 23 controlled-insufficient variants are now ~1.7% of the whole, so
-**a pooled overcommitment rate would be estimated from very few items**. Two
-consequences follow, both already required elsewhere in this README:
-report per benchmark, and treat overcommitment and wrong-non-committal-type
-as FinanceBench/FinTradeBench measurements rather than collection-wide ones.
-If a larger non-committal stratum is needed, the lever is more masked
-variants, not more directional items.
+#### Two reconstruction leaks found by hand, now guarded
+
+Removing the literal figure is not enough — financial tables let it be
+recomputed. Both were found by reading actual masked output, and neither is
+caught by any other check, because the operand really is absent as a string:
+
+1. **Roll-forward.** A movement table's surviving components still sum to the
+   removed closing balance: `8,053 + 5,253 + 1,256 − 7,563 − 490 = 6,509`.
+2. **Total minus components.** A summary table keeps its total row, so a
+   removed component returns as `23,678 − (13 + 7,381) = 16,284`.
+
+`reconstructible_by_column_sum` now checks both directions per table column,
+and `test_masking.py` pins each with the real numbers. Every shipped variant
+was independently re-verified against both patterns: **0 of 323 are
+reconstructible.**
+
+This does not make the masks certified. A model may still recover an answer
+through a route these checks do not model — a ratio rebuilt from unrelated
+components, or a direction inferred from surrounding prose. The guards narrow
+the candidate set; **human review remains mandatory**, and every masked item
+is held at `candidate` and never auto-promoted.
 
 ## Pipeline
 

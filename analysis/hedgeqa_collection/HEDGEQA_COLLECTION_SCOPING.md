@@ -93,12 +93,12 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 
 ## tatqa
 
-**Loaded:** 400 | **Candidate-included:** 400 | **Excluded:** 0
+**Loaded:** 500 | **Candidate-included:** 500 | **Excluded:** 0
 
-- answer_type: `directional_change`=400
-- gold commitment: `committed`=324, `noncommitted`=76
-- transformation: `numeric_to_directional`=400
-- evidence length (chars): min 216, p25 842, median 1467, p75 2151, max 6813
+- answer_type: `directional_change`=500
+- gold commitment: `committed`=324, `noncommitted`=176
+- transformation: `numeric_to_directional`=400, `evidence_masked_insufficient`=100
+- evidence length (chars): min 216, p25 841, median 1437, p75 2233, max 6813
 
 ### Top 20 clean candidates
 
@@ -131,12 +131,12 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 
 ## finqa
 
-**Loaded:** 400 | **Candidate-included:** 400 | **Excluded:** 0
+**Loaded:** 500 | **Candidate-included:** 500 | **Excluded:** 0
 
-- answer_type: `directional_change`=400
-- gold commitment: `committed`=391, `noncommitted`=9
-- transformation: `numeric_to_directional`=400
-- evidence length (chars): min 632, p25 3429, median 4171, p75 4873, max 14591
+- answer_type: `directional_change`=500
+- gold commitment: `committed`=391, `noncommitted`=109
+- transformation: `numeric_to_directional`=400, `evidence_masked_insufficient`=100
+- evidence length (chars): min 632, p25 3299, median 4076, p75 4799, max 14591
 
 ### Top 20 clean candidates
 
@@ -169,12 +169,12 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 
 ## convfinqa
 
-**Loaded:** 400 | **Candidate-included:** 400 | **Excluded:** 0
+**Loaded:** 500 | **Candidate-included:** 500 | **Excluded:** 0
 
-- answer_type: `directional_change`=400
-- gold commitment: `committed`=398, `noncommitted`=2
-- transformation: `numeric_to_directional`=400
-- evidence length (chars): min 467, p25 2946, median 3862, p75 4669, max 11446
+- answer_type: `directional_change`=500
+- gold commitment: `committed`=398, `noncommitted`=102
+- transformation: `numeric_to_directional`=400, `evidence_masked_insufficient`=100
+- evidence length (chars): min 467, p25 2811, median 3802, p75 4615, max 11446
 
 ### Top 20 clean candidates
 
@@ -218,14 +218,14 @@ Q1: what is the net change in total rent expense from 2007 to 2008?
 
 ## Assembled collection: `data/hedgeqa/hedgeqa_v0_1_candidates.jsonl`
 
-**1358 items.**
+**1658 items.**
 
-- by benchmark: `convfinqa`=400, `finqa`=400, `tatqa`=400, `fintradebench`=99, `financebench`=59
-- by commitment: `committed`=1229, `noncommitted`=129
-- by transformation: `numeric_to_directional`=1200, `none`=135, `evidence_masked_insufficient`=23
-- by answer_type: `directional_change`=1200, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
+- by benchmark: `convfinqa`=500, `finqa`=500, `tatqa`=500, `fintradebench`=99, `financebench`=59
+- by commitment: `committed`=1229, `noncommitted`=429
+- by transformation: `numeric_to_directional`=1200, `evidence_masked_insufficient`=323, `none`=135
+- by answer_type: `directional_change`=1500, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
 
-Non-committal gold rate is 129/1358 = 9%; 23 of those are constructed masked variants. Without them the rate would be 106/1335 = 8%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
+Non-committal gold rate is 429/1658 = 26%; 323 of those are constructed masked variants. Without them the rate would be 106/1335 = 8%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
 
 ## Collection-level caveats
 
