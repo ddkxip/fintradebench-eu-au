@@ -3,12 +3,12 @@
 Also emits the manual-review sheet, because nothing in this collection should
 be treated as final on automation alone.
 
-Target composition (from the collection spec):
-    fintradebench   up to 100, balanced
+Target composition:
+    fintradebench   up to 100, balanced over (lane x gold_commitment)
     financebench    37 yes/no + controlled-insufficient variants
-    tatqa           40-60
-    finqa           40-60
-    convfinqa       20-30
+    tatqa           whole validated pool (builder caps + balances the draw)
+    finqa           whole validated pool (builder caps + balances the draw)
+    convfinqa       whole validated pool
 
 Balancing for FinTradeBench is over (lane x gold_commitment). The pool is
 skewed -- most references are committed, and the lanes are 49/50/40 -- so
@@ -42,8 +42,11 @@ REVIEW = (REPO / "analysis" / "hedgeqa_collection" /
           "hedgeqa_v0_1_manual_review.csv")
 
 SEED = 20260820
-TARGETS = {"fintradebench": 100, "financebench": None,   # None = take all
-           "tatqa": 60, "finqa": 60, "convfinqa": 30}
+# None = take the whole validated pool. The TAT-QA and FinQA builders
+# already stratify by gold label when they subsample the corpus, so the
+# pool handed here is balanced and can be taken whole.
+TARGETS = {"fintradebench": 100, "financebench": None,
+           "tatqa": None, "finqa": None, "convfinqa": None}
 
 USABLE = {"auto_validated", "candidate", "manually_validated"}
 

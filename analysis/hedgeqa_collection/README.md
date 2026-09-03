@@ -73,15 +73,47 @@ which.
 
 ## Current state (v0.1)
 
-**308 items across all five sources.**
+**988 items across all five sources.**
 
-| source | selected | transformation | where the data lives |
-|---|---|---|---|
-| FinTradeBench | 99 | none | `schemas/answer_schemas.jsonl` |
-| FinanceBench | 59 | 36 none + 23 masked | `data/financebench_open_source.jsonl` |
-| TAT-QA | 60 | numeric→directional | `TAT-QA-master/dataset_raw/` |
-| FinQA | 60 | numeric→directional | `FinQA-main/dataset/` |
-| ConvFinQA | 30 | numeric→directional | `ConvFinQA-main/data.zip` |
+| source | selected | eligible pool | transformation | where the data lives |
+|---|---|---|---|---|
+| FinTradeBench | 99 | 108 | none | `schemas/answer_schemas.jsonl` |
+| FinanceBench | 59 | 59 | 36 none + 23 masked | `data/financebench_open_source.jsonl` |
+| TAT-QA | 400 | 2,697 | numeric→directional | `TAT-QA-master/dataset_raw/` |
+| FinQA | 400 | 1,385 | numeric→directional | `FinQA-main/dataset/` |
+| ConvFinQA | 30 | 930 | numeric→directional | `ConvFinQA-main/data.zip` |
+
+### Guarding against a degenerate baseline
+
+The direction labels in these corpora are skewed (TAT-QA ~62% `increased`,
+FinQA ~64%, ConvFinQA ~71%). Sampled proportionally, a system that always
+answers `increased` would score around 63% **without reasoning at all**, and
+the diagnostic would be passable for the wrong reason.
+
+The TAT-QA and FinQA builders therefore draw a **seeded, label-stratified**
+sample (`transforms.stratified_sample`): take every item from scarce classes,
+then fill equally from abundant ones. Realised majority-class baselines:
+
+| source | majority-class baseline |
+|---|---|
+| TAT-QA | 40.5% |
+| FinQA | 49.0% |
+| **ConvFinQA** | **76.7% — not yet stratified** |
+
+**ConvFinQA is a known weak point.** Its 30 items are a head slice, not a
+balanced draw, so its majority-class baseline is worse than the corpus prior.
+Its eligible pool is 930 turns and a balanced draw could yield ~534 items at
+roughly 50/50. Fixing it is one line — pass its items through
+`stratified_sample` as the other two builders do, and raise `MAX_ITEMS`.
+Until then, **do not read ConvFinQA accuracy as evidence of anything**;
+report it with its baseline alongside.
+
+Caps are CLI-adjustable:
+
+```bash
+python analysis/hedgeqa_collection/build_from_tatqa.py --max-items 800
+python analysis/hedgeqa_collection/build_from_finqa.py  --max-items 600
+```
 
 ConvFinQA ships zipped; extract before building:
 

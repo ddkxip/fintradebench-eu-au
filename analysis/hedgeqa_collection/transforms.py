@@ -175,3 +175,46 @@ def table_to_text(table) -> str:
 
 def clean_ws(s: str) -> str:
     return re.sub(r"[ \t]+", " ", (s or "")).strip()
+
+
+def stratified_sample(items, key, target, seed=20260820):
+    """Seeded, label-balanced subsample.
+
+    Two reasons this is not just `items[:target]`:
+
+    * **Document order is not random.** These corpora group questions by
+      filing and company, so a head slice over-represents a handful of
+      documents.
+    * **The direction labels are skewed.** TAT-QA eligible items are ~62%
+      "increased", FinQA ~64%. Sampling proportionally would carry that
+      prior into the collection, where a system that always answers
+      "increased" would score ~63% without reasoning at all -- a degenerate
+      baseline that makes the diagnostic easy to pass for the wrong reason.
+
+    So: take every item from scarce classes, then fill the remainder equally
+    from the abundant ones. The realised composition is returned rather than
+    assumed, since perfect balance is usually impossible (TAT-QA has only 76
+    "roughly_unchanged" items in total, FinQA only 9).
+    """
+    import collections
+    import random
+
+    rng = random.Random(seed)
+    buckets = collections.defaultdict(list)
+    for it in items:
+        buckets[key(it)].append(it)
+    for v in buckets.values():
+        v.sort(key=lambda x: getattr(x, "hedgeqa_id", str(x)))
+
+    chosen, remaining = [], target
+    # scarce classes first: anything that cannot fill its equal share
+    order = sorted(buckets, key=lambda k: len(buckets[k]))
+    for i, k in enumerate(order):
+        share = remaining // (len(order) - i)
+        take = min(share, len(buckets[k]))
+        chosen.extend(rng.sample(buckets[k], take) if take < len(buckets[k])
+                      else list(buckets[k]))
+        remaining -= take
+    chosen.sort(key=lambda x: getattr(x, "hedgeqa_id", str(x)))
+    realised = collections.Counter(key(it) for it in chosen)
+    return chosen, dict(realised)

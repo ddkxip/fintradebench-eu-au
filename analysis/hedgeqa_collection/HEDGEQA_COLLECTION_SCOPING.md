@@ -93,37 +93,37 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 
 ## tatqa
 
-**Loaded:** 60 | **Candidate-included:** 60 | **Excluded:** 0
+**Loaded:** 400 | **Candidate-included:** 400 | **Excluded:** 0
 
-- answer_type: `directional_change`=60
-- gold commitment: `committed`=56, `noncommitted`=4
-- transformation: `numeric_to_directional`=60
-- evidence length (chars): min 293, p25 809, median 1667, p75 2401, max 5687
+- answer_type: `directional_change`=400
+- gold commitment: `committed`=324, `noncommitted`=76
+- transformation: `numeric_to_directional`=400
+- evidence length (chars): min 216, p25 842, median 1467, p75 2151, max 6813
 
 ### Top 20 clean candidates
 
 | hedgeqa_id | source_id | gold | commitment | ev.chars | question |
 |---|---|---|---|---|---|
-| `hqa_TAT_107c72de` | 36719d75-6c38-485f-96f7-aab74dc5eb11 | `decreased` | committed | 5687 | What was the change in the Principal from 2018 to 2019? |
-| `hqa_TAT_c8bc8685` | d161e8c3-56f2-44bb-8c38-635fca79b1aa | `increased` | committed | 4342 | What is the percentage change in total net sales of International and Refrigerated & Froze... |
-| `hqa_TAT_5f558667` | 5964b119-824e-4277-8f83-ef83a15dead0 | `increased` | committed | 3140 | What is the percentage change in the current trail commission asset from 2018 to 2019? |
-| `hqa_TAT_41c9ab58` | b10455a5-8132-4593-b8c4-6ba2021a8ae6 | `increased` | committed | 3140 | What is the percentage change in the total trail commission asset from 2018 to 2019? |
-| `hqa_TAT_760ffe13` | c46605d2-5d2b-49e6-a84c-5b75365fb89d | `roughly_unchanged` | noncommitted | 3140 | What is the percentage change in the cash receipts from 2018 to 2019? |
-| `hqa_TAT_ec76e4ab` | 8040fbab-d3ac-4a11-a98e-ba7c7a5dfc6c | `decreased` | committed | 3132 | What was the percentage change in profit from operations from 2018 to 2019? |
-| `hqa_TAT_af79df1a` | b90a5b03-fbbf-470e-8a53-cb9f9bf36289 | `increased` | committed | 3132 | What was the change in average daily hire rate from 2018 to 2019? |
-| `hqa_TAT_3ffcea45` | 8cd9b335-f67d-4687-8316-99a081e57841 | `decreased` | committed | 3027 | What was the change in the increase resulting from permanent differences between 2017 and ... |
-| `hqa_TAT_01058ecd` | f8e86ea6-bee8-494e-bd02-d44130b43e91 | `decreased` | committed | 2871 | What is the percentage change in the Income tax expense computed at federal statutory rate... |
-| `hqa_TAT_1057c3f5` | cc088d02-efb7-4b63-a00d-c5c3ee514dcc | `decreased` | committed | 2871 | What is the percentage change in the Other permanent differences and miscellaneous items f... |
-| `hqa_TAT_fdd369f2` | 3597746f-7238-4a6c-a6eb-531daed6548a | `increased` | committed | 2706 | What is the percentage change in the cost of goods sold from operations in 2018 and 2019? |
-| `hqa_TAT_7495eac1` | 09be2281-6e4c-49d5-8131-798d29492337 | `increased` | committed | 2706 | What is the percentage change in selling, general and administrative expenses from operati... |
-| `hqa_TAT_e7bf2c1a` | aa051557-3b4c-497f-b14e-2c8b8b2c99ef | `increased` | committed | 2464 | What was the percentage change in cost of software under development between 2018 and 2019... |
-| `hqa_TAT_a6705912` | 847400ae-6d72-4afa-9b2c-c9677578034a | `decreased` | committed | 2401 | What is the change in the net sales for cheese between 2018 and 2019? |
-| `hqa_TAT_28b947f5` | 1c78b8ad-5dd7-471e-bafd-71e1515afaa3 | `increased` | committed | 2401 | What is the percentage change in net sales from Frozen Kefir between 2018 and 2019? |
-| `hqa_TAT_6d5b4044` | b4e1946b-4ac4-4d54-9560-386497b0c5a8 | `decreased` | committed | 2353 | What is the change between the value of machinery, equipment and furniture between 2018 an... |
-| `hqa_TAT_034d554f` | ae97568d-fcde-469c-a9a9-118d339cccb5 | `increased` | committed | 2298 | What was the percentage change in net income(loss) between 2018 and 2019? |
-| `hqa_TAT_7838a496` | 35096122-545b-4be2-8ea2-ebafd94c687f | `decreased` | committed | 2298 | What was the percentage change in Basic weighted average number of common shares outstandi... |
-| `hqa_TAT_f205878f` | bb2de5ba-6926-4ca3-ae67-5fe2264b1b59 | `increased` | committed | 2298 | What is the change in Basic earnings(loss) per share between 2018 and 2019? |
-| `hqa_TAT_7c7d3ad1` | 0d18801f-5b34-48eb-91d2-87c98fa9c523 | `decreased` | committed | 2285 | What was the change in the employee benefit from 2018 to 2019? |
+| `hqa_TAT_ebffecf0` | a077ef46-3556-41f8-95fb-b35b7c8bd059 | `increased` | committed | 6813 | What is the change in percentage of total revenue for cloud subscriptions in 2019 and 2018... |
+| `hqa_TAT_568a52a5` | a934de94-63fb-4a91-820e-26e79d486fbb | `decreased` | committed | 6730 | What was the change in Net cash provided by financing activities between 2017 and 2018? |
+| `hqa_TAT_89e08c3a` | 9b794cd7-2905-4d39-8b67-d2f03ac529b3 | `roughly_unchanged` | noncommitted | 6492 | What is the percentage change in the adjusted EBITDA from 2018 to 2019? |
+| `hqa_TAT_1999d86f` | 2358c322-bf24-4dd8-b6a0-1b3ae91ae952 | `increased` | committed | 5933 | What is the percentage change in the revenue after the adoption of ASC606? |
+| `hqa_TAT_7a493fbb` | 1cfc6a3d-232c-4066-aca1-b49c2033dc97 | `decreased` | committed | 5928 | What was the percentage change in free cash flow in 2019 from 2018? |
+| `hqa_TAT_70081d20` | 925fc592-e42f-49c5-80c3-a3191ce3a412 | `increased` | committed | 5858 | What was the change in Other interest expense between 2017 and 2018? |
+| `hqa_TAT_8e398795` | d869b8d1-5857-4921-ad7e-56e9bb6e184d | `decreased` | committed | 5599 | What was the percentage change in Transportation Solutions in 2019 from 2018? |
+| `hqa_TAT_fd3651b2` | 7dd9e6c9-76f7-4600-8dd5-1d1820a42462 | `increased` | committed | 5513 | What is the percentage change in total operating profit of International and Foodservice f... |
+| `hqa_TAT_1b28e221` | ceeb4a06-64e2-4a2e-aa1d-1073dde94d87 | `decreased` | committed | 5443 | What is the % change in EBITDA margin from 2018 to 2019? |
+| `hqa_TAT_78e6df46` | e5eb733b-d87c-4edd-ad78-769daad4803d | `decreased` | committed | 5250 | What was the percentage change in the end of period balance for Subsidiary Unit Awards bet... |
+| `hqa_TAT_28f745fd` | c2897096-e60e-4a81-aa8d-40e3dd5e9665 | `decreased` | committed | 5171 | What was the change in the US federal tax rate from 2017 to 2018? |
+| `hqa_TAT_473a4921` | 43fa77c3-8e1c-411d-a185-216083acfde3 | `increased` | committed | 5140 | What was the change in Diluted Net income per share from continuing operations in 2018 fro... |
+| `hqa_TAT_74051a75` | 6f227148-d8d9-425b-835a-321d2c13befa | `increased` | committed | 5127 | What was the percentage change net income attributable to non-controlling shareholders who... |
+| `hqa_TAT_61ad8570` | 7b88a47f-472f-4482-afc1-f6ba584a02de | `increased` | committed | 4888 | What is the change in the amount of total goodwill in 2019 from 2018? |
+| `hqa_TAT_860f17e3` | 20485ed4-492d-460a-ba9b-53203bf9f813 | `roughly_unchanged` | noncommitted | 4869 | What is the change in foreign operation tax between 2019 and 2018? |
+| `hqa_TAT_d4c9a42b` | ef8cf420-1d02-4977-b362-080baf6d7849 | `decreased` | committed | 4680 | What is the change in Global Enterprise value from 2018 to 2019? |
+| `hqa_TAT_8b85be11` | 55e5eaea-5ff7-4382-b643-0a125c2526cd | `decreased` | committed | 4648 | What is the percentage change in the loss before income taxes and equity in net income/(lo... |
+| `hqa_TAT_ad2737b8` | 1ba0a12d-b45e-4689-a63d-d968c006af5f | `increased` | committed | 4518 | What is the change in interest rate protection between 2018 and 2019? |
+| `hqa_TAT_5b953d31` | 40ae9ace-7cd5-4ebd-8ea7-d15664a2b31f | `decreased` | committed | 4414 | What is the change in Net Cash Used in Investing Activities from Fiscal Year Ended April 2... |
+| `hqa_TAT_ce9bba62` | bf166a50-d7ab-40a1-96ef-7e16fcca75f6 | `decreased` | committed | 4312 | What was the change in the Additions based on tax positions of prior year between 2017 and... |
 
 ### Risks / caveats
 - Numeric answers have no finite answer space, so items must be transformed before any hedging metric is computable. Only change-shaped arithmetic questions qualify; spans, counts and open arithmetic are skipped.
@@ -131,37 +131,37 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 
 ## finqa
 
-**Loaded:** 60 | **Candidate-included:** 60 | **Excluded:** 0
+**Loaded:** 400 | **Candidate-included:** 400 | **Excluded:** 0
 
-- answer_type: `directional_change`=60
-- gold commitment: `committed`=60
-- transformation: `numeric_to_directional`=60
-- evidence length (chars): min 1012, p25 3221, median 3844, p75 4624, max 14591
+- answer_type: `directional_change`=400
+- gold commitment: `committed`=391, `noncommitted`=9
+- transformation: `numeric_to_directional`=400
+- evidence length (chars): min 632, p25 3429, median 4171, p75 4873, max 14591
 
 ### Top 20 clean candidates
 
 | hedgeqa_id | source_id | gold | commitment | ev.chars | question |
 |---|---|---|---|---|---|
+| `hqa_FQ_5ced0512` | C/2008/page_212.pdf-4 | `decreased` | committed | 14591 | what was the percentage change in the carrying amount reported on the consolidated balance... |
 | `hqa_FQ_96e3a276` | C/2008/page_212.pdf-3 | `decreased` | committed | 14591 | what was the change in millions of the carrying amount reported on the consolidated balanc... |
-| `hqa_FQ_5d8a461d` | VRTX/2006/page_71.pdf-1 | `increased` | committed | 7278 | what is the percent change in cash , cash equivalents and marketable securities between 20... |
-| `hqa_FQ_0a96e5ae` | ZBH/2008/page_70.pdf-1 | `increased` | committed | 6537 | what is the percent change in information technology integration from 2006 to 2007? |
-| `hqa_FQ_9d13f5a3` | C/2009/page_141.pdf-3 | `increased` | committed | 6446 | what was the net change in the repurchase reserve between 2008 and 2009 , in millions? |
-| `hqa_FQ_16c64ba5` | JPM/2016/page_140.pdf-1 | `increased` | committed | 6328 | based on the review of the net derivative receivables for the periods what was the ratio o... |
-| `hqa_FQ_625c8f22` | HIG/2012/page_132.pdf-2 | `increased` | committed | 5332 | what is the growth rate in the statutory capital and surplus for the property and casualty... |
-| `hqa_FQ_96abe9de` | MMM/2007/page_39.pdf-2 | `increased` | committed | 5217 | what was percentage change in the net cash used in financing activities from 2006 to 2007 |
-| `hqa_FQ_ade6460f` | ADI/2016/page_61.pdf-2 | `increased` | committed | 5122 | what is the percentage change in the balance of goodwill from 2015 to 2016? |
-| `hqa_FQ_de072e16` | PNC/2009/page_31.pdf-4 | `decreased` | committed | 5110 | in percentage points , what was the change in the average federal funds rate from 2009 com... |
-| `hqa_FQ_544d8b95` | AES/2017/page_168.pdf-3 | `decreased` | committed | 5096 | what was the net change in millions in unrecognized tax benefits from 2015 to 2016? |
-| `hqa_FQ_2d4593d2` | LMT/2012/page_43.pdf-4 | `increased` | committed | 4966 | what is the growth rate in operating profit for aeronautics in 2011? |
-| `hqa_FQ_64cde824` | LMT/2013/page_89.pdf-1 | `decreased` | committed | 4864 | what was the percentage change in the number of rsus outstanding from 2012 to 2013? |
-| `hqa_FQ_393791a9` | IPG/2017/page_49.pdf-2 | `decreased` | committed | 4810 | what is the growth rate in the interest income in 2017 relative to 2016? |
-| `hqa_FQ_45cf04c3` | LMT/2012/page_46.pdf-2 | `increased` | committed | 4679 | what is the growth rate in operating profit for mst in 2012? |
-| `hqa_FQ_42d61ddf` | FIS/2016/page_64.pdf-4 | `decreased` | committed | 4624 | what is the percentage change in total trade receivables? |
-| `hqa_FQ_55ea63a8` | FIS/2016/page_64.pdf-3 | `decreased` | committed | 4624 | what was the percentage change in total trade receivables net from 2015 to 2016? |
-| `hqa_FQ_999c842d` | KIM/2010/page_103.pdf-2 | `decreased` | committed | 4518 | what is the growth rate in weighted average fair value of options granted in 2009? |
-| `hqa_FQ_d047b2ae` | GS/2013/page_193.pdf-1 | `increased` | committed | 4436 | what was the percentage change in tier 1 capital between 2012 and 2013? |
-| `hqa_FQ_aec93028` | LMT/2016/page_83.pdf-4 | `decreased` | committed | 4424 | what is the percentage change in weighted average common shares outstanding for basic comp... |
-| `hqa_FQ_d019af6f` | GS/2014/page_134.pdf-3 | `increased` | committed | 4337 | in millions between 2014 and 2013 , what was the change in net derivative liabilities unde... |
+| `hqa_FQ_0a7c38ac` | PPG/2010/page_45.pdf-3 | `decreased` | committed | 11716 | what was the change in millions of interest payments from 2009 to 2010? |
+| `hqa_FQ_923b74c0` | ZBH/2002/page_46.pdf-1 | `decreased` | committed | 11663 | what was the net change in millions of total debt from 2001 to 2002? |
+| `hqa_FQ_a257c257` | PPG/2011/page_28.pdf-3 | `decreased` | committed | 11446 | what was the percentage change in cash from operating activities from 2009 to 2010? |
+| `hqa_FQ_899f1700` | ADBE/2011/page_112.pdf-3 | `increased` | committed | 9649 | what is the growth rate in the average price of repurchased shares from 2009 to 2010? |
+| `hqa_FQ_0ee8580f` | JPM/2015/page_92.pdf-2 | `increased` | committed | 8287 | in 2015 what was the percentage change in the net interest income excluding cib 2019s mark... |
+| `hqa_FQ_5bf73c84` | FITB/2008/page_69.pdf-4 | `decreased` | committed | 7791 | what is the percentage change in capital expenditures from 2007 to 2008? |
+| `hqa_FQ_44169740` | BLK/2014/page_68.pdf-1 | `increased` | committed | 7515 | what is the growth rate in employee headcount from 2012 to 2013? |
+| `hqa_FQ_b5b0d70f` | BLK/2010/page_126.pdf-2 | `increased` | committed | 7135 | what is the percentage change in expenses related to personal pension plan from 2009 to 20... |
+| `hqa_FQ_9addccdc` | C/2008/page_189.pdf-1 | `decreased` | committed | 6908 | what was the change in billions of the available-for-sale securities between 2007 and 2008... |
+| `hqa_FQ_cf6bdd49` | PPG/2006/page_21.pdf-4 | `increased` | committed | 6773 | what was the percentage change in earnings per share from 2005 to 2006? |
+| `hqa_FQ_9063e23b` | MRO/2006/page_92.pdf-2 | `decreased` | committed | 6740 | what was the percentage change in total assets due to the adoption of fas 158? |
+| `hqa_FQ_d7c223c6` | MRO/2006/page_92.pdf-1 | `decreased` | committed | 6740 | what was the percentage change in total stockholders' equity due to the adoption of fas 15... |
+| `hqa_FQ_7c47c43b` | ZBH/2008/page_83.pdf-1 | `decreased` | committed | 6543 | what is the change in unrecognized tax benefits between 2007 and 2008 in millions? |
+| `hqa_FQ_70cdc32a` | ZBH/2007/page_80.pdf-1 | `increased` | committed | 6335 | what was the percentage change in unrecognized tax benefits for 2007? |
+| `hqa_FQ_5447c20b` | MO/2017/page_10.pdf-1 | `increased` | committed | 6308 | what is the percent change in relative percentages of operating companies income ( loss ) ... |
+| `hqa_FQ_062e136c` | ABC/2005/page_40.pdf-2 | `decreased` | committed | 6245 | what was the change in total debt net of current portions in thousands between 2004 and 20... |
+| `hqa_FQ_50e1d593` | ZBH/2013/page_46.pdf-2 | `increased` | committed | 6200 | what is the percent change in accelerated software amortization from 2012 to 2013? |
+| `hqa_FQ_f5e2aa92` | ZBH/2013/page_46.pdf-1 | `increased` | committed | 6200 | what is the percent change in contract terminations from 2011 to 2012? |
 
 ### Risks / caveats
 - Same transformation constraint as TAT-QA. The `program` field is carried into the derivation so a reviewer can check that the arithmetic really licenses the direction.
@@ -218,14 +218,14 @@ Q1: what was the change in value of american airlines stock over the ... |
 
 ## Assembled collection: `data/hedgeqa/hedgeqa_v0_1_candidates.jsonl`
 
-**308 items.**
+**988 items.**
 
-- by benchmark: `fintradebench`=99, `finqa`=60, `tatqa`=60, `financebench`=59, `convfinqa`=30
-- by commitment: `committed`=262, `noncommitted`=46
-- by transformation: `numeric_to_directional`=150, `none`=135, `evidence_masked_insufficient`=23
-- by answer_type: `directional_change`=150, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
+- by benchmark: `finqa`=400, `tatqa`=400, `fintradebench`=99, `financebench`=59, `convfinqa`=30
+- by commitment: `committed`=861, `noncommitted`=127
+- by transformation: `numeric_to_directional`=830, `none`=135, `evidence_masked_insufficient`=23
+- by answer_type: `directional_change`=830, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
 
-Non-committal gold rate is 46/308 = 15%; 23 of those are constructed masked variants. Without them the rate would be 23/285 = 8%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
+Non-committal gold rate is 127/988 = 13%; 23 of those are constructed masked variants. Without them the rate would be 104/965 = 11%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
 
 ## Collection-level caveats
 

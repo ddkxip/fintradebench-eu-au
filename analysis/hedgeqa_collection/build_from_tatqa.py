@@ -27,6 +27,7 @@ Usage: python analysis/hedgeqa_collection/build_from_tatqa.py
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -37,7 +38,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from hedgeqa_schema import HedgeQAItem, make_id, write_jsonl  # noqa: E402
 from transforms import (clean_ws, numeric_to_directional,  # noqa: E402
-                        table_to_text)
+                        stratified_sample, table_to_text)
 
 # The official release is vendored in the repo root; data/tatqa/ is a
 # fallback for a manually placed copy.
@@ -46,7 +47,7 @@ CANDIDATE_FILES = ["tatqa_dataset_train.json", "tatqa_dataset_dev.json",
                    "tatqa_dataset_test.json"]
 OUT = REPO / "data" / "hedgeqa" / "candidates" / "tatqa_candidates.jsonl"
 
-MAX_ITEMS = 60
+DEFAULT_MAX_ITEMS = 400
 
 
 def _find_source():
@@ -58,7 +59,7 @@ def _find_source():
     return None
 
 
-def build():
+def build(max_items=DEFAULT_MAX_ITEMS):
     src = _find_source()
     if src is None:
         print("[tatqa] SOURCE NOT PRESENT — no candidates emitted.")
@@ -71,7 +72,7 @@ def build():
 
     data = json.loads(src.read_text(encoding="utf-8"))
     items = []
-    stats = {"loaded": 0, "kept": 0, "skip_not_arithmetic": 0,
+    stats = {"loaded": 0, "eligible": 0, "kept": 0, "skip_not_arithmetic": 0,
              "skip_not_change": 0, "skip_no_evidence": 0}
 
     for entry in data:
@@ -116,11 +117,12 @@ def build():
                 notes=f"source answer={q.get('answer')!r} "
                       f"scale={q.get('scale')!r} "
                       f"answer_from={q.get('answer_from')!r}"))
-            stats["kept"] += 1
-            if stats["kept"] >= MAX_ITEMS:
-                break
-        if stats["kept"] >= MAX_ITEMS:
-            break
+            stats["eligible"] += 1
+
+    items, realised = stratified_sample(items, lambda x: x.gold_label,
+                                        max_items)
+    stats["kept"] = len(items)
+    stats["gold_balance"] = realised
 
     n = write_jsonl(items, OUT)
     print(f"[tatqa] wrote {n} rows -> {OUT.relative_to(REPO)}")
@@ -130,4 +132,6 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--max-items", type=int, default=DEFAULT_MAX_ITEMS)
+    build(max_items=ap.parse_args().max_items)
