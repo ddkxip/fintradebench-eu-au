@@ -15,3 +15,6 @@ results/_quarantine/
 
 # AI reviewer output — collected per run, not source
 analysis/hedgeqa_collection/ai_review/responses/*.jsonl
+
+# pre-normalisation backup of reviewer output
+analysis/hedgeqa_collection/ai_review/responses_raw_backup/
