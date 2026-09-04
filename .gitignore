@@ -22,3 +22,6 @@ analysis/hedgeqa_collection/ai_review/responses_raw_backup/
 # human review working files (in-progress state, not source)
 analysis/hedgeqa_collection/hedgeqa_core_v0_1_human_review_in_progress.csv
 analysis/hedgeqa_collection/review_backups/
+
+# JetBrains IDE files
+.idea/
