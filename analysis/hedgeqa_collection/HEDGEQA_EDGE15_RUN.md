@@ -46,7 +46,9 @@ document because the input *looks damaged*, not because the evidence is
 *absent*. Right answer, wrong reason — and it would silently inflate any
 overcommitment metric computed over masked items.
 
-**Across 300 round-1 decodes, zero cited document damage.**
+**Across 300 round-1 decodes, zero cited document damage.** (On the refilled
+set this becomes **1 in 300** — a genuine citation, of a bare `$` our own
+masking left behind; see `HEDGEQA_EDGE15_V2_RUN.md` §4.)
 
 | rationale cites | decodes | share |
 |---|---|---|
@@ -74,6 +76,16 @@ confound predicts:
 If gutted documents induced spurious declining, gutted would decline *more*.
 It declines slightly less, and all three groups sit within a few points of
 each other on 4–10 items — which is to say indistinguishable.
+
+> **CORRECTED — this direction reverses once the defective items are removed.
+> See `HEDGEQA_EDGE15_V2_RUN.md` §3.** The 70%-vs-80% above was carried
+> entirely by `hqa_FB_9fc58fab_masked` and `hqa_FB_5dbbcec0_masked`. On the
+> refilled set gutted items decline **88%** against **71%** for other masked —
+> the opposite direction, and weakly *consistent* with the confound rather
+> than against it. Neither figure means anything at this n (7-of-8 against
+> 5-of-7: one failure versus two); treating the original direction as evidence
+> was an over-read, and the reversal is not evidence either. The argument that
+> survives is the rationale content below, which was always the stronger leg.
 
 The triage in §4 **strengthens** this. Of the 3 gutted items that did not
 decline, 2 did not decline because their evidence genuinely still supported

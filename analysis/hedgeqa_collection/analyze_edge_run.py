@@ -63,10 +63,16 @@ DAMAGE = re.compile(
     r"formatting|not legible|illegible)", re.I)
 
 
-def rationales(run):
-    """question_id -> list of round-1 rationale strings."""
-    p = REPO / "results" / "raw" / run / "decodes.jsonl"
+def rationales(runs):
+    """question_id -> list of round-1 rationale strings, across runs."""
     out = collections.defaultdict(list)
+    for run in runs:
+        _rationales_one(run, out)
+    return out
+
+
+def _rationales_one(run, out):
+    p = REPO / "results" / "raw" / run / "decodes.jsonl"
     if not p.exists():
         return out
     for line in p.read_text(encoding="utf-8").splitlines():
@@ -87,7 +93,10 @@ def rationales(run):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--run", required=True)
+    ap.add_argument("--run", required=True,
+                    help="run id, or several comma-separated: rows are "
+                         "pooled, which is only legitimate when every run "
+                         "used the same model, k, tau and rounds")
     ap.add_argument("--compare", default=None)
     ap.add_argument("--manifest",
                     default="data/hedgeqa/hedgeqa_core_v0_1_edge_smoke_15.jsonl")
@@ -97,7 +106,19 @@ def main():
     args = ap.parse_args()
 
     items = {i.hedgeqa_id: i for i in read_jsonl(REPO / args.manifest)}
-    rows = pd.read_csv(REPO / "results" / args.run / "rows.csv")
+    runs = [r.strip() for r in args.run.split(",") if r.strip()]
+    rows = pd.concat([pd.read_csv(REPO / "results" / r / "rows.csv")
+                      for r in runs], ignore_index=True)
+    # Pooling rows across runs is only valid if the decode config matches.
+    cfg = rows[["model"]].drop_duplicates()
+    if len(cfg) > 1:
+        raise SystemExit(f"[ABORT] runs disagree on model: "
+                         f"{sorted(rows['model'].unique())}")
+    rows = rows[rows["question_id"].isin(items)].copy()
+    missing = sorted(set(items) - set(rows["question_id"]))
+    if missing:
+        raise SystemExit(f"[ABORT] {len(missing)} manifest item(s) have no "
+                         f"rows in {runs}: {missing}")
     r1 = rows[(rows["round"] == 1) & rows["correct"].notna()].copy()
     r0 = rows[(rows["round"] == 0) & rows["correct"].notna()].copy()
 
@@ -115,7 +136,8 @@ def main():
                                                            set()), axis=1)
     r1["gutted"] = r1["question_id"].isin(gutted)
 
-    print(f"=== {args.run} ===")
+    print("=== " + " + ".join(runs) + " ===")
+    print(f"manifest: {args.manifest}")
     print(f"items {len(r1)}   parse_rate mean {rows['parse_rate'].mean():.4f}")
     print("\nEvery item is a masked variant with gold `insufficient_data`, so")
     print("accuracy on this set IS the decline rate. Reported as such.\n")
@@ -146,7 +168,7 @@ def main():
             print(f"  (comparison unavailable: {exc})")
 
     print("\nWHY DOES IT DECLINE? rationale keyword scan (round 1)")
-    rat = rationales(args.run)
+    rat = rationales(runs)
     tot = collections.Counter()
     per = {}
     for h in items:

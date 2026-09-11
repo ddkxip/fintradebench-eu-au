@@ -1,0 +1,14 @@
+{
+ "run_id": "hedgeqa_edge_refill2_gemma4",
+ "model": "gemma4:latest",
+ "manifest": "data/hedgeqa/hedgeqa_core_v0_1_edge_refill_2.jsonl",
+ "n_items": 2,
+ "k": 10,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "evidence_mode": "hedgeqa_oracle",
+ "digest": "c6eb396dbd59",
+ "failed_no_parse": [],
+ "seconds": 190.5
+}
