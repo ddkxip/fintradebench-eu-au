@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percent change in state street corporation's cumulative total shareholder return on common stock between 2008 and 2009?
 
@@ -42,7 +42,7 @@ s&p financial index | 100 | 45 | 52 | 59 | 49 | 63
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in airliner count during 2016?
 
@@ -89,7 +89,7 @@ total |  | 10.3 | 519 | 411 | 930
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the redeemable non controlling interests balance at december 31 2009 from 2008
 
@@ -132,7 +132,7 @@ accordingly the fair value of these units is included as a component of 201cothe
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the accretable yield activity for the firm 2019s pci consumer loans in 2010
 
@@ -169,7 +169,7 @@ extended loan liquidation periods reduce the accretable yield percentage because
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percent change of the beginning and ending amount of unrecognized tax benefits in 2009?
 
@@ -215,7 +215,7 @@ tax benefits of $ 629 thousand and $ 1714 thousand related to share-based compen
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the five year change in value of the o 2019reilly automotive inc . stock?
 
@@ -242,7 +242,7 @@ s&p 500 | $ 100 | $ 111 | $ 111 | $ 121 | $ 145 | $ 136
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in held-to-maturity securities at cost and at fair value as of january 30 , 2009?
 
@@ -285,7 +285,7 @@ improvements of leased properties are amortized over the shorter of the life of 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in millions in the accumulated depreciation and amortization of real estate assets from 2015 to 2016?
 
@@ -322,7 +322,7 @@ balance at december 31 2018 | $ 6373
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in net revenue from 2010 to 2011?
 
@@ -363,7 +363,7 @@ see note 2 to the financial statements for additional discussion of the formula 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in balance of u.s . life insurance subsidiaries from 2013 to 2014?
 
@@ -399,7 +399,7 @@ under the accounting practices and procedures governed by japanese regulatory au
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in cash provided by operating activities from 2007 to 2008?
 
@@ -437,7 +437,7 @@ increased capital investments and lower proceeds from asset sales drove the incr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percent change in the investment into alexion pharmaceuticals between 7/02 and 7/03?
 
@@ -467,7 +467,7 @@ nasdaq biotechnology | 100.00 | 149.29 | 146.51 | 176.75 | 186.10 | 183.89 | 187
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in rental expense between 2003 and 2004?
 
@@ -511,7 +511,7 @@ intersegment sales and transfers are not significant. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the growth rate of the s&p 500 index from 2011 to 2016
 
@@ -545,7 +545,7 @@ regular dividends of $ 0.0625 per share of loews common stock were paid in each 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in millions of aircraft from 2014 to 2015?
 
@@ -597,7 +597,7 @@ government bond yield plus 15 basis points and accrued interest. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Current income tax expense (benefit) in 2019 from 2018?
 
@@ -635,7 +635,7 @@ Significant components of the income tax expense (benefit) were as follows:
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in net computer software between 2018 and 2019?
 
@@ -665,7 +665,7 @@ In the fourth quarter of 2019, we entered into agreements to acquire software in
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in operating profit between 2018 and 2019?
 
@@ -694,7 +694,7 @@ The following table reflects the impact of consolidation of GS Holdings into the
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Cash and cash equivalents from 2018 to 2019?
 
@@ -722,7 +722,7 @@ As of December 31, 2019 and 2018, restricted cash included a security deposit th
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the Total shares reserved for issuance between 2018 and 2019?
 
@@ -751,7 +751,7 @@ The following are shares reserved for issuance (in thousands):
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Other receivables in 2019 from 2018?
 
@@ -780,7 +780,7 @@ Financial assets
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in total revenue between 2018 and 2019?
 
@@ -811,7 +811,7 @@ The following table presents revenues disaggregated by the major markets we serv
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in the allocation of equities from 2018 to 2019?
 
@@ -839,7 +839,7 @@ The following table presents the Company’s target for the allocation of invest
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Total operating income in the Communications Solutions segment in 2019 from 2018?
 
@@ -867,7 +867,7 @@ Excluding these items, operating income decreased in fiscal 2019 due primarily t
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in share-based compensation for sales and marketing between 2018 and 2019?
 

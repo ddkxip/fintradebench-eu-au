@@ -46,7 +46,9 @@ from one that guesses.
 The `evidence_masked_insufficient` variants fix this by removing the decisive
 evidence from an item whose answer is otherwise known, making
 `insufficient_data` correct *by construction*. In v0.1 they lift the
-non-committal share from 14% to 27%.
+non-committal share of the collection substantially — though after the
+2026-09 convention revision essentially the whole non-committal stratum
+outside FinTradeBench is constructed rather than observed.
 
 They are **constructed items and are treated as such**:
 
@@ -112,8 +114,10 @@ target than FinanceBench's yes/no items: TAT-QA ships an explicit
 depends on are stated rather than inferred from prose. Their answer space
 already contains `insufficient_data`, so a masked variant needs no new label.
 
-This lifts the non-committal share from **9.5% to 25.9%** (429/1,658), with
-323 masked variants.
+This lifts the non-committal share to **20.6%** (342/1,658), with 323 masked
+variants. *(Revised 2026-09: `roughly_unchanged` counts as committed, so
+natural non-committal items in the directional lanes are 0 — the entire
+non-committal stratum outside FinTradeBench is constructed.)*
 
 Directional masked variants are drawn from pool items **not** selected as
 natural items, so no masked/natural pair shares an evidence document.

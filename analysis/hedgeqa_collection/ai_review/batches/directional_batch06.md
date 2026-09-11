@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Other taxes in 2018/2019 from 2017/2018?
 
@@ -39,7 +39,7 @@ The other taxes (for example property tax, motor vehicle tax, excise tax and tra
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the year-on-year percentage change in GDP for Russia from 2018 to 2019?
 
@@ -71,7 +71,7 @@ Real GDP growth corrected for purchasing power. Source: Oxford Economics
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the number of RSUs granted between the 2019 and 2009 plans?
 
@@ -103,7 +103,7 @@ The following table summarizes the shares available for grant under the 2019 Pla
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in Total prepaid expenses between fiscal years 2019 and 2018?
 
@@ -132,7 +132,7 @@ Prepaid expenses consisted of the following:
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in contract assets in 2019?
 
@@ -165,7 +165,7 @@ The following table presents details of other current assets in our consolidated
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in Foreign in 2019 from 2018?
 
@@ -192,7 +192,7 @@ The Company’s income before income taxes consisted of the following (in thousa
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in accrued expenses between 2018 and 2019?
 
@@ -221,7 +221,7 @@ Accrued expenses consist of the following (in thousands):
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in expected dividend yield between 2018 and 2019?
 
@@ -254,7 +254,7 @@ The variables in the table below are used as inputs into the model to determine 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in the value of land between 2018 and 2019?
 
@@ -287,7 +287,7 @@ Property, plant and equipment consisted of the following:
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in provisions (benefit) for state and local income taxes between 2018 and 2019?
 
@@ -317,7 +317,7 @@ The provision (benefit) for income taxes consists of the following:
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the amount for Performance Share Plan from 2018 to 2019?
 
@@ -344,7 +344,7 @@ Disclosures of the share-based payments offered to employees are set out below. 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in computers, software, furniture and fixtures between 2018 and 2019?
 
@@ -373,7 +373,7 @@ Depreciation and amortization expense was $0.9 million and $1.0 million for the 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in the domestic losses between 2018 and 2019?
 
@@ -399,7 +399,7 @@ The components of loss before income taxes are as follows:
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the value of computer software from 2018 to 2019?
 
@@ -431,7 +431,7 @@ Depreciation and amortization expense included as a charge to income was $66,082
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in Foreign in 2019 from 2018?
 

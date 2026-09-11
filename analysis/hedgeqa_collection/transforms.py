@@ -12,6 +12,8 @@ original question and the derivation that licences the rewrite:
       question over {increased, decreased, roughly_unchanged,
       insufficient_data}. Licensed only when the source question is already
       asking about a change, so we are not inventing a new task.
+      Of these only `insufficient_data` is non-committal: `roughly_unchanged`
+      states that the quantity did not move materially, which is an answer.
 
   comparison_to_choice
       A question comparing named entities becomes pick-one over those
@@ -28,7 +30,13 @@ import re
 
 DIRECTIONAL_SPACE = ["increased", "decreased", "roughly_unchanged",
                      "insufficient_data"]
-DIRECTIONAL_NONCOMMIT = ["roughly_unchanged", "insufficient_data"]
+# CONVENTION (revised 2026-09, by reviewer decision): `roughly_unchanged` is
+# COMMITTED, not non-committal. It reports a finding -- "the quantity did not
+# move materially" -- rather than declining to answer, which is what
+# `insufficient_data` does. The earlier treatment put it in the non-committal
+# set, which inflated the collection's non-committal share and mis-scored a
+# real answer as a hedge. Only `insufficient_data` declines here.
+DIRECTIONAL_NONCOMMIT = ["insufficient_data"]
 
 # Direction-NEUTRAL phrasings only. The sign of the source answer may be
 # read as a direction only when the question itself does not already assert

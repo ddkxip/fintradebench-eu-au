@@ -2135,7 +2135,7 @@ Total
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in net revenue in 2016 for entergy new orleans , inc?
 
@@ -2171,7 +2171,7 @@ the volume/weather variance is primarily due to a decrease of 112 gwh , or 2% ( 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percent change in the snap-on performance from 2015 to 2016
 
@@ -2201,7 +2201,7 @@ december 31 2018 | 144.41 | 133.53 | 150.33
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: from 2009 to 2010 what was the percentage change in the expected volatility
 
@@ -2242,7 +2242,7 @@ notes to consolidated financial statements , continued .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the ratio of the changes in assets and liabilities , net of effects from business acquisitions and divestitures in 2016 to 2015
 
@@ -2279,7 +2279,7 @@ as of december 31 , 2015 and 2014 , our days sales outstanding were 38 days , or
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percent change in receivables from or ( payables to ) the money pool from 2001 to 2002?
 
@@ -2316,7 +2316,7 @@ uses of capital entergy louisiana requires capital resources for : 2022 construc
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the allowance for loan losses from 2008 to 2009?
 
@@ -2360,7 +2360,7 @@ citifinancial portfolio to held-for-sale , offset by additions of $ 610 million 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in commercial commitments net of participations , assignments and syndications , primarily to financial services companies in 2007 compared to 2006 in billions?
 

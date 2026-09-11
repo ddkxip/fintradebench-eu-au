@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in net revenue that was due the net gas revenue adjustment and the volume/weather adjustment, combined, in millions?
 
@@ -50,7 +50,7 @@ the volume/weather variance is primarily due to a decrease of 112 gwh , or 2% ( 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the performance of the united parcel service inc . from 2004 to 2009?
 
@@ -81,7 +81,7 @@ dow jones transportation average | $ 100.00 | $ 111.65 | $ 122.61 | $ 124.35 | $
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in value of the high bid price for the quarter ended december 31, 2004 and the quarter ended march 31, 2005?
 
@@ -121,7 +121,7 @@ the shares were issued pursuant to an exemption from registration under the secu
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the difference in comprehensive income attributable to nbc universal between 2013 and 2014?
@@ -159,7 +159,7 @@ see accompanying notes to consolidated financial statements .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in value for booking holding inc. in 2018, assuming a $100 initial investment?
 
@@ -189,7 +189,7 @@ measurement pointdecember 31 | booking holdings inc . | nasdaqcomposite index | 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the value of the class b common stock, considering its value in 2017 and the original amount invested in it in 2012?
 
@@ -218,7 +218,7 @@ dow jones transportation average | $ 100.00 | $ 141.38 | $ 176.83 | $ 147.19 | $
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the change in the allowance for doubtful accounts from 2006 to 2007?
@@ -260,7 +260,7 @@ the company records all derivatives on the balance sheet at fair value. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in value of an investment in advance auto parts from 2015 to 2016?
 
@@ -290,7 +290,7 @@ s&p retail index | 100.00 | 122.23 | 178.55 | 196.06 | 245.31 | 256.69
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the value of ball corporation in 2008?
@@ -328,7 +328,7 @@ all rights reserved. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the price of lilly in 2018?
@@ -368,7 +368,7 @@ it comprises the companies in the pharmaceutical and biotech industries that we 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in sales from 2013 to 2014?
 
@@ -412,7 +412,7 @@ as of 30 september 2014 , no assets or liabilities were classified as discontinu
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the net change in value of abiomed inc from 2006 to 2009?
@@ -448,7 +448,7 @@ transfer agent american stock transfer & trust company , 59 maiden lane , new yo
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the price of e*trade financial corporation between 12/02 and 12/07?
 
@@ -484,7 +484,7 @@ www.researchdatagroup.com/s&p.htm .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in value of intrinsic value from 2016 to 2018?
 
@@ -512,7 +512,7 @@ rsus generally vest based on continued employment with the company over periods 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the net change in citigroup from 2007 to 2008?
@@ -548,7 +548,7 @@ december 31 | citigroup | s&p 500 index | s&p financial index
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the net change in value of cadence design from 2002 to 2007?
@@ -588,7 +588,7 @@ the stock price performance included in this graph is not necessarily indicative
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the change in price of teleflex incorporated from 2014 to 2015?
@@ -625,7 +625,7 @@ s&p 500 healthcare equipment & supply index 100 126 134 142 186 213 .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the value of an investment in edwards lifesciences in 2016?
@@ -661,7 +661,7 @@ s&p 500 healthcare equipment index | 117.42 | 150.28 | 181.96 | 194.37 | 207.46
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the change in net cash provided by operating activities between 2016 and 2017?
@@ -694,7 +694,7 @@ md&a consolidated results and analysis 40 .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in value of an investment in disca from 2013 to 2018?
 
@@ -736,7 +736,7 @@ equity compensation plan information information regarding securities authorized
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the future minimum rental payments from 2008 to 2009?
 
@@ -766,7 +766,7 @@ aon corporation .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in value of the s&p from 2010 to 2015?
 
@@ -803,7 +803,7 @@ december 31 , ( in dollars ) .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in earnings attributable to altria group from 2016 to 2017?
 
@@ -846,7 +846,7 @@ $ 10222 $ 14239 $ 5241 less : distributed and undistributed earnings attributabl
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in price of the nasdaq composite index from 2010 to 2013?
 
@@ -877,7 +877,7 @@ transfer agent american stock transfer & trust company , 59 maiden lane , new yo
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the change in percentage points of data center cost between the years of 2014-13 and 2013-12?

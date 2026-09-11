@@ -119,10 +119,33 @@ def _norm(v):
     return (str(v).strip().lower() if v is not None else "")
 
 
+# The AI reviewers were INSTRUCTED that `roughly_unchanged` is non-committal
+# (AI_REVIEW_PROMPT.md, as written at collection time). That convention was
+# revised: it is committed. Their recorded value is therefore obedience to a
+# superseded instruction, not a judgement, so it is remapped here for the
+# comparison. Only this one label is touched, and the raw response files on
+# disk are left exactly as collected -- they are the evidence.
+CONVENTION_REMAP = {"roughly_unchanged": "committed"}
+_remapped = {"count": 0}
+
+
+def commitment_of(rec):
+    """A rater's commitment, under the CURRENT convention."""
+    lab = _norm(rec.get("reviewer_gold_label"))
+    com = _norm(rec.get("reviewer_gold_commitment"))
+    if com == "ambiguous_exclude":
+        return com                      # a judgement, never remapped
+    want = CONVENTION_REMAP.get(lab)
+    if want and com and com != want:
+        _remapped["count"] += 1
+        return want
+    return com
+
+
 def classify(human, ai_recs):
     """-> (promotion_class, reason)."""
     h_keep = _norm(human.get("keep_or_exclude"))
-    h_commit = _norm(human.get("reviewer_gold_commitment"))
+    h_commit = commitment_of(human)
     present = [r for r in REVIEWERS if ai_recs.get(r)]
 
     if h_keep == "exclude":
@@ -144,8 +167,7 @@ def classify(human, ai_recs):
     if h_keep != "keep":
         return "review_needed", f"human keep_or_exclude = {h_keep!r}"
 
-    commits = {h_commit} | {_norm(ai_recs[r].get("reviewer_gold_commitment"))
-                            for r in present}
+    commits = {h_commit} | {commitment_of(ai_recs[r]) for r in present}
     commits.discard("")
     if len(commits) > 1:
         return "review_needed", f"gold_commitment disagreement: {sorted(commits)}"
@@ -204,7 +226,7 @@ def main():
                    it.transformation_type, it.answer_type, it.question,
                    it.gold_label, it.gold_commitment, it.validation_status,
                    h.get("reviewer_gold_label", ""),
-                   h.get("reviewer_gold_commitment", ""),
+                   commitment_of(h) if h else "",
                    h.get("evidence_sufficient_for_gold", ""),
                    h.get("transformation_valid", ""),
                    h.get("masked_variant_valid", ""),
@@ -214,6 +236,8 @@ def main():
                 d = recs.get(r) or {}
                 for fld in AI_FIELDS:
                     v = d.get(fld, "")
+                    if fld == "reviewer_gold_commitment" and d:
+                        v = commitment_of(d)
                     row.append("|".join(v) if isinstance(v, list) else v)
             row += [cls, why]
             w.writerow(row)

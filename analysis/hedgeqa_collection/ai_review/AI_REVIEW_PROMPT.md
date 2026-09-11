@@ -81,10 +81,11 @@ disagreements can be found and settled by a human.
 
 7. **Commitment is about the answer, not the question.** `committed` means
    the evidence settles on one side. `noncommitted` means the honest answer
-   declines to settle — `insufficient_data`, `mixed`, `conditional`,
-   `none_clear`, and `roughly_unchanged` are all non-committal in this
-   collection, including `roughly_unchanged`, which reports that a direction
-   is *not* resolved. Your `reviewer_gold_label` and
+   declines to settle — `insufficient_data`, `mixed`, `conditional` and
+   `none_clear` are non-committal. **`roughly_unchanged` is COMMITTED**: it
+   reports that the quantity did not move materially, which is an answer.
+   *(Revised 2026-09; responses collected before that date recorded it as
+   non-committal and are remapped at merge time.)* Your `reviewer_gold_label` and
    `reviewer_gold_commitment` must agree: a label listed in
    `noncommit_labels` implies `noncommitted`.
 

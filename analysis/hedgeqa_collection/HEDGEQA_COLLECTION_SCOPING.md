@@ -96,7 +96,7 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 **Loaded:** 500 | **Candidate-included:** 500 | **Excluded:** 0
 
 - answer_type: `directional_change`=500
-- gold commitment: `committed`=324, `noncommitted`=176
+- gold commitment: `committed`=400, `noncommitted`=100
 - transformation: `numeric_to_directional`=400, `evidence_masked_insufficient`=100
 - evidence length (chars): min 216, p25 841, median 1437, p75 2233, max 6813
 
@@ -106,7 +106,7 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 |---|---|---|---|---|---|
 | `hqa_TAT_ebffecf0` | a077ef46-3556-41f8-95fb-b35b7c8bd059 | `increased` | committed | 6813 | What is the change in percentage of total revenue for cloud subscriptions in 2019 and 2018... |
 | `hqa_TAT_568a52a5` | a934de94-63fb-4a91-820e-26e79d486fbb | `decreased` | committed | 6730 | What was the change in Net cash provided by financing activities between 2017 and 2018? |
-| `hqa_TAT_89e08c3a` | 9b794cd7-2905-4d39-8b67-d2f03ac529b3 | `roughly_unchanged` | noncommitted | 6492 | What is the percentage change in the adjusted EBITDA from 2018 to 2019? |
+| `hqa_TAT_89e08c3a` | 9b794cd7-2905-4d39-8b67-d2f03ac529b3 | `roughly_unchanged` | committed | 6492 | What is the percentage change in the adjusted EBITDA from 2018 to 2019? |
 | `hqa_TAT_1999d86f` | 2358c322-bf24-4dd8-b6a0-1b3ae91ae952 | `increased` | committed | 5933 | What is the percentage change in the revenue after the adoption of ASC606? |
 | `hqa_TAT_7a493fbb` | 1cfc6a3d-232c-4066-aca1-b49c2033dc97 | `decreased` | committed | 5928 | What was the percentage change in free cash flow in 2019 from 2018? |
 | `hqa_TAT_70081d20` | 925fc592-e42f-49c5-80c3-a3191ce3a412 | `increased` | committed | 5858 | What was the change in Other interest expense between 2017 and 2018? |
@@ -118,7 +118,7 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 | `hqa_TAT_473a4921` | 43fa77c3-8e1c-411d-a185-216083acfde3 | `increased` | committed | 5140 | What was the change in Diluted Net income per share from continuing operations in 2018 fro... |
 | `hqa_TAT_74051a75` | 6f227148-d8d9-425b-835a-321d2c13befa | `increased` | committed | 5127 | What was the percentage change net income attributable to non-controlling shareholders who... |
 | `hqa_TAT_61ad8570` | 7b88a47f-472f-4482-afc1-f6ba584a02de | `increased` | committed | 4888 | What is the change in the amount of total goodwill in 2019 from 2018? |
-| `hqa_TAT_860f17e3` | 20485ed4-492d-460a-ba9b-53203bf9f813 | `roughly_unchanged` | noncommitted | 4869 | What is the change in foreign operation tax between 2019 and 2018? |
+| `hqa_TAT_860f17e3` | 20485ed4-492d-460a-ba9b-53203bf9f813 | `roughly_unchanged` | committed | 4869 | What is the change in foreign operation tax between 2019 and 2018? |
 | `hqa_TAT_d4c9a42b` | ef8cf420-1d02-4977-b362-080baf6d7849 | `decreased` | committed | 4680 | What is the change in Global Enterprise value from 2018 to 2019? |
 | `hqa_TAT_8b85be11` | 55e5eaea-5ff7-4382-b643-0a125c2526cd | `decreased` | committed | 4648 | What is the percentage change in the loss before income taxes and equity in net income/(lo... |
 | `hqa_TAT_ad2737b8` | 1ba0a12d-b45e-4689-a63d-d968c006af5f | `increased` | committed | 4518 | What is the change in interest rate protection between 2018 and 2019? |
@@ -134,7 +134,7 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 **Loaded:** 500 | **Candidate-included:** 500 | **Excluded:** 0
 
 - answer_type: `directional_change`=500
-- gold commitment: `committed`=391, `noncommitted`=109
+- gold commitment: `committed`=400, `noncommitted`=100
 - transformation: `numeric_to_directional`=400, `evidence_masked_insufficient`=100
 - evidence length (chars): min 632, p25 3299, median 4076, p75 4799, max 14591
 
@@ -172,7 +172,7 @@ HedgeQA is **not a new general financial benchmark**. It is a diagnostic collect
 **Loaded:** 500 | **Candidate-included:** 500 | **Excluded:** 0
 
 - answer_type: `directional_change`=500
-- gold commitment: `committed`=398, `noncommitted`=102
+- gold commitment: `committed`=400, `noncommitted`=100
 - transformation: `numeric_to_directional`=400, `evidence_masked_insufficient`=100
 - evidence length (chars): min 467, p25 2811, median 3802, p75 4615, max 11446
 
@@ -221,11 +221,11 @@ Q1: what is the net change in total rent expense from 2007 to 2008?
 **1658 items.**
 
 - by benchmark: `convfinqa`=500, `finqa`=500, `tatqa`=500, `fintradebench`=99, `financebench`=59
-- by commitment: `committed`=1229, `noncommitted`=429
+- by commitment: `committed`=1316, `noncommitted`=342
 - by transformation: `numeric_to_directional`=1200, `evidence_masked_insufficient`=323, `none`=135
 - by answer_type: `directional_change`=1500, `yes_no`=59, `yes_no_mixed`=37, `category_choice`=16, `screening_top1`=15, `supportive_judgment`=10, `open_summary_with_canonical_claim`=9, `company_choice`=6, `graded_judgment`=4, `valuation_judgment`=1, `premise_check`=1
 
-Non-committal gold rate is 429/1658 = 26%; 323 of those are constructed masked variants. Without them the rate would be 106/1335 = 8%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
+Non-committal gold rate is 342/1658 = 21%; 323 of those are constructed masked variants. Without them the rate would be 19/1335 = 1%, which is why the variants exist: a collection of overwhelmingly settled questions can only measure hedge collision, and rewards a system that never declines.
 
 ## Collection-level caveats
 

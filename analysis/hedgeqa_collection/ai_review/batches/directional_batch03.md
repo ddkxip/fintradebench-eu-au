@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in fair value of foreign currency instruments from 2018 to 2019?
 
@@ -40,7 +40,7 @@ equity instruments | 2.3 | 2.2 | 2.0
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percent change in net revenue between 2007 and 2008?
 
@@ -80,7 +80,7 @@ fuel and purchased power expenses increased primarily due to increases in the av
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: from the years 2014-2013 to 2013-2012 , what was the change in percentage points of depreciation expense?
 
@@ -123,7 +123,7 @@ cost of services and support revenue increased during fiscal 2013 as compared to
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in percentage sales to restaurants from 2004 to 2005?
 
@@ -174,7 +174,7 @@ this project is intended to increase profitability by lowering aggregate invento
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in total lease expense , including base rent on all leases and executory costs , such as insurance , taxes , and maintenance from 2004 to 2005?
 
@@ -216,7 +216,7 @@ these costs are included in cost of goods sold and selling and administrative ex
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in the total expense related to the defined contribution plan for u.s employees in 2010?
 
@@ -271,7 +271,7 @@ notes to consolidated financial statements 2014 ( continued ) .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in estimated fair value of the cash flow hedges from 2005 to 2006?
 
@@ -313,7 +313,7 @@ and subsidiaries and affiliates consolidated and combined financial statements n
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in value for level 3 inputs during 2018?\\n
 
@@ -561,7 +561,7 @@ the fixed income portion of the portfolio was designed to match the bond- .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in total operating expenses between 2007 and 2008?
 
@@ -606,7 +606,7 @@ operating expenses declined , primarily due to lower restructuring charges in 20
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the amount of future annual commitments related to minimum quantities of purchased water between \\n2019 and 2020?
 
@@ -654,7 +654,7 @@ in june 2018 , the company and its remaining non-participating general liability
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in fuel surcharge revenues from 2012 to 2013?
 
@@ -706,7 +706,7 @@ assessorial revenues also increased in 2012 due to container revenue related to 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate of net revenue from 2014 to 2015 for entergy wholesale commodities?
 
@@ -743,7 +743,7 @@ the decrease was partially offset by higher volume in the entergy wholesale comm
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in pmi's share price from 2012 to 2013?
 
@@ -781,7 +781,7 @@ note : figures are rounded to the nearest $ 0.10. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the 5 year annual performance of the peer group stock from 2010 to 2011
 
@@ -813,7 +813,7 @@ was removed from the peer group as it was acquired in september 2014. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percent of the change in the weighted average grant date fair value of our restricted stock awards from 2006 to 2007
 
@@ -853,7 +853,7 @@ there are no other contractual terms covering restricted stock awards once veste
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in net revenue in 2016 for entergy louisiana?
 
@@ -894,7 +894,7 @@ the increase .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in net revenue for entergy new orleans , inc . in 2004?
 
@@ -938,7 +938,7 @@ the price applied to unbilled electric sales variance is due to an increase in t
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in cumulative total return for the s&p a9500 between 2003 and 2004?
 
@@ -970,7 +970,7 @@ s&p a9 500 $ 100 $ 114 $ 128 $ 142 $ 165 $ 129 s&p a9 computer hardware $ 100 $ 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the average annual growth rate for snap from 2016 to 2018?
 
@@ -1002,7 +1002,7 @@ december 31 2018 | 144.41 | 133.53 | 150.33
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percent change in future minimum lease payments from 2015 to 2016?
 
@@ -1037,7 +1037,7 @@ present value of net minimum lease payments | $ 97414
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in total contribution expense under the plan between 2006 and 2007?
 
@@ -1086,7 +1086,7 @@ total contribution expense under this plan was $ 5.7 million , $ 5.7 million and
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate in net revenue from 2010 to 2011?
 
@@ -1126,7 +1126,7 @@ see note 2 to the financial statements for discussion of the formula rate plan i
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the redeemable noncontrolling interests from 2009 to 2010
 
@@ -1169,7 +1169,7 @@ accordingly , the fair value of these units is included as a component of 201cot
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percent of the change in the 8 total brokerage payable from 2015 to 2016
 
@@ -1208,7 +1208,7 @@ payables to brokers , dealers , and clearing organizations 19915 18069 total bro
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the expected long-term return on plan assets for determining net periodic pension cost in 2008 compared to 2007?
 

@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the amount of Net debt and IFRS 16 lease liabilities from 2018 to 2019?
 
@@ -38,7 +38,7 @@ A reconciliation between net debt and net debt including IFRS 16 lease liabiliti
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the Total non-current trade and other payables in 2019 from 2018?
 
@@ -69,7 +69,7 @@ Trade payables are non interest-bearing and are normally settled on 30-day terms
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the total unamortized compensation cost related to employee purchases under the ESPP the company expects to recognise between 2018 and 2019?
 
@@ -99,7 +99,7 @@ related to employee purchases under the ESPP over a weighted average period of 0
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change between Foreign exchange forward contracts purchased for March 29, 2019 and March 30, 2018?
 
@@ -126,7 +126,7 @@ The notional amount of our outstanding foreign exchange forward contracts in U.S
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the current accrued benefit liability between 2018 and 2019?
 
@@ -156,7 +156,7 @@ The amount of net deferred loss expected to be recognized as a component of net 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Interest expense in 2019 from 2018?
 
@@ -182,7 +182,7 @@ Interest income decreased by $1.9 million from 2018 to 2019 due primarily to low
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the Property and equipment, net from 2018 to 2019?
 
@@ -213,7 +213,7 @@ Property and equipment are as follows (in thousands):
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the net value of property and equipment between 2018 and 2019?
 
@@ -241,7 +241,7 @@ Depreciation and amortization expense was $0.9 million and $1.0 million for the 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the fair market value between 2018 and 2019?
 
@@ -267,7 +267,7 @@ The cost, gross unrealized gains, gross unrealized losses and fair market value 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in the pension discount rate for actuarial benefit obligations between 2018 and 2019?
 
@@ -296,7 +296,7 @@ For certain Canadian post-retirement plans the above trend rates are applicable 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in total inventories between 2018 and 2019?
 
@@ -324,7 +324,7 @@ Inventories are valued at the lower of cost and net realizable value using the f
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in balance at end of year from 2018 to 2019?
 
@@ -353,7 +353,7 @@ Costs of warranty include the cost of labor and materials to repair a product du
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in total remuneration from 2018 to 2019?
 
@@ -388,7 +388,7 @@ No stock options or performance shares have been granted to members of the Super
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in total other current assets in 2019?
 
@@ -420,7 +420,7 @@ The following table presents details of other current assets in our consolidated
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Other (income) expense, net in 2019 from 2018?
 
@@ -446,7 +446,7 @@ Interest income decreased by $1.9 million from 2018 to 2019 due primarily to low
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in total revenue from 2018 to 2019?
 
@@ -473,7 +473,7 @@ The proceeds resulting from the patent litigation & arbitration settlements (€
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in loss per share between 2018 and 2019?
 
@@ -500,7 +500,7 @@ No adjustments have been made in the pro forma information for synergies that ar
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the Basic weighted average common shares outstanding between 2018 and 2019?
 

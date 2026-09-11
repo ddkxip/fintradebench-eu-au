@@ -6,7 +6,7 @@
 
 | reviewer | items reviewed | of |
 |---|---|---|
-| human | 359 | 368 |
+| human | 368 | 368 |
 | gemini_antigravity | 368 | 368 |
 | chatgpt_codex | 368 | 368 |
 
@@ -26,16 +26,16 @@ Three shared categories, so kappa is meaningful. This is the collection's load-b
 
 | comparison | n | raw agreement | Cohen kappa |
 |---|---|---|---|
-| human vs Gemini | 368 | 69.3% | 0.398 |
-| human vs ChatGPT | 368 | 77.4% | 0.476 |
-| Gemini vs ChatGPT | 368 | 82.3% | 0.657 |
+| human vs Gemini | 368 | 70.7% | 0.389 |
+| human vs ChatGPT | 368 | 78.8% | 0.461 |
+| Gemini vs ChatGPT | 368 | 82.6% | 0.651 |
 
 ## 3. Agreement on `keep_or_exclude`
 
 | comparison | n | raw agreement | Cohen kappa |
 |---|---|---|---|
-| human vs Gemini | 359 | 66.9% | 0.037 |
-| human vs ChatGPT | 359 | 66.0% | -0.011 |
+| human vs Gemini | 368 | 67.1% | 0.037 |
+| human vs ChatGPT | 368 | 66.3% | -0.010 |
 | Gemini vs ChatGPT | 368 | 75.3% | 0.443 |
 
 ## 4. Disagreement rate by stratum
@@ -163,14 +163,14 @@ Ranked: a masked item any reviewer could answer, then a directional item whose t
 | 59 | `hqa_TAT_f4ec2a00_masked` | evidence_masked_insufficient | masked item reported answerable |
 | 60 | `hqa_CFQ_525e330f` | numeric_to_directional | directional transformation challenged |
 
-…and 126 more; the full list is the `review_needed` rows of the merged CSV.
+…and 121 more; the full list is the `review_needed` rows of the merged CSV.
 
 ## 7. Promotion classes
 
 | class | items | meaning |
 |---|---|---|
-| `strong_keep` | 171 | human + both AI kept, commitment agrees — *eligible* for human promotion |
-| `review_needed` | 115 | disagreement, missing reviewer, low confidence, or an `unclear` flag |
+| `strong_keep` | 180 | human + both AI kept, commitment agrees — *eligible* for human promotion |
+| `review_needed` | 106 | disagreement, missing reviewer, low confidence, or an `unclear` flag |
 | `exclude` | 82 | human excluded, or both AI reviewers excluded |
 
 `strong_keep` means **nobody objected**, which is weaker than verified. Two of the three raters are language models with correlated failure modes, so unanimity among them is not independent confirmation. A human still decides every promotion, and no item in this repository is `manually_validated`.

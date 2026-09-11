@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the price of applied materials as of 10/28/12?
@@ -57,7 +57,7 @@ s&p 500 rdg semiconductor composite .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the net change in value of edwards lifesciences in 2013 less 100?
@@ -91,7 +91,7 @@ s&p 500 healthcare equipment index | 120.83 | 117.02 | 123.37 | 145.84 | 186.00
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: was the five year return of the s&p 500 retail index greater than the s&p 500?
@@ -123,7 +123,7 @@ s&p 500 | $ 100 | $ 100 | $ 113 | $ 147 | $ 164 | $ 163
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the value of jpmorgan chase from the original investment in 2011 to 2016?
 
@@ -160,7 +160,7 @@ december 31 , ( in dollars ) .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the 2015 value of priceline less 100?
@@ -195,7 +195,7 @@ measurement pointdecember 31 | the priceline group inc . | nasdaqcomposite index
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the performance price of the masco common stock in the five year period ended 2010?
 
@@ -228,7 +228,7 @@ we did not purchase any shares during the three months ended december 31 , 2010.
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in the value of an investment in e*trade financial corporation from 2010 to 2015?
 
@@ -255,7 +255,7 @@ dow jones us financials index | 100.00 | 87.16 | 110.56 | 148.39 | 170.04 | 170.
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the net change in value of global payments from 2003 to 2004?
@@ -298,7 +298,7 @@ no amounts have been repurchased during the fiscal year ended may 31 , 2007. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the change value of the s&p healthcare index from 2010 to 2015?
@@ -332,7 +332,7 @@ s&p 500 healthcare equipment & supply index 100 99 116 148 187 199 .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in value of unrecognized tax benefits from 2008 to 2009?
 
@@ -378,7 +378,7 @@ aon has concluded income tax examinations in its primary international jurisdict
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the amount of shares authorized for repurchase between 2014 and 2016?
 
@@ -419,7 +419,7 @@ this new program authorizes the repurchase of up to $ 10 billion of 3m 2019s out
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the value of an investment in s&p500 in 2016?
@@ -452,7 +452,7 @@ past performance is not necessarily an indicator of future results. .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in value of an investment in s&p500 from 2014 to 2016?
 
@@ -479,7 +479,7 @@ s&p 500 | $ 100 | $ 130 | $ 144 | $ 143 | $ 157 | $ 187
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the fraction change of the investment in s&p500 from 2008 to 2013?
 
@@ -510,7 +510,7 @@ kbw bank index | 100 | 98 | 121 | 93 | 122 | 168
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in revenues from 2003 to 2004?
 
@@ -547,7 +547,7 @@ gross operating revenues , fuel and purchased power expenses , and other regulat
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in the balance of letters of credit from 2000 to 2001?
 
@@ -585,7 +585,7 @@ state street corporation 53 .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the total benefits from 2017 to 2018 in millions
 
@@ -619,7 +619,7 @@ the significant u.s. , u.k. , netherlands and canadian pension plans are closed 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the cumulative change in apple inc . stock between 2016 and 2011?
 
@@ -659,7 +659,7 @@ dow jones u.s . technology supersector index | $ 100 | $ 130 | $ 137 | $ 178 | $
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in shares outstanding during 2011?
 
@@ -700,7 +700,7 @@ see the notes to consolidated financial statements .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the total incentive compensation from 2017 to 2018
 
@@ -732,7 +732,7 @@ the expense is generally accrued as cash incentive compensation in the year prio
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in the balance of outstanding options from 2005 to 2008?
 
@@ -777,7 +777,7 @@ included in the company 2019s share-based compensation expense in the year ended
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the s&p 500 index between 2010 and 2015?
 
@@ -817,7 +817,7 @@ apple inc .
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the amount of pre-tax catastrophe losses from 2015 to 2016 in millions
 
@@ -858,7 +858,7 @@ these loss projections are approximations , reliant on a mix of quantitative and
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in ground leases between 2012 and 2013 in millions?
 
@@ -909,7 +909,7 @@ total | $ 695979 | $ 1006596 | $ 1174607 | $ 653245 | $ 1956586 | $ 5083646 | $ 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the growth rate of net amount from 2007 to 2008?
 

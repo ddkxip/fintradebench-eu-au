@@ -70,6 +70,12 @@ Enforced by `validate()`; the first failure becomes the exclusion reason.
 
 **`none`** — used as written. The only type that needs no derivation.
 
+**Convention note.** On directional items only `insufficient_data` is
+non-committal. `roughly_unchanged` is **committed** — it states that the
+quantity did not move materially. (Revised 2026-09 by reviewer decision; it
+was previously classed non-committal, which inflated the collection's
+non-committal share and scored a real answer as a hedge.)
+
 **`numeric_to_directional`** — a free-form numeric answer has no finite
 answer space and therefore no non-committal label, so no hedging metric is
 computable on it. Change-shaped questions map onto

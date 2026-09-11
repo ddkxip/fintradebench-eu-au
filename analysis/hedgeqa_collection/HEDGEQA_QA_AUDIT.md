@@ -1,3 +1,10 @@
+> **Superseded in part (2026-09).** `roughly_unchanged` was reclassified
+> from non-committal to **committed**. Every non-committal count in this
+> document predates that change: the collection's non-committal share is
+> now 342/1,658 (20.6%), and natural non-committal items exist only in
+> FinTradeBench. Structural checks, validator results and masking-test
+> results are unaffected. See `ai_review/HUMAN_REVIEW_FINDINGS.md`.
+
 # HedgeQA-v0.1 — QA audit
 
 **Status: CANDIDATE-ONLY. This collection is NOT validated.**

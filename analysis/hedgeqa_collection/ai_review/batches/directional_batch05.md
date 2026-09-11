@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the amount of Net debt and IFRS 16 lease liabilities from 2018 to 2019?
 
@@ -39,7 +39,7 @@ A reconciliation between net debt and net debt including IFRS 16 lease liabiliti
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in consolidated net sales between 2018 and 2019?
 
@@ -72,7 +72,7 @@ Sales are attributed to countries based upon the origin of the sale.
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Debt principal from 2018 to 2019?
 
@@ -99,7 +99,7 @@ As of December 31, 2019, the unamortized discount was $65.3 million, which will 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in other prepaid expenses and other current assets between 2018 and 2019?
 
@@ -129,7 +129,7 @@ During 2019, tax refunds from the Internal Revenue Service of $5.0 million were 
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the total amount of property and equipment between 2018 and 2019?
 
@@ -155,7 +155,7 @@ With the exception of property and equipment, we do not identify or allocate our
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in the value of customer relationships between 2018 and 2019?
 
@@ -188,7 +188,7 @@ The remaining $152 of intangible asset at December 31, 2019 is expected to be am
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in Cost, Insurance and Freight (CIF) value of imports from FY 2018 to FY 2019?
 
@@ -215,7 +215,7 @@ Export revenue constituted 93.3 percent of the total unconsolidated revenue in F
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Thereof defined-contribution in 2019 from 2018?
 
@@ -246,7 +246,7 @@ Executive Board Compensation
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the number of shares under scheme under the 2019 Grant from the 2018 Grant?
 
@@ -276,7 +276,7 @@ The relevant disclosures in respect of the Performance Share Plan grants are set
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Losses from the disposal of fixed assets in 2018/2019 from 2017/2018?
 
@@ -304,7 +304,7 @@ The expenses from logistics services provided by METRO LOGISTICS to companies in
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in the inflation - CPI for RHm schemes from 2018 to 2019?
 
@@ -334,7 +334,7 @@ At 30 March 2019 and 31 March 2018, the discount rate was derived based on a bon
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the amount of research and development between 2018 and 2019?
 
@@ -363,7 +363,7 @@ Results of Operations
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in total revenue between 2018 to 2019?
 
@@ -392,7 +392,7 @@ The following table depicts the disaggregation of revenue by geographic region b
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in share of annual sales between 2018 and 2019?
 
@@ -422,7 +422,7 @@ As of December 31, 2019, no material land, buildings, machinery or equipment wer
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Work in progress in 2019 from 2018?
 
@@ -451,7 +451,7 @@ Inventories consisted of the following:
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in other accrued liabilities due to adjustment from Topic 606?
 
@@ -484,7 +484,7 @@ The effects of the adoption on the Company's Consolidated Financial Statements f
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in retained earnings in 2019 from 2018?
 
@@ -514,7 +514,7 @@ The table above shows the actual expenditure of the Group for employee pay and d
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the Number of common shares repurchased in 2019 from 2018?
 
@@ -542,7 +542,7 @@ At fiscal year end 2019, we had $1.5 billion of availability remaining under our
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the current federal income tax provision between 2018 and 2019?
 
@@ -579,7 +579,7 @@ VMware’s income tax provision (benefit) for the periods presented consisted of
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the property and equipment, net between 2018 and 2019?
 
@@ -612,7 +612,7 @@ Depreciation expense for the years ended December 31, 2019, 2018, and 2017 was $
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in the Fair value of options vested between 2018 and 2019?
 
@@ -639,7 +639,7 @@ Additional information related to our stock options is summarized below (in mill
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the percentage change in gross debt in 2019 from 2018?
 
@@ -669,7 +669,7 @@ Net Debt to Adjusted EBITDA Ratio
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in total amortization of purchased intangible assets between 2018 and 2019?
 
@@ -699,7 +699,7 @@ The following table presents the amortization of purchased intangible assets (in
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in Net accounts receivable from December 31, 2019 to December 31, 2018?
 
@@ -727,7 +727,7 @@ Bad debt expense for the years ended December 31, 2019, 2018 and 2017 was $0.7 m
 - **transformation_type**: `numeric_to_directional`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the total amount of fees payable in 2019 from 2018?
 

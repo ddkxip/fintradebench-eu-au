@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in rent expenses included in selling , general and administrative expense from 2015 to 2016?
 
@@ -53,7 +53,7 @@ the following is a schedule of the company 2019s future minimum payments under i
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in amount of net revenue from 2009 to 2010?
 
@@ -95,7 +95,7 @@ see note 2 to the financial statements for further discussion of the proceedings
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the cumulative change in value for apple inc . between 2008 and 2013?
 
@@ -134,7 +134,7 @@ dow jones us technology supersector index | $ 100 | $ 111 | $ 124 | $ 128 | $ 16
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in net sales between 2003 and 2004?
 
@@ -176,7 +176,7 @@ net income ( loss ) | $ 68.7 | $ -14.4 ( 14.4 ) | $ 83.1
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what percent of the net change in revenue between 2006 and 2007 was due to fuel recovery?
 
@@ -217,7 +217,7 @@ in addition , 2006 revenue includes the sales into the wholesale market of enter
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the growth rate of the schlumberger interest expense from 2010 to 2011
 
@@ -257,7 +257,7 @@ these charges and credits , which are summarized below , are more fully describe
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in liability balance during 2014?
 
@@ -300,7 +300,7 @@ asset impairment charges during 2014 , pmi recorded other pre-tax asset impairme
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in total contribution expense under the plan between 2005 and 2006?
 
@@ -348,7 +348,7 @@ the company matches certain employee contributions ; additional contributions to
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change pre-tax catastrophe losses from 2016 to 2017 in thousands
 
@@ -390,7 +390,7 @@ these loss projections are approximations , reliant on a mix of quantitative and
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the percentage change in the royal caribbean cruises ltd . performance from 2014 to 2015
 
@@ -417,7 +417,7 @@ past performance is not necessarily an indicator of future results. .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in accumulated other comprehensive income during 2015?
 
@@ -451,7 +451,7 @@ december 31 2016 | $ 2164 | $ 2014 | $ -259 ( 259 ) | $ -40 ( 40 ) | $ -1240 ( 1
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in the balance of allowance for doubtful accounts receivable during 2015?
 
@@ -480,7 +480,7 @@ note : other valuation and qualifying accounts have not been reported in this sc
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in percentage points in debt-to-capital ratio from 2008 to 2009?
 
@@ -515,7 +515,7 @@ effect of subtracting cash from debt | 3.8% ( 3.8 % ) | 4.1% ( 4.1 % ) | 2.9% ( 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what percent of the change in revenue was due to volume/weather?
 
@@ -560,7 +560,7 @@ the reserve equalization variance is primarily due to a revision in 2006 of rese
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in the valuation allowance in thousands between 2014 and 2015?
 
@@ -610,7 +610,7 @@ federal income tax examinations for years ended on or before may 31 , 2014 .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the percentage change in staff number in 2013?
 
@@ -657,7 +657,7 @@ goldman sachs 2013 annual report 45 .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in net revenue during 2016 for entergy arkansas , inc.?
 
@@ -693,7 +693,7 @@ see note 14 to the financial statements for further discussion of the union powe
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the stock compensation plans rsu in millions from 2007 to 2008
 
@@ -742,7 +742,7 @@ during 2009 , 2008 and 2007 , the company granted approximately 3.7 million , 4.
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in the cash at bank?
 
@@ -771,7 +771,7 @@ For the purposes of the cash flow statement, cash and cash equivalents comprise 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in METRO AG in 2019 from 2018?
 
@@ -803,7 +803,7 @@ Full-time equivalents1 as of the closing date of 30/9
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in deferred tax asset in 2019 from 2018?
 
@@ -829,7 +829,7 @@ Amounts owed by Group undertakings are non-interest-bearing, unsecured and have 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in Foreign in 2019 from 2018?
 
@@ -855,7 +855,7 @@ Income before income taxes for the Company’s domestic and foreign operations w
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What is the change in non-current accrued benefit liability between 2018 and 2019?
 
@@ -885,7 +885,7 @@ The amount of net deferred loss expected to be recognized as a component of net 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the change in raw materials between 2018 and 2019?
 
@@ -913,7 +913,7 @@ Inventories are valued at the lower of cost and net realizable value using the f
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: What was the percentage change in social security costs in 2019 from 2018?
 

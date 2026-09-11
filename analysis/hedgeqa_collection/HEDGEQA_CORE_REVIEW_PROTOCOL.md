@@ -64,7 +64,8 @@ be defensible even though the stated justification is false. Decide.
 
 `committed` = the reference picks a side. `noncommitted` = the reference
 says the evidence does not settle it (`insufficient_data`, `mixed`,
-`conditional`, `none_clear`, `roughly_unchanged`).
+`conditional`, `none_clear`). `roughly_unchanged` is **not** in that set —
+see below.
 
 This is the collection's **load-bearing judgement** and the one humans agree
 on least: in the parent project two blinded annotators reached only
@@ -74,10 +75,11 @@ information, not as one of you being wrong.
 Rules:
 - Judge the **reference answer**, not the question and not what a model
   would say.
-- `roughly_unchanged` is non-committal in this schema. It reports that the
-  direction is not resolved, which is a declination even though it sounds
-  like a finding. If you disagree with that convention, note it — do not
-  silently re-classify.
+- **`roughly_unchanged` is COMMITTED.** It reports that the quantity did not
+  move materially, which is an answer. Only `insufficient_data` declines on a
+  directional item. *(This reverses the convention this protocol originally
+  carried; the reviewer's disagreement with the old reading was accepted and
+  the schema changed in 2026-09.)*
 - `mixed` is non-committal. "Both effects are present" does not settle
   which dominates.
 - A reference that commits *and* hedges ("probably yes, though the data is

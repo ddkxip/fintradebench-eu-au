@@ -1,7 +1,9 @@
 # HedgeQA-Core-v0.1 — selection report
 
 **Status: CANDIDATE-ONLY. Nothing here is `manually_validated`.**
-This document describes a *review set*. The review has not happened.
+This document describes the *review set*. The human review is now complete —
+see `ai_review/HUMAN_REVIEW_FINDINGS.md` for its results. Figures below were
+revised in 2026-09 when `roughly_unchanged` was reclassified as committed.
 
 368 items drawn from the 1,658-item v0.1 candidate collection, small enough
 to review completely by hand while still supporting every hedging metric
@@ -58,8 +60,8 @@ a pooled statistic is no longer a near-pure measurement of one answer type.
 
 | gold_commitment | items | share |
 |---|---|---|
-| committed | 229 | 62.2% |
-| noncommitted | 139 | 37.8% |
+| committed | 256 | 69.6% |
+| noncommitted | 112 | 30.4% |
 
 ## 5. Natural vs masked
 
@@ -111,18 +113,23 @@ separately. It must be.
 |---|---|---|---|---|---|---|
 | fintradebench | 99 | 19 | 19.2% | 0 | 19 | 19.2% |
 | financebench | 59 | 23 | 39.0% | 23 | 0 | **0.0%** |
-| tatqa | 75 | 41 | 54.7% | 25 | 16 | 32.0% |
-| finqa | 75 | 34 | 45.3% | 25 | 9 | 18.0% |
-| convfinqa | 60 | 22 | 36.7% | 20 | 2 | **5.0%** |
-| pooled | 368 | 139 | 37.8% | 93 | 46 | 16.7% |
+| tatqa | 75 | 25 | 33.3% | 25 | 0 | **0.0%** |
+| finqa | 75 | 25 | 33.3% | 25 | 0 | **0.0%** |
+| convfinqa | 60 | 20 | 33.3% | 20 | 0 | **0.0%** |
+| pooled | 368 | 112 | 30.4% | 93 | 19 | **6.9%** |
 
-The headline 37.8% is **67% constructed**. On natural items alone it is
-16.7%, and FinanceBench has no natural non-committal item at all. So:
+*(Revised 2026-09: `roughly_unchanged` is committed, so the directional
+lanes have no natural non-committal items at all.)*
+
+The headline 30.4% is **83% constructed**. On natural items alone it is
+**6.9%**, and **only FinTradeBench has any natural non-committal items
+(19)**. So:
 
 - **overcommitment** and **wrong non-committal type** are measurable on
-  natural items only for FinTradeBench (19), TAT-QA (16) and FinQA (9);
-- for FinanceBench and ConvFinQA they are measurable *only* through
-  constructed items, i.e. only as strongly as the masking is trusted.
+  natural items **only for FinTradeBench**;
+- for every other source they are measurable *only* through constructed
+  items, i.e. only as strongly as the masking is trusted — and the human
+  review found roughly half the masks answerable.
 
 ## 8. Evidence-sharing clusters
 
@@ -185,9 +192,11 @@ partial review is still useful.
 3. **Answer-type spread.** `directional_change` drops 90.5% → 57.1%, so the
    judgement-style questions the parent paper is actually about are properly
    represented.
-4. **Every metric is exercised per benchmark.** Committed and non-committal
-   golds are present in every source, so hedge collision, wrong-direction
-   commitment and (with the caveat in §7) overcommitment are all computable.
+4. **Hedge collision and wrong-direction commitment are computable in every
+   source.** Overcommitment is not: after the 2026-09 convention revision
+   only FinTradeBench has natural non-committal golds (19), so elsewhere that
+   mode rests entirely on the constructed masked variants — roughly half of
+   which the human review found answerable. See §7.
 5. **Near-independent items.** 10.9% evidence sharing against 36.7%, and
    zero outside FinTradeBench, so confidence intervals need clustering only
    in one source.

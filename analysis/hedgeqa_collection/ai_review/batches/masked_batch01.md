@@ -12,7 +12,7 @@ Follow `AI_REVIEW_PROMPT.md`. Output one JSON object per item, JSONL only, no pr
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the a. o. smith corporation share price as of 12/31/16?
@@ -44,7 +44,7 @@ russell 1000 index | 100.0 | 116.4 | 155.0 | 175.4 | 177.0 | 198.4
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the performance value of the ups class b common stock from 2010 to 2015?
 
@@ -72,7 +72,7 @@ dow jones transportation average | $ 100.00 | $ 100.01 | $ 107.49 | $ 151.97 | $
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the value of the common stock for e*trade financial corporation from 2004 to 2005?
 
@@ -107,7 +107,7 @@ www.researchdatagroup.com/s&p.htm .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the value of the kbw bank index in 2016?
@@ -148,7 +148,7 @@ december 31 , ( in dollars ) .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in value of disca common stock from 2018, less a $100 initial investment?
 
@@ -179,7 +179,7 @@ equity compensation plan information information regarding securities authorized
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the value of a o smith corp from 2002 to 2007?
 
@@ -206,7 +206,7 @@ s&p 600 electrical equipment | 100.00 | 126.12 | 152.18 | 169.07 | 228.83 | 253.
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the performance value of the peer group stock from 2014 to 2016?
 
@@ -238,7 +238,7 @@ in april 2016. .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the performance value of the united parcel service inc . in 2010?
@@ -272,7 +272,7 @@ dow jones transportation average | $ 100.00 | $ 109.82 | $ 111.38 | $ 87.52 | $ 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the pmi's share price from 2014 to 2015?
 
@@ -308,7 +308,7 @@ note : figures are rounded to the nearest $ 0.10. .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in pre-tax catastrophe losses from 2015 to 2016?
 
@@ -347,7 +347,7 @@ these loss projections are approximations , reliant on a mix of quantitative and
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the change in the value of the s&p index from 2011 to 2016?
@@ -383,7 +383,7 @@ regular dividends of $ 0.0625 per share of loews common stock were paid in each 
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the change in value of an investment in disca from sep 18 to dec 31, 2008?
 
@@ -414,7 +414,7 @@ s&p 500 peer group .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in price for apple inc. between 9/30/11 and 9/30/06?
 
@@ -449,7 +449,7 @@ september 30 , september 30 , september 30 , september 30 , september 30 , septe
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in value of american airlines stock over the 4 year period?
 
@@ -477,7 +477,7 @@ purchases of equity securities by the issuer and affiliated purchasers since jul
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the net change in shares purchased as part of publicly announced plans from nov 2016 to dec 2016?
 
@@ -509,7 +509,7 @@ as of december 31 , 2016 , no purchases have been made under the 2016 authorizat
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the difference between the share price of ventas between 12/31/02 and 12/31/03?
@@ -546,7 +546,7 @@ ventas nyse composite index all reit index healthcare reit index russell 1000 in
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what is the net change in value of cash provided by operating activities from 2007 to 2008?
 
@@ -583,7 +583,7 @@ increased capital investments and lower proceeds from asset sales drove the incr
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what is the change in value of the s&p from 2010 to 2015?
@@ -624,7 +624,7 @@ december 31 , ( in dollars ) .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: what was the change in the weighted-average estimated fair values of stock options granted from 2009 to 2010?
 
@@ -665,7 +665,7 @@ notes to consolidated financial statements , continued .
 - **transformation_type**: `evidence_masked_insufficient`
 - **answer_type**: `directional_change`
 - **answer_space**: ['increased', 'decreased', 'roughly_unchanged', 'insufficient_data']
-- **noncommit_labels**: ['roughly_unchanged', 'insufficient_data']
+- **noncommit_labels**: ['insufficient_data']
 
 **Question**: Conversation so far:
 Q1: what was the price of booking holdings inc. in 2017?
