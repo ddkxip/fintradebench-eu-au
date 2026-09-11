@@ -1,0 +1,14 @@
+{
+ "run_id": "hedgeqa_smoke15_gemma4",
+ "model": "gemma4:latest",
+ "manifest": "data/hedgeqa/hedgeqa_core_v0_1_smoke_15.jsonl",
+ "n_items": 15,
+ "k": 10,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "evidence_mode": "hedgeqa_oracle",
+ "digest": "c6eb396dbd59",
+ "failed_no_parse": [],
+ "seconds": 1339.7
+}
