@@ -15,7 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from masking import (mask_directional, mask_evidence,
-                     reconstructible_by_column_sum, salient_numbers)
+                     parse_value_rows, reconstructible_by_column_sum,
+                     reconstructible_by_window, salient_numbers)
 from transforms import is_change_question, numeric_to_directional
 
 
@@ -153,6 +154,115 @@ def test_sign_maps_to_direction():
 def test_presupposing_question_yields_nothing():
     assert numeric_to_directional(
         "what percentage decrease occurred in 2012?", 96.55) is None
+
+
+# ------------------------------ guard gap: non-pipe layouts (2026-09 fix)
+# The human review flagged 11 total_minus_components leaks on items the
+# automated guard had passed. Every one was a FinanceBench filing rendered
+# VERTICALLY -- label on its own line, one numeric line per period -- with
+# zero pipe characters, so the pipe-only row reader saw nothing at all.
+
+def test_parses_vertical_label_then_numbers_layout():
+    """Layout 3: a label line followed by a run of numeric-only lines."""
+    ev = "\n".join(["Sales of products", "$55,893", "$51,386", "$47,142",
+                    "Sales of services", "10,715", "10,900", "11,016"])
+    rows = parse_value_rows(ev)
+    assert len(rows) == 2, rows
+    assert rows[0][1] == [55893.0, 51386.0, 47142.0], rows[0]
+    assert rows[1][1] == [10715.0, 10900.0, 11016.0], rows[1]
+
+
+def test_parses_whitespace_table_layout():
+    """Layout 2: label and values on one line, no pipes."""
+    rows = parse_value_rows("Total revenues     58,158    62,286    66,608")
+    assert rows and rows[0][1] == [58158.0, 62286.0, 66608.0], rows
+
+
+def test_pipe_header_cells_do_not_leak_numbers():
+    """Regression: a date header must contribute no values.
+
+    Token-splitting "30 June 2019" injects 30 and 2019 into the value
+    columns and destroys the positional alignment the column checks rely on.
+    """
+    rows = parse_value_rows("| 30 June 2019 | 30 June 2018\nCash | 13 | 14")
+    assert len(rows) == 1 and rows[0][1] == [13.0, 14.0], rows
+
+
+def test_catches_total_minus_components_in_prose_layout():
+    """The real Boeing case: no pipes anywhere, components sum to the total.
+
+    47,142 + 11,016 = 58,158, a masked total-revenue figure.
+    """
+    ev = "\n".join([
+        "Consolidated Statements of Operations",
+        "Sales of products", "$55,893", "$51,386", "$47,142",
+        "Sales of services", "10,715", "10,900", "11,016"])
+    assert reconstructible_by_column_sum(ev, ["58158"]), \
+        "vertical-layout reconstruction not detected"
+
+
+def test_catches_reconstruction_spanning_two_blocks():
+    """Total in one block, sibling components in another, no pipes.
+
+    23,678 - (13 + 7,381) = 16,284.
+    """
+    ev = "\n".join([
+        "Note 11 Intangible assets", "Rights and licences", "13",
+        "Internally generated software", "7,381",
+        "", "Summary of carrying amounts", "Total intangible assets",
+        "23,678"])
+    assert reconstructible_by_column_sum(ev, ["16284"]), \
+        "cross-block reconstruction not detected"
+
+
+def test_catches_one_step_deeper_total_minus_several_components():
+    """A removed value recoverable as total minus THREE siblings.
+
+    100,000 - (12,000 + 8,000 + 5,000) = 75,000.
+    """
+    ev = "\n".join(["Segment A | 12,000", "Segment B | 8,000",
+                    "Segment C | 5,000", "Total segments | 100,000"])
+    assert reconstructible_by_column_sum(ev, ["75000"]), \
+        "one-step-deeper reconstruction not detected"
+
+
+def test_negative_control_ordinary_totals_do_not_fire():
+    """NEGATIVE CONTROL -- the guard must not reject an innocent document.
+
+    An ordinary statement whose totals are internally consistent but
+    reconstruct nothing near the masked operand. If this starts firing the
+    guard has become a blanket rejector and every mask it passes is
+    meaningless.
+    """
+    ev = "\n".join([
+        "Revenue", "1,200", "1,150",
+        "Cost of sales", "700", "690",
+        "Gross profit", "500", "460",
+        "Operating expenses", "300", "295",
+        "Operating profit", "200", "165"])
+    assert not reconstructible_by_column_sum(ev, ["987654"]), \
+        "rejecting guard fired on an unrelated target"
+    assert not reconstructible_by_window(ev, ["987654"]), \
+        "window advisory fired on an unrelated target"
+
+
+def test_window_search_stays_advisory():
+    """The window search must NOT gate mask_directional.
+
+    Measured on the 93 reviewed masked items it fires on 27% of human
+    rejections and 22% of human keeps -- a 5-point lift on a 22% base rate.
+    Wiring it in would discard about one good item in five.
+    """
+    ev = "\n".join([
+        "Total revenues of 58,158 comprised product sales of 47,142",
+        "and service sales of 11,016 for the period.",
+        "Narrative padding line with no figures at all in it whatsoever",
+        "A second padding line of filing text for context purposes here"])
+    assert reconstructible_by_window(ev, ["58158"]), \
+        "prose reconstruction not detected by the advisory"
+    res = mask_directional(ev, "subtract(58158, 1)", question="change?")
+    assert "reconstructible" not in (res.get("reason") or ""), \
+        "the advisory window search must not gate mask_directional"
 
 
 if __name__ == "__main__":

@@ -245,6 +245,148 @@ def _cell_value(cell: str):
     return -v if neg else v
 
 
+def _numbers_in(line: str) -> list:
+    """Every parseable numeric cell on one line, in order."""
+    out = []
+    for tok in re.split(r"[ 	|]+", line.strip()):
+        v = _cell_value(tok)
+        if v is not None:
+            out.append(v)
+    return out
+
+
+def _is_numeric_only(line: str) -> bool:
+    t = line.strip()
+    if not t:
+        return False
+    return bool(_numbers_in(t)) and not re.search(r"[A-Za-z]{2,}", t)
+
+
+def parse_value_rows(masked: str) -> list:
+    """Recover (label, values) rows from the three layouts that occur here.
+
+    The original guard read only pipe-delimited lines. Every FinanceBench
+    item is a filing rendered VERTICALLY -- a label on its own line followed
+    by one numeric line per period -- and contains no pipe at all, so the
+    guard was blind to 100% of that source. That is the gap the human review
+    surfaced as 11 `total_minus_components` flags on items the automated
+    check had passed.
+
+    Handled:
+      1. pipe-delimited   `Total | 23,678 | 12,907`
+      2. whitespace table `Total revenues   58,158   62,286`
+      3. vertical runs    `Total revenues` / `58,158` / `62,286`
+         (a label line followed by a maximal run of numeric-only lines)
+
+    Rows are returned with their values positionally aligned, so column *i*
+    is period *i* for every row that has one. Rows from different blocks of
+    the document pool together, which is what lets a total in one block
+    reconcile against components in another.
+    """
+    rows, lines = [], masked.splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if not line.strip():
+            i += 1
+            continue
+        if "|" in line:                              # layout 1
+            # Whole-cell parsing, NOT token splitting. A header cell like
+            # "30 June 2019" must yield nothing; splitting it on whitespace
+            # injects 30 and 2019 into the value columns and destroys the
+            # positional alignment every downstream check depends on.
+            parts = line.split("|")
+            label = parts[0].strip()
+            vals = [_cell_value(c) for c in parts[1:]]
+            vals = [v for v in vals if v is not None]
+            if vals:
+                rows.append((label, vals))
+            i += 1
+            continue
+        nums = _numbers_in(line)
+        has_text = bool(re.search(r"[A-Za-z]{2,}", line))
+        if nums and has_text:                        # layout 2
+            label = re.split(r"\s{2,}|	", line.strip())[0]
+            rows.append((label[:60], nums))
+            i += 1
+            continue
+        if has_text and not nums:                    # layout 3: label, then
+            run, j = [], i + 1                       # a run of numeric lines
+            while j < len(lines) and _is_numeric_only(lines[j]):
+                run.extend(_numbers_in(lines[j]))
+                j += 1
+            if run:
+                rows.append((line.strip()[:60], run))
+                i = j
+                continue
+        i += 1
+    return rows
+
+
+def _match(value, targets, tol):
+    for t in targets:
+        if t and abs(abs(value) - t) <= max(tol, abs(t) * 0.001):
+            return t
+    return None
+
+
+def reconstructible_by_window(masked: str, operands: list, tol: float = 0.01,
+                              window: int = 6, max_pool: int = 12) -> list:
+    """Small-subset arithmetic inside a sliding window of lines.
+
+    Catches a reconstruction stated in running prose -- "total revenues of X
+    comprised A and B" -- which no row parser will see as a table.
+
+    ADVISORY ONLY -- this does NOT gate `mask_directional`.
+
+    Measured on the 93 human-reviewed masked items it fires on 27% of those
+    a human rejected and 22% of those a human kept. A 5-point lift on a 22%
+    base rate is coincidence, not discrimination: a filing contains hundreds
+    of figures whose pairwise and three-way sums land within tolerance of
+    almost any target. Locality (a few adjacent lines, a capped pool, only
+    2- and 3-term combinations) reduces that but does not remove it.
+
+    Use it to produce a shortlist for a human to read, never to auto-reject.
+    """
+    targets = [abs(float(o)) for o in operands
+               if _cell_value(str(o)) is not None]
+    targets = [t for t in targets if t >= 100]      # tiny targets match noise
+    if not targets:
+        return []
+    lines = [ln for ln in masked.splitlines() if ln.strip()]
+    hits = []
+    for start in range(max(1, len(lines) - window + 1)):
+        pool = []
+        for ln in lines[start:start + window]:
+            pool.extend(_numbers_in(ln))
+        pool = [v for v in dict.fromkeys(pool) if abs(v) >= 1][:max_pool]
+        if len(pool) < 2:
+            continue
+        for a in range(len(pool)):
+            for b in range(a + 1, len(pool)):
+                x, y = pool[a], pool[b]
+                t = _match(x + y, targets, tol)
+                if t:
+                    hits.append(f"{x:g} + {y:g} = {x + y:g} reproduces "
+                                f"masked operand {t:g} within {window} lines")
+                t = _match(x - y, targets, tol)
+                if t:
+                    hits.append(f"{x:g} - {y:g} = {x - y:g} reproduces "
+                                f"masked operand {t:g} within {window} lines")
+                for c in range(b + 1, len(pool)):
+                    z = pool[c]
+                    t = _match(x + y + z, targets, tol)
+                    if t:
+                        hits.append(f"{x:g} + {y:g} + {z:g} = {x + y + z:g} "
+                                    f"reproduces masked operand {t:g}")
+                    t = _match(x - y - z, targets, tol)
+                    if t:
+                        hits.append(f"{x:g} - ({y:g} + {z:g}) = "
+                                    f"{x - y - z:g} reproduces masked "
+                                    f"operand {t:g}")
+    return sorted(set(hits))[:8]
+
+
 def reconstructible_by_column_sum(masked: str, operands: list,
                                   tol: float = 0.01) -> list:
     """Operands still derivable by summing a remaining table column.
@@ -276,10 +418,10 @@ def reconstructible_by_column_sum(masked: str, operands: list,
     sum of surviving cells reproduces an operand, and whether any single cell
     minus the others does.
     """
-    rows = [r.split("|") for r in masked.splitlines() if "|" in r]
+    rows = parse_value_rows(masked)
     if not rows:
         return []
-    width = max(len(r) for r in rows)
+    width = max(len(v) for _, v in rows) if rows else 0
     targets = []
     for o in operands:
         try:
@@ -291,12 +433,7 @@ def reconstructible_by_column_sum(masked: str, operands: list,
 
     hits = []
     for col in range(width):
-        vals = []
-        for r in rows:
-            if col < len(r):
-                v = _cell_value(r[col])
-                if v is not None:
-                    vals.append(v)
+        vals = [v[col] for _, v in rows if col < len(v)]
         if len(vals) < 2:
             continue
 
@@ -320,4 +457,33 @@ def reconstructible_by_column_sum(masked: str, operands: list,
                         f"column {col}: {cand_total:g} minus the other "
                         f"entries ({others:g}) gives {residual:g}, "
                         f"reproducing masked operand {t:g}")
+
+        # (c) partial sums within a column. The Boeing case: three period
+        # columns, the total row masked for two of them, and the two
+        # component rows still summing to it. A whole-column sum misses this
+        # whenever the column also carries unrelated rows, so pairs and
+        # triples drawn from the column are checked directly.
+        if 2 <= len(vals) <= 14:
+            for i in range(len(vals)):
+                for j in range(i + 1, len(vals)):
+                    t = _match(vals[i] + vals[j], targets, tol)
+                    if t:
+                        hits.append(
+                            f"column {col}: {vals[i]:g} + {vals[j]:g} = "
+                            f"{vals[i] + vals[j]:g}, reproducing masked "
+                            f"operand {t:g}")
+                    for k in range(j + 1, len(vals)):
+                        t = _match(vals[i] + vals[j] + vals[k], targets, tol)
+                        if t:
+                            hits.append(
+                                f"column {col}: {vals[i]:g} + {vals[j]:g} + "
+                                f"{vals[k]:g} reproduces masked operand "
+                                f"{t:g}")
+
+    # reconstructible_by_window is deliberately NOT called here. Measured on
+    # the 93 reviewed masked items it fires on 27% of the ones a human
+    # rejected and 22% of the ones a human kept -- a 5-point lift on a 22%
+    # base rate, which is coincidence, not signal. Wiring it in would discard
+    # roughly one good item in five to catch roughly one bad one in four. It
+    # is exposed for human triage instead; see ADVISORY note on that function.
     return sorted(set(hits))
