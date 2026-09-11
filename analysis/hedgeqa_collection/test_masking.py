@@ -14,10 +14,154 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from masking import (mask_directional, mask_evidence,
+from masking import (classify_question, mask_directional, mask_evidence,
                      parse_value_rows, reconstructible_by_column_sum,
-                     reconstructible_by_window, salient_numbers)
+                     reconstructible_by_window, salient_numbers, splice_sites)
 from transforms import is_change_question, numeric_to_directional
+
+
+# --------------------------------------------------------------- splice guard
+
+# The real MGM text, reconstructed from `hqa_FB_5dbbcec0_masked`: the two
+# middle lines are what masking deleted (they carry `0.01` and `2022.`), the
+# outer two are what survived in the shipped item.
+MGM_LINES = [
+    "We implemented a dividend program in February 2017 pursuant to which it "
+    "has paid regular quarterly dividends. In the second quarter of 2020, we",
+    "reduced our annual dividend to $0.01 per share in light of the impact of "
+    "the COVID-19 pandemic on our operations at that time. We maintained an "
+    "annual",
+    "dividend of $0.01 per share throughout 2022. On February 8, 2023, we "
+    "announced that the Board of Directors has determined to suspend the "
+    "ongoing dividends",
+    "in light of our current preferred method of returning value to "
+    "shareholders through our share repurchase plan. To the extent we "
+    "determine to reinstate the",
+    "dividend in the future, the amount, declaration and payment of any "
+    "future dividends will be subject to the discretion of our Board.",
+]
+
+
+def test_catches_mgm_sentence_splice():
+    """REGRESSION: the defect that shipped in hqa_FB_5dbbcec0_masked.
+
+    Deleting lines 1 and 2 joins "In the second quarter of 2020, we" to
+    "in light of our current preferred method..." -- a grammatical sentence
+    asserting a Q2-2020 suspension, which is the opposite of the truth (MGM
+    maintained a $0.01 dividend through 2022). The guard must reject it.
+    """
+    sites = splice_sites(MGM_LINES, [1, 2])
+    assert sites, "the MGM splice was not detected"
+    assert "second quarter of 2020, we" in sites[0]["joined"], sites[0]
+    assert "in light of our current preferred" in sites[0]["joined"], sites[0]
+
+    # and end to end, through the real entry point
+    res = mask_evidence("\n".join(MGM_LINES), ["0.01"],
+                        question="Did MGM pay a dividend in FY2022?")
+    assert res["ok"] is False, "mask_evidence shipped a spliced document"
+    assert "splice" in res["reason"], res["reason"]
+    assert res["splices"], "no splice recorded on the result"
+
+
+def test_negative_control_deletion_between_complete_sentences():
+    """Deleting a whole standalone sentence must NOT fire the splice guard."""
+    lines = [
+        "The Company operates three reportable business segments worldwide.",
+        "Segment revenue for the period was 12,345 across all three units.",
+        "Each segment is managed by a separate executive leadership team.",
+    ]
+    assert not splice_sites(lines, [1]), \
+        "guard fired on a deletion between two complete sentences"
+    res = mask_evidence("\n".join(lines), ["12345"],
+                        question="what was the change in segment revenue?")
+    assert res["ok"] is True, res["reason"]
+    assert not res["splices"], res["splices"]
+
+
+def test_negative_control_table_rows_are_not_splices():
+    """Table rows have no sentence structure to splice."""
+    lines = ["Consolidated Balance Sheet", "Total current assets",
+             "58,158", "47,142", "Narrative line of filing text for context"]
+    assert not splice_sites(lines, [2, 3]), \
+        "guard fired on deleted numeric table rows"
+
+
+def test_splice_guard_needs_a_real_gap():
+    """Two already-adjacent prose lines are not a splice: nothing was joined."""
+    assert not splice_sites(MGM_LINES, []), "fired with nothing removed"
+    assert not splice_sites(MGM_LINES, [4]), \
+        "fired on a trailing deletion that joined nothing"
+
+
+# ------------------------------------------------------------- category gate
+
+def test_category_gate_refuses_existence_and_qualitative_questions():
+    """The two shapes that produced the FinanceBench defects."""
+    assert classify_question(
+        "Has CVS Health reported any materially important ongoing legal "
+        "battles from 2022, 2021 and 2020?")["category"] == "existence"
+    assert classify_question(
+        "Has MGM Resorts paid dividends to common shareholders in FY2022?"
+    )["category"] == "existence"
+    assert classify_question(
+        "Does Adobe have an improving Free cashflow conversion as of FY2022?"
+    )["category"] == "qualitative"
+    assert classify_question(
+        "Does AMCOR have an improving gross margin profile as of FY2023? If "
+        "gross margin is not a useful metric for a company like this, then "
+        "state that and explain why.")["category"] == "narrative"
+    for q in ("Has CVS reported any material legal battles?",
+              "Has MGM paid dividends to common shareholders in FY2022?"):
+        assert classify_question(q)["maskable"] is False, q
+
+
+def test_category_gate_admits_genuinely_numeric_questions():
+    """It must not refuse the items number-deletion is built for."""
+    for q in ("Did Pfizer grow its PPNE between FY20 and FY21?",
+              "Was there any drop in Cash & Cash equivalents between FY 2023 "
+              "and Q2 of FY2024?",
+              "Is growth in JnJ's adjusted EPS expected to accelerate in "
+              "FY2023?"):
+        c = classify_question(q)
+        assert c["category"] == "numeric", f"{q} -> {c}"
+        assert c["maskable"] is True, q
+
+
+def test_category_gate_blocks_a_prose_answerable_mask_end_to_end():
+    """The CVS shape: figures gone, question still answerable from prose."""
+    ev = ("The Company is a defendant in a number of lawsuits alleging that "
+          "its retail pharmacies overcharged for prescription drugs.\n"
+          "The Company agreed to a settlement of 4,300 with several state "
+          "Attorneys General during the period.\n"
+          "These matters remain subject to court approval and further "
+          "proceedings in the ordinary course.\n")
+    res = mask_evidence(ev, ["4300"],
+                        question="Has the Company reported any materially "
+                                 "important ongoing legal battles?")
+    assert res["ok"] is False, "a prose-answerable question was masked"
+    assert "not maskable" in res["reason"], res["reason"]
+    assert res["question_category"] == "existence", res["question_category"]
+
+
+def test_category_gate_is_discharged_by_proof():
+    """`numeric_dependency` overrides the gate -- and only it does."""
+    ev = ("Consolidated Statement of Cash Flows\n"
+          "Purchases of property, plant and equipment 1,577\n"
+          "Some narrative line with no figures at all in it whatsoever\n"
+          "Another purely textual line of the filing for context\n")
+    q = "Does it have a healthy capital expenditure profile?"
+    blocked = mask_evidence(ev, ["1577"], question=q)
+    assert blocked["ok"] is False, "qualitative question was not gated"
+    proved = mask_evidence(ev, ["1577"], question=q,
+                           numeric_dependency="program operands ['1577']")
+    assert proved["ok"] is True, proved["reason"]
+    assert "numeric dependency proved" in proved["reason"], proved["reason"]
+
+
+def test_unclassified_questions_fail_closed():
+    c = classify_question("Frobnicate the widget?")
+    assert c["category"] == "unclassified"
+    assert c["maskable"] is False, "unknown question shape defaulted to OPEN"
 
 
 # ------------------------------------------------------------------ salience

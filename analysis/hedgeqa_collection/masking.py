@@ -93,15 +93,226 @@ def _flat(s: str) -> str:
     return s.replace("$", "").replace(",", "")
 
 
-def mask_evidence(evidence: str, salient: list, question: str = "") -> dict:
+# ---------------------------------------------------------------------------
+# Splice guard
+#
+# Masking deletes whole LINES. When a deleted line sat in the middle of a
+# sentence, the surviving fragments on either side become adjacent, and if the
+# grammar of that join happens to work the document acquires a fluent sentence
+# that the filing never contained.
+#
+# This is not hypothetical. On `hqa_FB_5dbbcec0_masked` (MGM dividends) the
+# filing said MGM *reduced* its dividend to $0.01 in Q2 2020, *maintained* it
+# through 2022, and suspended it in February 2023. Deleting the two lines
+# carrying `0.01` and `2022.` left:
+#
+#     In the second quarter of 2020, we
+#     in light of our current preferred method of returning value to
+#     shareholders through our share repurchase plan.
+#
+# -- a grammatical sentence asserting a Q2-2020 suspension, i.e. the OPPOSITE
+# of the truth. Masking is supposed to REMOVE information; here it ADDED false
+# information, and every downstream check passed because each one only asked
+# whether the figures were gone.
+#
+# The guard fires only where a deletion actually created a new adjacency, both
+# sides are running prose, the left fragment does not end a sentence, and the
+# right fragment continues one (lowercase start). Table rows, headings and
+# deletions between complete sentences are all left alone.
+# ---------------------------------------------------------------------------
+
+_SENTENCE_END = re.compile(r"""[.!?;:]['")\]]?\s*$""")
+_WORD_RE = re.compile(r"[A-Za-z]{2,}")
+
+
+def _is_prose_line(line: str) -> bool:
+    """True for running text; False for table rows, headings and stubs."""
+    words = _WORD_RE.findall(line)
+    if len(words) < 4:
+        return False
+    digits = sum(ch.isdigit() for ch in line)
+    alpha = sum(ch.isalpha() for ch in line)
+    return alpha > 3 * digits
+
+
+def splice_sites(lines: list, removed_idx) -> list:
+    """Deletions that join two prose fragments into a new sentence.
+
+    `lines` is the ORIGINAL document split into lines; `removed_idx` the
+    indices being deleted. Returns one record per suspect join.
+    """
+    removed = set(removed_idx)
+    kept = [i for i in range(len(lines)) if i not in removed]
+    out = []
+    for a, b in zip(kept, kept[1:]):
+        if b == a + 1:
+            continue                    # already adjacent; no new join made
+        prev, nxt = lines[a].rstrip(), lines[b].lstrip()
+        if not prev or not nxt:
+            continue                    # a blank line breaks the sentence
+        if not (_is_prose_line(prev) and _is_prose_line(nxt)):
+            continue                    # table/heading: no sentence to splice
+        if _SENTENCE_END.search(prev):
+            continue                    # left fragment was already complete
+        if not nxt[:1].islower():
+            continue                    # right fragment starts its own sentence
+        out.append({
+            "gap_lines": [lines[i].strip()[:60] for i in range(a + 1, b)],
+            "joined": f"{prev[-55:].strip()} / {nxt[:70].strip()}",
+        })
+    return out
+
+
+def is_normally_cased(text: str, min_ratio: float = 0.3) -> bool:
+    """Does this document use ordinary sentence capitalisation?
+
+    ConvFinQA and FinQA ship their filings LOWER-CASED throughout. In such a
+    document "this line starts lower-case" carries no information at all, so
+    any heuristic keyed to it must abstain rather than report a hit on every
+    line. (A first version of the splice sweep did not check this and flagged
+    8 ConvFinQA/FinQA items purely because their corpora are lower-case.)
+    """
+    # Only lines starting with a LETTER carry casing information. Financial
+    # filings open many lines with a digit ("2022 Fourth-Quarter sales..."),
+    # and counting those as "not upper-case" made this abstain on normally
+    # cased documents, which is the opposite failure to the one it prevents.
+    prose = [ln.strip() for ln in (text or "").splitlines()
+             if _is_prose_line(ln.strip()) and ln.strip()[:1].isalpha()]
+    if len(prose) < 3:
+        return False
+    upper = sum(1 for ln in prose if ln[:1].isupper())
+    return upper / len(prose) >= min_ratio
+
+
+def splice_risk_from_removed(removed_lines: list, context: str = "") -> list:
+    """Retrospective splice check for an ALREADY-BUILT masked item.
+
+    `splice_sites` needs the original document. A shipped item no longer has
+    it, but it does record the removed lines, and that is enough for a
+    one-sided check: a removed PROSE line that starts lower-case was the
+    continuation of a sentence begun on the line above it, so deleting it left
+    that sentence hanging -- exactly the MGM failure.
+
+    `context` is the surviving masked text, used only to establish that the
+    document is normally cased. Without it, or in a lower-cased corpus, the
+    function ABSTAINS (returns []) rather than flagging every prose line.
+
+    One-sided by construction: it cannot see whether the resulting join reads
+    fluently, so it flags risk rather than proving a defect. It is the right
+    instrument for triaging a built collection, not for gating construction --
+    use `splice_sites` there.
+    """
+    # Establish the corpus convention from the SURVIVING text only. Including
+    # the removed lines here is self-defeating: they are the lower-case
+    # continuations under test, so they drag the ratio down and make the check
+    # abstain on exactly the items it exists to flag. (Observed on
+    # hqa_FB_d397e71d_masked: 0.33 -> 0.25, silently dropping a true hit.)
+    if not is_normally_cased(context):
+        return []
+    out = []
+    for line in removed_lines or []:
+        s = (line or "").strip()
+        if not s or not _is_prose_line(s):
+            continue
+        if s[:1].islower():
+            out.append(s[:90])
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Question-category gate
+#
+# `mask_evidence` deletes lines carrying salient NUMBERS. That is the right
+# instrument when the gold answer is a computation over those figures. It is
+# category-inappropriate when the answer is carried by PROSE, and then
+# removing every figure leaves the question just as answerable as before while
+# the pipeline reports a successful mask.
+#
+# `hqa_FB_9fc58fab_masked` is the worked example: "Has CVS reported any
+# materially important ongoing legal battles?" Masking removed the opioid
+# settlement's dollar amounts and left four paragraphs describing the
+# lawsuits. The constructed gold said `insufficient_data`; the surviving prose
+# says `yes`.
+#
+# So a mask is refused unless EITHER the question is numeric by category, OR
+# the caller supplies `numeric_dependency` -- positive proof that the answer
+# is a computation over the removed figures. `mask_directional` has that proof
+# (TAT-QA ships a `derivation`, FinQA/ConvFinQA a `program`, naming the exact
+# operands) and passes it. The FinanceBench builder has no such artifact and
+# so cannot discharge the gate by assertion.
+#
+# Unrecognised questions fail CLOSED, consistent with the module's stated
+# philosophy that skipping an item is free and a bad masked item is not.
+# ---------------------------------------------------------------------------
+
+# Checked first: an instruction to explain or describe makes the item
+# answerable in prose no matter which figures are removed.
+NARRATIVE_CUES = ("explain", "describe", "discuss", "why do", "why did",
+                  "why is", "what factors", "state that", "elaborate",
+                  "comment on")
+
+# Checked second: an explicit quantity, movement or comparison.
+NUMERIC_CUES = ("how much", "how many", "what was", "what is the",
+                "what were", "grow", "growth", "increase", "decrease",
+                "declin", "drop in", "rise in", "fall in", "change in",
+                "accelerat", "percentage", "ratio of", "between fy",
+                "compared to", "difference between", "net change")
+
+# Checked third: questions about whether something exists or occurred at all.
+EXISTENCE_PATTERNS = (
+    r"\bhas\b[^?]*\bpaid\b",
+    r"\b(?:reported|disclosed|announced|recorded|filed)\s+any\b",
+    r"\b(?:is|are|was|were)\s+there\s+any\b",
+    r"\b(?:has|have|had)\b[^?]*\bany\b",
+    r"\bdoes\b[^?]*\bhave\s+any\b",
+    r"\bever\b",
+)
+
+# Checked last: a judgement word with no quantity attached.
+QUALITATIVE_CUES = ("improving", "improve", "healthy", "strong", "weak",
+                    "attractive", "reasonable", "meaningful", "robust",
+                    "sustainable", "efficient", "useful metric",
+                    "materially important", "profile", "adequate")
+
+MASKABLE_CATEGORIES = ("numeric",)
+
+
+def classify_question(question: str) -> dict:
+    """Categorise a question for maskability. Unknown => not maskable."""
+    q = (question or "").lower()
+    for cat, cues in (("narrative", NARRATIVE_CUES),
+                      ("numeric", NUMERIC_CUES)):
+        hits = [c for c in cues if c in q]
+        if hits:
+            return {"category": cat, "cues": hits,
+                    "maskable": cat in MASKABLE_CATEGORIES}
+    hits = [p for p in EXISTENCE_PATTERNS if re.search(p, q)]
+    if hits:
+        return {"category": "existence", "cues": hits, "maskable": False}
+    hits = [c for c in QUALITATIVE_CUES if c in q]
+    if hits:
+        return {"category": "qualitative", "cues": hits, "maskable": False}
+    return {"category": "unclassified", "cues": [], "maskable": False}
+
+
+def mask_evidence(evidence: str, salient: list, question: str = "",
+                  numeric_dependency: str = "") -> dict:
     """Remove evidence lines carrying the decisive figures.
 
     Returns a dict describing the attempt. `ok` is True only when the mask is
-    grounded, complete, and leaves no give-away concept row. `ok` False is
-    the normal, safe outcome -- skipping an item is free.
+    grounded, complete, leaves no give-away concept row, splices no sentence,
+    and the question is one that number-deletion can legitimately mask. `ok`
+    False is the normal, safe outcome -- skipping an item is free.
+
+    `numeric_dependency` is the caller's PROOF that the gold answer is a
+    computation over the removed figures (e.g. a FinQA `program` or a TAT-QA
+    `derivation`). Supplying it discharges the question-category gate. It must
+    not be passed as a formality: without an artifact naming the operands,
+    the honest value is "".
     """
     result = {"masked": evidence, "removed": [], "found": [], "ok": False,
-              "reason": "", "residual_concepts": []}
+              "reason": "", "residual_concepts": [], "splices": [],
+              "question_category": classify_question(question)["category"]}
     if not salient:
         result["reason"] = "no salient figures identified in the gold answer"
         return result
@@ -115,11 +326,13 @@ def mask_evidence(evidence: str, salient: list, question: str = "") -> dict:
                             "evidence settled the question")
         return result
 
-    kept, removed = [], []
-    for line in evidence.splitlines():
+    lines = evidence.splitlines()
+    kept, removed, removed_idx = [], [], []
+    for idx, line in enumerate(lines):
         f = _flat(line)
         if any(s in f for s in found):
             removed.append(line)
+            removed_idx.append(idx)
         else:
             kept.append(line)
     masked = "\n".join(kept)
@@ -156,9 +369,35 @@ def mask_evidence(evidence: str, salient: list, question: str = "") -> dict:
                             f"row(s) for a concept the question names")
         return result
 
+    # splice: did deleting a line join two prose fragments into a sentence
+    # the filing never contained? (the MGM dividend failure)
+    splices = splice_sites(lines, removed_idx)
+    if splices:
+        result["splices"] = splices
+        result["reason"] = (
+            f"deletion splices {len(splices)} sentence(s) -- the masked text "
+            f"would assert something the source never said: "
+            f"\"{splices[0]['joined']}\"")
+        return result
+
+    # category: is this a question number-deletion can legitimately mask?
+    cat = classify_question(question)
+    if not cat["maskable"] and not numeric_dependency:
+        result["reason"] = (
+            f"question category '{cat['category']}' is not maskable by "
+            f"number-deletion"
+            + (f" (cue: {cat['cues'][0]!r})" if cat["cues"] else "")
+            + "; the answer may be carried by prose that masking leaves "
+              "intact. Supply `numeric_dependency` to override, and only "
+              "with an artifact naming the operands.")
+        return result
+
     result["ok"] = True
-    result["reason"] = ("grounded, complete, no residual concept rows -- "
-                        "STILL REQUIRES HUMAN REVIEW")
+    result["reason"] = ("grounded, complete, no residual concept rows, no "
+                        "splice, question is maskable"
+                        + (" (numeric dependency proved)"
+                           if numeric_dependency else "")
+                        + " -- STILL REQUIRES HUMAN REVIEW")
     return result
 
 
@@ -207,7 +446,11 @@ def mask_directional(evidence: str, program: str, question: str = "") -> dict:
                 "reason": "no numeric operands in the derivation/program",
                 "residual_concepts": [], "operands": []}
 
-    res = mask_evidence(evidence, ops, question=question)
+    # The program/derivation IS the proof the category gate asks for: it names
+    # the exact operands the gold answer is computed from, so for these three
+    # corpora the answer provably depends on the removed figures.
+    res = mask_evidence(evidence, ops, question=question,
+                        numeric_dependency=f"program operands {ops}")
     res["operands"] = ops
     if not res["ok"]:
         return res

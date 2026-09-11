@@ -177,12 +177,18 @@ def build():
         res = mask_evidence(evidence, salient, question=sc["question"])
         if not res["ok"]:
             r = res["reason"]
+            # NOTE: every new rejection reason in masking.py needs a branch
+            # here. Without one it falls through to the final `else` and is
+            # silently counted as a residual-concept skip, which reads like a
+            # different guard doing the work.
             key = ("masked_skip:no_salient" if "no salient" in r else
                    "masked_skip:not_grounded" if "do not appear" in r
                    or "cannot show" in r else
                    "masked_skip:nothing_removed" if "nothing was removed" in r
                    else "masked_skip:figures_survive" if "survive" in r else
-                   "masked_skip:residual_concept_rows")
+                   "masked_skip:sentence_splice" if "splice" in r else
+                   "masked_skip:question_category" if "not maskable" in r
+                   else "masked_skip:residual_concept_rows")
             stats[key] = stats.get(key, 0) + 1
             skipped_detail.append((fid, r))
             continue
