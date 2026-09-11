@@ -26,8 +26,8 @@ Three shared categories, so kappa is meaningful. This is the collection's load-b
 
 | comparison | n | raw agreement | Cohen kappa |
 |---|---|---|---|
-| human vs Gemini | 368 | 70.7% | 0.389 |
-| human vs ChatGPT | 368 | 78.8% | 0.461 |
+| human vs Gemini | 368 | 70.9% | 0.395 |
+| human vs ChatGPT | 368 | 79.1% | 0.469 |
 | Gemini vs ChatGPT | 368 | 82.6% | 0.651 |
 
 ## 3. Agreement on `keep_or_exclude`
@@ -163,7 +163,7 @@ Ranked: a masked item any reviewer could answer, then a directional item whose t
 | 59 | `hqa_TAT_f4ec2a00_masked` | evidence_masked_insufficient | masked item reported answerable |
 | 60 | `hqa_CFQ_525e330f` | numeric_to_directional | directional transformation challenged |
 
-…and 121 more; the full list is the `review_needed` rows of the merged CSV.
+…and 120 more; the full list is the `review_needed` rows of the merged CSV.
 
 ## 7. Promotion classes
 
