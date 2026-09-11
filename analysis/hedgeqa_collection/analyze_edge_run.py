@@ -179,8 +179,19 @@ def main():
     a0 = r0.set_index("question_id")["correct"].astype(bool)
     a1 = r1.set_index("question_id")["correct"].astype(bool)
     common = a0.index.intersection(a1.index)
+    # Report movement in BOTH directions, never the net rate alone: a
+    # 73% -> 73% here concealed a 1-for-1 swap in which debate argued one
+    # correctly-declining item INTO an overcommitment.
+    resc = int((~a0[common] & a1[common]).sum())
+    lost = int((a0[common] & ~a1[common]).sum())
     print(f"\nDEBATE EFFECT: decline rate {a0[common].mean():.0%} -> "
-          f"{a1[common].mean():.0%}  (n={len(common)})")
+          f"{a1[common].mean():.0%}  rescued {resc}, lost {lost}  "
+          f"(n={len(common)})")
+    p0 = r0.set_index("question_id")["predicted"].astype(str)
+    p1 = r1.set_index("question_id")["predicted"].astype(str)
+    for h in common:
+        if p0[h] != p1[h]:
+            print(f"    {h:28s} {p0[h]:18s} -> {p1[h]}")
 
     print("\nSAMPLE RATIONALES (first decode of 3 items)")
     for h in list(items)[:3]:
