@@ -25,3 +25,8 @@ analysis/hedgeqa_collection/review_backups/
 
 # JetBrains IDE files
 .idea/
+
+# secrets / local credentials — never commit
+azure_details.env
+*.env
+!.env.example

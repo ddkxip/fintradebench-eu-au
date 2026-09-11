@@ -56,7 +56,14 @@ sys.path.insert(0, str(HERE.parent))
 from hedgeqa_schema import read_jsonl  # noqa: E402
 
 CORE = REPO / "data" / "hedgeqa" / "hedgeqa_core_v0_1_candidates.jsonl"
-HUMAN = (HERE.parent / "hedgeqa_core_v0_1_manual_review.csv")
+# Prefer the reviewer's exported completed sheet; fall back to the blank
+# template only when no review has been exported yet. Resolving this here
+# rather than requiring a manual edit avoids the failure mode where the
+# merge silently runs against the empty template and reports every item as
+# "human review not recorded".
+_COMPLETED = HERE.parent / "hedgeqa_core_v0_1_manual_review_completed.csv"
+_TEMPLATE = HERE.parent / "hedgeqa_core_v0_1_manual_review.csv"
+HUMAN = _COMPLETED if _COMPLETED.exists() else _TEMPLATE
 RESPONSES = HERE / "responses"
 OUT = HERE / "hedgeqa_core_review_merged.csv"
 
@@ -212,7 +219,11 @@ def main():
             w.writerow(row)
 
     print(f"merged {len(core)} items -> {OUT.relative_to(REPO)}")
-    print(f"  human rows found      : {len(human)}")
+    print(f"  human sheet           : {HUMAN.name}")
+    n_dec = sum(1 for r in human.values()
+                if (r.get("keep_or_exclude") or "").strip())
+    print(f"  human rows found      : {len(human)} "
+          f"({n_dec} with a keep/exclude decision)")
     for r in REVIEWERS:
         print(f"  {r:22s}: {len(ai[r])} records")
     print("\npromotion classes (routing only — no item is promoted here):")
