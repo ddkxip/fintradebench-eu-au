@@ -1,0 +1,62 @@
+{
+ "model": "llama3.3:70b",
+ "ollama_url": "http://localhost:11434/api/chat",
+ "k": 10,
+ "digest": "a6eb4748fd29",
+ "items": [
+  {
+   "hedgeqa_id": "hqa_FQ_ccc2f20b",
+   "evidence_chars": 5350,
+   "gold": "roughly_unchanged",
+   "seconds": 123.0,
+   "parse_rate_by_round": [
+    1.0,
+    1.0
+   ],
+   "predicted_r1": "roughly_unchanged",
+   "emitted_labels": [
+    "roughly_unchanged"
+   ],
+   "out_of_space_labels": [],
+   "max_prompt_tokens": 1452,
+   "done_reasons": [
+    "stop"
+   ],
+   "max_thinking_chars": 0,
+   "empty_content_calls": 0,
+   "calls": 40
+  },
+  {
+   "hedgeqa_id": "hqa_FQ_46ab258b",
+   "evidence_chars": 5296,
+   "gold": "roughly_unchanged",
+   "seconds": 113.0,
+   "parse_rate_by_round": [
+    1.0,
+    1.0
+   ],
+   "predicted_r1": "roughly_unchanged",
+   "emitted_labels": [
+    "roughly_unchanged"
+   ],
+   "out_of_space_labels": [],
+   "max_prompt_tokens": 1450,
+   "done_reasons": [
+    "stop"
+   ],
+   "max_thinking_chars": 0,
+   "empty_content_calls": 0,
+   "calls": 40
+  }
+ ],
+ "context_length": 131072,
+ "seconds_per_item": 118.0,
+ "projected_hours_317": 10.39,
+ "verdict": {
+  "parse_ok": true,
+  "no_output_truncation": true,
+  "no_empty_content": true,
+  "prompt_fits_context": true,
+  "max_prompt_tokens": 1452
+ }
+}

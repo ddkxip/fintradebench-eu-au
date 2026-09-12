@@ -1,0 +1,72 @@
+{
+ "model": "gpt-oss:120b",
+ "ollama_url": "http://localhost:11434/api/chat",
+ "k": 10,
+ "digest": "a951a23b46a1",
+ "items": [
+  {
+   "hedgeqa_id": "hqa_FQ_ccc2f20b",
+   "evidence_chars": 5350,
+   "gold": "roughly_unchanged",
+   "seconds": 19.2,
+   "parse_rate_by_round": [
+    0.0,
+    0.0
+   ],
+   "predicted_r1": null,
+   "emitted_labels": [
+    "<non-json>"
+   ],
+   "out_of_space_labels": [
+    "<non-json>"
+   ],
+   "max_prompt_tokens": 1435,
+   "done_reasons": [
+    "None",
+    "stop"
+   ],
+   "max_thinking_chars": 92,
+   "empty_content_calls": 33,
+   "calls_with_control_chars": 0,
+   "raw_head_sample": "",
+   "calls": 40
+  },
+  {
+   "hedgeqa_id": "hqa_FQ_46ab258b",
+   "evidence_chars": 5296,
+   "gold": "roughly_unchanged",
+   "seconds": 16.4,
+   "parse_rate_by_round": [
+    0.0,
+    0.0
+   ],
+   "predicted_r1": null,
+   "emitted_labels": [
+    "<non-json>"
+   ],
+   "out_of_space_labels": [
+    "<non-json>"
+   ],
+   "max_prompt_tokens": 1436,
+   "done_reasons": [
+    "None",
+    "stop"
+   ],
+   "max_thinking_chars": 72,
+   "empty_content_calls": 40,
+   "calls_with_control_chars": 0,
+   "raw_head_sample": "",
+   "calls": 40
+  }
+ ],
+ "context_length": 131072,
+ "seconds_per_item": 17.8,
+ "projected_hours_317": 1.57,
+ "verdict": {
+  "parse_ok": false,
+  "no_output_truncation": false,
+  "no_empty_content": false,
+  "prompt_fits_context": true,
+  "max_prompt_tokens": 1436
+ }
+}

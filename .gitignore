@@ -31,3 +31,4 @@ azure_details.env
 *.env
 !.env.example
 results/*.log
+results/logs/
