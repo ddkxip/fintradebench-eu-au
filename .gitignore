@@ -30,3 +30,4 @@ analysis/hedgeqa_collection/review_backups/
 azure_details.env
 *.env
 !.env.example
+results/*.log
