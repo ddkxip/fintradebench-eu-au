@@ -8,7 +8,7 @@
   {
    "model": "qwen3.6:35b-a3b-q8_0",
    "run_id": "hedgeqa_core317_qwen3_6_35b-a3b-q8_0",
-   "status": "running",
+   "status": "DONE",
    "digest": "0218f872e86b",
    "probe": {
     "parse_ok": true,
@@ -18,8 +18,27 @@
     "seconds_per_item": 21.3,
     "projected_hours_317": 1.88
    },
-   "run_started": "2026-09-12T21:06:41+00:00"
+   "run_started": "2026-09-12T21:06:41+00:00",
+   "run_exit": 0,
+   "scored_after_run": 317,
+   "scored": 317,
+   "run_finished": "2026-09-12T23:13:26+00:00"
+  },
+  {
+   "model": "gemma4:latest",
+   "run_id": "hedgeqa_core317_gemma4_latest",
+   "status": "running",
+   "digest": "c6eb396dbd59",
+   "probe": {
+    "parse_ok": true,
+    "no_output_truncation": true,
+    "no_empty_content": true,
+    "prompt_fits_context": true,
+    "seconds_per_item": 29.0,
+    "projected_hours_317": 2.55
+   },
+   "run_started": "2026-09-12T23:14:25+00:00"
   }
  ],
- "updated": "2026-09-12T21:06:41+00:00"
+ "updated": "2026-09-12T23:14:25+00:00"
 }
