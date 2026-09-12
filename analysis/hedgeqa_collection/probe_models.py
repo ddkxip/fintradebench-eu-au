@@ -78,10 +78,32 @@ def instrumented_chat(system, user, temperature=R.TAU, timeout=300,
         "done_reason": body.get("done_reason"),
         "wall_s": round(time.time() - t, 2),
         "content_chars": len(msg.get("content") or ""),
+        "control_chars_in_content": sum(
+            1 for ch in (msg.get("content") or "")
+            if ord(ch) < 32 and ch not in "\n\r\t"),
+        "raw_head": (msg.get("content") or "")[:160],
         "thinking_chars": len(msg.get("thinking") or ""),
         "prompt_chars": len(system) + len(user),
     })
     return msg.get("content", "")
+
+
+def _label_of(raw):
+    """Best-effort label, for REPORTING only -- never used for scoring.
+
+    The first gpt-oss:120b probe crashed here: its output carried a literal
+    control character inside a JSON string, which strict json.loads rejects.
+    A diagnostic must not die on the very quirk it exists to surface, so this
+    is lenient and records unparseable output instead of raising. Whether the
+    RUNNER accepts such output is a separate question, answered by
+    parse_rate_by_round, which comes from the runner's own parser.
+    """
+    if not raw.lstrip().startswith("{"):
+        return "<non-json>"
+    try:
+        return json.loads(raw, strict=False).get("label")
+    except Exception:
+        return "<unparseable>"
 
 
 def loaded_context_length(model):
@@ -122,8 +144,7 @@ def main():
                               pack=to_pack(it))
         calls = CALLS[before:]
         r1 = [r for r in rows if r.get("round") == 1]
-        labels = sorted({(json.loads(s["raw_text"]).get("label")
-                          if s.get("raw_text", "").startswith("{") else None)
+        labels = sorted({_label_of(s.get("raw_text") or "")
                          for s in sink} - {None})
         rec = {
             "hedgeqa_id": it.hedgeqa_id,
@@ -141,6 +162,9 @@ def main():
             "max_thinking_chars": max(c["thinking_chars"] for c in calls),
             "empty_content_calls": sum(1 for c in calls
                                        if c["content_chars"] == 0),
+            "calls_with_control_chars": sum(
+                1 for c in calls if c["control_chars_in_content"]),
+            "raw_head_sample": calls[0]["raw_head"] if calls else "",
             "calls": len(calls),
         }
         out["items"].append(rec)
