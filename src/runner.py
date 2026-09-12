@@ -82,13 +82,26 @@ Consider their argument against your own reading of the evidence. You may keep o
 """
 
 
-def ollama_digest() -> str:
+def ollama_digest(model: str = None) -> str:
+    """Digest of `model` (default: the module MODEL).
+
+    Takes the model explicitly because a caller running `--model gemma3:4b`
+    was silently recorded with gemma4's digest: this read the module-level
+    MODEL constant regardless of what was actually run, so the manifest
+    attributed every run to whichever model the module happened to default to.
+
+    Matches the model NAME exactly rather than by prefix -- "gemma3" as a
+    prefix matches both gemma3:4b and gemma3:12b, and whichever ollama listed
+    first would win.
+    """
+    want = (model or MODEL).strip()
     try:
         out = subprocess.run(["ollama", "list"], capture_output=True, text=True,
                              timeout=30).stdout
         for line in out.splitlines():
-            if line.startswith(MODEL.split(":")[0]):
-                return line.split()[1]
+            parts = line.split()
+            if len(parts) >= 2 and parts[0] == want:
+                return parts[1]
     except Exception:
         pass
     return "unknown"

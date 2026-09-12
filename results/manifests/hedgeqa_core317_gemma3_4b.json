@@ -1,0 +1,16 @@
+{
+ "run_id": "hedgeqa_core317_gemma3_4b",
+ "model": "gemma3:4b",
+ "manifest": "data/hedgeqa/hedgeqa_core_v0_1_validated_strict.jsonl",
+ "n_items": 317,
+ "k": 10,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "evidence_mode": "hedgeqa_oracle",
+ "digest": "a2af6cc3eb7f",
+ "failed_no_parse": [
+  "hqa_FQ_ccc2f20b"
+ ],
+ "seconds": 86.2
+}

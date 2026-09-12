@@ -152,6 +152,14 @@ def main():
     block("DOES UNCERTAINTY SEPARATE RIGHT FROM WRONG?")
     print("  The claim under test: a monitor watching entropy / p_noncommit")
     print("  can flag the answers the model gets wrong. AUC 0.50 = useless.\n")
+    print("  WARNING -- the p_noncommit split below is CIRCULAR and is printed")
+    print("  only to show how large the circularity is. On masked items every")
+    print("  gold is `insufficient_data`, so being right just IS declining,")
+    print("  and 'p_nc 0.05 when wrong vs 0.95 when right' restates the")
+    print("  definition rather than measuring anything. The same holds in")
+    print("  reverse for committed golds. Use AUC(TU), and above all the")
+    print("  committed-only test in the next block, which holds the")
+    print("  prediction's commitment fixed and so cannot be circular.\n")
     for lab, d in (("natural", nat), ("masked", msk), ("all", r1)):
         if not len(d) or d["ok"].nunique() < 2:
             print(f"  {lab:9s} -- not enough of both classes yet")
@@ -169,6 +177,41 @@ def main():
                   f"{int((~ze['ok']).sum()):4d} "
                   f"({pct((~ze['ok']).mean())}) -- confidently wrong, "
                   f"invisible to an entropy monitor")
+
+    block("NON-CIRCULAR TEST: among predictions the model COMMITTED to,\n"
+          "can entropy tell right from wrong?")
+    print("  Commitment is held fixed, so p_noncommit is near-constant and")
+    print("  cannot leak the answer. This is the question an operator has:")
+    print("  the model just gave me an answer -- can I tell if it is wrong?\n")
+    for lab, d in (("all committed", r1[~r1["pred_nc"]]),
+                   ("natural, committed gold",
+                    r1[~r1["is_masked"] & ~r1["gold_nc"] & ~r1["pred_nc"]])):
+        if not len(d) or d["ok"].nunique() < 2:
+            continue
+        w, g = d[~d["ok"]], d[d["ok"]]
+        print(f"  {lab}")
+        print(f"      n={len(d):4d}  wrong={len(w):4d} ({pct(len(w) / len(d))})"
+              f"   AUC(TU) {auc(w['tu'], g['tu']):.3f}")
+        print(f"      mean TU  wrong {w['tu'].mean():.3f} | "
+              f"right {g['tu'].mean():.3f}")
+        ze = d[d["zero_ent"]]
+        if len(ze):
+            print(f"      zero-entropy {len(ze):4d} of {len(d)}, of which "
+                  f"WRONG {int((~ze['ok']).sum()):4d} "
+                  f"({pct((~ze['ok']).mean())})")
+
+    block("FAILURE MODES BY SOURCE (natural items)")
+    print(f"  {'source':15s} {'n':>4s} {'hedge_coll':>11s} {'wrong_dir':>10s} "
+          f"{'overcommit':>11s} {'declined':>9s}")
+    for s, g in nat.groupby("source_benchmark"):
+        hc = int((~g["gold_nc"] & g["pred_nc"]).sum())
+        wd = int((~g["gold_nc"] & ~g["pred_nc"] & ~g["ok"]).sum())
+        oc = int((g["gold_nc"] & ~g["pred_nc"]).sum())
+        print(f"  {s:15s} {len(g):4d} {hc:11d} {wd:10d} {oc:11d} "
+              f"{g['pred_nc'].mean():9.1%}")
+    print("\n  Read this before quoting any pooled decline rate: if declining")
+    print("  is concentrated in one source, the pooled figure describes the")
+    print("  collection's composition more than the model's behaviour.")
 
     block("BY SOURCE (natural items only)")
     if len(nat):

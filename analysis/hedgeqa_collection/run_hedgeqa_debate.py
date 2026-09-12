@@ -184,8 +184,8 @@ def main():
         "manifest": args.manifest, "n_items": len(items),
         "k": args.k, "tau": TAU, "workers": WORKERS, "rounds": 1,
         "evidence_mode": "hedgeqa_oracle",
-        "digest": ollama_digest() if not args.model.startswith("vertex:")
-        else "api",
+        "digest": ollama_digest(args.model)
+        if not args.model.startswith("vertex:") else "api",
         "failed_no_parse": failed,
         "seconds": round(time.time() - t0, 1),
     }, indent=1), encoding="utf-8")
