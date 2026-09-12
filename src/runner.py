@@ -11,7 +11,7 @@ results/<run_id>_rows.csv. Manifest to results/manifests/<run_id>.json.
 from __future__ import annotations
 
 import json
-import subprocess
+import os
 import time
 import urllib.request
 from collections import Counter
@@ -27,7 +27,9 @@ from .parsing import parse_label
 from .schema import AnswerSchema
 
 REPO = Path(__file__).resolve().parents[1]
-OLLAMA = "http://localhost:11434/api/chat"
+# OLLAMA_URL points runs at another Ollama, e.g. the workstation via the SSH
+# tunnel: http://localhost:11435/api/chat. Same variable as the FinanceBench runner.
+OLLAMA = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/chat")
 MODEL = "gemma4:latest"
 TAU = 0.7
 WORKERS = 4
@@ -93,15 +95,18 @@ def ollama_digest(model: str = None) -> str:
     Matches the model NAME exactly rather than by prefix -- "gemma3" as a
     prefix matches both gemma3:4b and gemma3:12b, and whichever ollama listed
     first would win.
+
+    Asks the same server the decodes go to (OLLAMA_URL), not the local
+    `ollama` CLI: with a remote server the CLI would read the laptop's model
+    store and record a missing or wrong digest.
     """
     want = (model or MODEL).strip()
+    tags_url = OLLAMA.rsplit("/api/", 1)[0] + "/api/tags"
     try:
-        out = subprocess.run(["ollama", "list"], capture_output=True, text=True,
-                             timeout=30).stdout
-        for line in out.splitlines():
-            parts = line.split()
-            if len(parts) >= 2 and parts[0] == want:
-                return parts[1]
+        with urllib.request.urlopen(tags_url, timeout=30) as r:
+            for m in json.loads(r.read().decode()).get("models", []):
+                if m.get("name") == want:
+                    return m.get("digest", "unknown")[:12]
     except Exception:
         pass
     return "unknown"

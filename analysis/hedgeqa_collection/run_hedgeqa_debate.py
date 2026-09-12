@@ -53,7 +53,7 @@ import pandas as pd  # noqa: E402
 
 from hedgeqa_schema import read_jsonl  # noqa: E402
 from src.evidence import EvidencePack  # noqa: E402
-from src.runner import TAU, WORKERS, ollama_digest, run_question  # noqa: E402
+from src.runner import OLLAMA, TAU, WORKERS, ollama_digest, run_question  # noqa: E402
 from src.schema import AnswerSchema  # noqa: E402
 
 SINGLE_DOC_NOTE = ("This item ships a single combined evidence document, "
@@ -186,6 +186,10 @@ def main():
         "evidence_mode": "hedgeqa_oracle",
         "digest": ollama_digest(args.model)
         if not args.model.startswith("vertex:") else "api",
+        # Which server produced the decodes. Runs now happen on the laptop and
+        # on the workstation, and a manifest that cannot say which is not
+        # provenance.
+        "ollama_url": OLLAMA,
         "failed_no_parse": failed,
         "seconds": round(time.time() - t0, 1),
     }, indent=1), encoding="utf-8")

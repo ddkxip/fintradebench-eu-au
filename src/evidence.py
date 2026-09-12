@@ -8,6 +8,7 @@ fundamental context (window medians of F_ columns).
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -17,8 +18,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-COMBINED_DIR = Path(r"C:\Users\ddkxi\PycharmProjects\Contrastive learning"
-                    r"\NASDAQ processed data\output\combined")
+# FTB_COMBINED_DIR overrides the location (e.g. on the Linux workstation).
+COMBINED_DIR = Path(os.environ.get(
+    "FTB_COMBINED_DIR",
+    r"C:\Users\ddkxi\PycharmProjects\Contrastive learning"
+    r"\NASDAQ processed data\output\combined"))
 SUFFIX = "-daily_with_fundamentals.csv"
 DEFAULT_LOOKBACK_DAYS = 90
 

@@ -19,7 +19,7 @@ sys.path.insert(0, str(REPO))
 
 import pandas as pd
 
-from src.runner import TAU, WORKERS, ollama_digest, run_question
+from src.runner import OLLAMA, TAU, WORKERS, ollama_digest, run_question
 from src.schema import load_schemas
 
 ap = argparse.ArgumentParser()
@@ -111,7 +111,8 @@ for i, s in enumerate(eligible, 1):
 
 (man_dir / f"{args.run_id}.json").write_text(json.dumps({
     "run_id": args.run_id, "model": args.model,
-    "digest": ollama_digest() if not args.model.startswith("vertex:") else "api",
+    "digest": ollama_digest(args.model) if not args.model.startswith("vertex:") else "api",
+    "ollama_url": OLLAMA,
     "k_by_lane": K_BY_LANE, "tau": TAU, "workers": WORKERS, "rounds": 1,
     "n_questions": len(eligible), "seconds": round(time.time() - t0, 1),
     "failed_no_parse": failed,
