@@ -1,0 +1,68 @@
+{
+ "model": "qwen3.6:27b-q8_0",
+ "ollama_url": "http://localhost:11434/api/chat",
+ "k": 10,
+ "digest": "cd0210c667bf",
+ "items": [
+  {
+   "hedgeqa_id": "hqa_FQ_ccc2f20b",
+   "evidence_chars": 5350,
+   "gold": "roughly_unchanged",
+   "seconds": 84.6,
+   "parse_rate_by_round": [
+    1.0,
+    1.0
+   ],
+   "predicted_r1": "roughly_unchanged",
+   "emitted_labels": [
+    "roughly_unchanged"
+   ],
+   "out_of_space_labels": [],
+   "max_prompt_tokens": 1586,
+   "done_reasons": [
+    "stop"
+   ],
+   "max_thinking_chars": 0,
+   "empty_content_calls": 0,
+   "calls_with_control_chars": 0,
+   "raw_head_sample": "{\n\"label\": \"roughly_unchanged\",\n\"rationale\": \"The text explicitly states that the expected long-term return on plan assets for determining net periodic pension ",
+   "calls": 40
+  },
+  {
+   "hedgeqa_id": "hqa_FQ_46ab258b",
+   "evidence_chars": 5296,
+   "gold": "roughly_unchanged",
+   "seconds": 96.5,
+   "parse_rate_by_round": [
+    1.0,
+    1.0
+   ],
+   "predicted_r1": "roughly_unchanged",
+   "emitted_labels": [
+    "decreased",
+    "increased",
+    "roughly_unchanged"
+   ],
+   "out_of_space_labels": [],
+   "max_prompt_tokens": 1618,
+   "done_reasons": [
+    "stop"
+   ],
+   "max_thinking_chars": 0,
+   "empty_content_calls": 0,
+   "calls_with_control_chars": 0,
+   "raw_head_sample": "{\n\"label\": \"decreased\",\n\"rationale\": \"According to the table provided in the evidence, sales to restaurants accounted for 64% of total sales in both fiscal year",
+   "calls": 40
+  }
+ ],
+ "context_length": 262144,
+ "seconds_per_item": 90.6,
+ "projected_hours_317": 7.98,
+ "verdict": {
+  "parse_ok": true,
+  "no_output_truncation": true,
+  "no_empty_content": true,
+  "prompt_fits_context": true,
+  "max_prompt_tokens": 1618
+ }
+}
