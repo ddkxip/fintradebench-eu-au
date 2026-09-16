@@ -1,0 +1,24 @@
+{
+  "data": "sp500_valuation_technical_2026-04-27_2.xlsx",
+  "rows": 5,
+  "identity_mode": "fake_ticker",
+  "snapshot_date": "2026-04-27",
+  "agents": ["fundamental", "trading", "challenger"],
+  "rounds": 3,
+  "self_revision": false,
+  "seed": 17,
+  "output_root": "runs",
+  "base_url": "http://localhost:8000/v1",
+  "model": "Qwen/Qwen3.5-9B",
+  "max_tokens": 8192,
+  "timeout": 300,
+  "thinking": false,
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "min_p": 0.0,
+    "presence_penalty": 1.5,
+    "repetition_penalty": 1.0
+  }
+}

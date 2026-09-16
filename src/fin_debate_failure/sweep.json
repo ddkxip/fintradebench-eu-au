@@ -1,0 +1,5 @@
+{
+  "rounds": [1, 2, 3],
+  "identity_modes": ["fake_ticker", "real_name"],
+  "generations": [1]
+}

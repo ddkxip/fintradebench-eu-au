@@ -1,0 +1,4 @@
+# Local source snapshots, identity maps, and generated experiment artifacts.
+data/
+runs/
+annotations/
