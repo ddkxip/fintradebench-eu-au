@@ -39,7 +39,7 @@ sys.path.insert(0, str(REPO))
 
 import pandas as pd  # noqa: E402
 
-from analyze_core_run import auc  # noqa: E402
+from analyze_core_run import auc, load_valid_rows  # noqa: E402
 from hedgeqa_schema import read_jsonl  # noqa: E402
 
 MASKED = "evidence_masked_insufficient"
@@ -47,7 +47,9 @@ STRICT = "data/hedgeqa/hedgeqa_core_v0_1_validated_strict.jsonl"
 
 
 def load(run, nc_of):
-    d = pd.read_csv(REPO / "results" / run / "rows.csv")
+    d, excluded = load_valid_rows(REPO / "results" / run / "rows.csv")
+    for q, rnd, why in excluded:
+        print(f"  [{run}] EXCLUDED malformed row {q} round {rnd}: {why}")
     models = d["model"].dropna().unique()
     out = {}
     for rnd in (0, 1):

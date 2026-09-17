@@ -47,6 +47,55 @@ from hedgeqa_schema import read_jsonl  # noqa: E402
 MASKED = "evidence_masked_insufficient"
 
 
+NUMERIC = ("tu", "au", "eu", "p_noncommit")
+
+
+def load_valid_rows(path):
+    """Read a run's rows.csv, keeping only rows with a real decomposition.
+
+    Returns (rows, excluded) where `excluded` lists (question_id, round,
+    reason) for every row dropped. Never drops silently.
+
+    Why this exists: the runner appends each item's rows to the CSV by
+    POSITION, without a header. When one agent parses nothing, that round has
+    no decomposition, the item's rows carry a different column set, and every
+    value after `parse_rate` lands under the wrong header. Found on
+    llama3.3:70b `hqa_FTB_8315fbdd`: `tu` held "True" and `correct` held
+    "0.0" -- and bool("0.0") is True, so a naive loader would have scored that
+    garbage row as a CORRECT answer. It was caught only because `tu` failed to
+    parse as a number and crashed the comparison.
+
+    An item is kept only if EVERY one of its rounds is valid, because the
+    paired round-0 -> round-1 analyses need both.
+    """
+    d = pd.read_csv(path, dtype=str, keep_default_na=False)
+    reasons = {}
+    for i, r in d.iterrows():
+        why = []
+        if r.get("gold_scoreable") not in ("True", "False"):
+            why.append(f"gold_scoreable={r.get('gold_scoreable')!r:.40}")
+        if r.get("correct") not in ("True", "False", ""):
+            why.append(f"correct={r.get('correct')!r}")
+        for c in NUMERIC:
+            try:
+                float(r.get(c, ""))
+            except ValueError:
+                why.append(f"{c} non-numeric")
+                break
+        if why:
+            reasons.setdefault(r["question_id"], []).append(
+                (r["round"], "; ".join(why)))
+    bad_items = set(reasons)
+    excluded = [(q, rnd, why) for q in sorted(bad_items)
+                for rnd, why in reasons[q]]
+    keep = d[~d["question_id"].isin(bad_items)].copy()
+    for c in NUMERIC + ("round", "parse_rate"):
+        keep[c] = pd.to_numeric(keep[c])
+    keep["correct"] = keep["correct"].map(
+        {"True": True, "False": False, "": None})
+    return keep, excluded
+
+
 def auc(pos, neg):
     """Mann-Whitney AUC: P(score(pos) > score(neg)), ties at 0.5.
 
@@ -88,7 +137,12 @@ def main():
     args = ap.parse_args()
 
     items = {i.hedgeqa_id: i for i in read_jsonl(REPO / args.manifest)}
-    rows = pd.read_csv(REPO / "results" / args.run / "rows.csv")
+    rows, excluded = load_valid_rows(REPO / "results" / args.run / "rows.csv")
+    if excluded:
+        print(f"EXCLUDED {len({q for q, _, _ in excluded})} item(s) with "
+              f"malformed rows (not scored, not hidden):")
+        for q, rnd, why in excluded:
+            print(f"    {q} round {rnd}: {why}")
     r1 = rows[(rows["round"] == 1) & rows["correct"].notna()].copy()
     r0 = rows[(rows["round"] == 0) & rows["correct"].notna()].copy()
 

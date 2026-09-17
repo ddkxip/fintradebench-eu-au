@@ -84,9 +84,42 @@
   {
    "model": "gemma4:31b-it-q8_0",
    "run_id": "hedgeqa_core317_gemma4_31b-it-q8_0",
-   "status": "probing",
-   "digest": "53dd8459790f"
+   "status": "DONE",
+   "digest": "53dd8459790f",
+   "probe": {
+    "parse_ok": true,
+    "no_output_truncation": true,
+    "no_empty_content": true,
+    "prompt_fits_context": true,
+    "seconds_per_item": 92.1,
+    "projected_hours_317": 8.11
+   },
+   "run_started": "2026-09-13T10:40:17+00:00",
+   "run_exit": 0,
+   "scored_after_run": 317,
+   "scored": 317,
+   "run_finished": "2026-09-13T19:36:42+00:00"
+  },
+  {
+   "model": "llama3.3:70b",
+   "run_id": "hedgeqa_core317_llama3_3_70b",
+   "status": "DONE",
+   "digest": "a6eb4748fd29",
+   "probe": {
+    "parse_ok": true,
+    "no_output_truncation": true,
+    "no_empty_content": true,
+    "prompt_fits_context": true,
+    "seconds_per_item": 118.0,
+    "projected_hours_317": 10.39
+   },
+   "run_started": "2026-09-13T19:36:42+00:00",
+   "run_exit": 0,
+   "scored_after_run": 317,
+   "scored": 317,
+   "run_finished": "2026-09-14T07:15:08+00:00"
   }
  ],
- "updated": "2026-09-13T10:37:12+00:00"
+ "updated": "2026-09-14T07:15:08+00:00",
+ "finished": "2026-09-14T07:15:08+00:00"
 }

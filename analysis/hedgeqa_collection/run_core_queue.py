@@ -76,13 +76,21 @@ def run(cmd, log_prefix):
 
 
 def scored_items(run_id):
+    """Items with a VALID decomposition in every round.
+
+    This used to count any question_id present in rows.csv, so llama3.3:70b
+    was ledgered as 317/317 although hqa_FTB_8315fbdd had no decomposition in
+    round 0 (one agent parsed nothing) and is not scoreable. It now applies
+    the same validator the analyzers use, so the ledger and the analysis
+    cannot disagree about what was scored.
+    """
     p = REPO / "results" / run_id / "rows.csv"
     if not p.exists():
         return 0
-    import csv
-    with p.open(newline="", encoding="utf-8") as f:
-        rd = csv.DictReader(f)
-        return len({r["question_id"] for r in rd if r.get("question_id")})
+    sys.path.insert(0, str(HERE))
+    from analyze_core_run import load_valid_rows
+    rows, _ = load_valid_rows(p)
+    return rows["question_id"].nunique()
 
 
 def main():

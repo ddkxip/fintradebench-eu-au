@@ -1,0 +1,15 @@
+{
+ "run_id": "hedgeqa_core317_llama3_3_70b",
+ "model": "llama3.3:70b",
+ "manifest": "data/hedgeqa/hedgeqa_core_v0_1_validated_strict.jsonl",
+ "n_items": 317,
+ "k": 10,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "evidence_mode": "hedgeqa_oracle",
+ "digest": "a6eb4748fd29",
+ "ollama_url": "http://localhost:11434/api/chat",
+ "failed_no_parse": [],
+ "seconds": 41905.6
+}

@@ -1,0 +1,15 @@
+{
+ "run_id": "hedgeqa_core317_gemma4_31b-it-q8_0",
+ "model": "gemma4:31b-it-q8_0",
+ "manifest": "data/hedgeqa/hedgeqa_core_v0_1_validated_strict.jsonl",
+ "n_items": 317,
+ "k": 10,
+ "tau": 0.7,
+ "workers": 4,
+ "rounds": 1,
+ "evidence_mode": "hedgeqa_oracle",
+ "digest": "53dd8459790f",
+ "ollama_url": "http://localhost:11434/api/chat",
+ "failed_no_parse": [],
+ "seconds": 32184.6
+}

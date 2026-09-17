@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import socket
 import sys
 import time
 from pathlib import Path
@@ -138,7 +139,7 @@ def main():
                 done = {r[i] for r in rd if len(r) > i and r[i]}
         print(f"[{args.run_id}] resuming: {len(done)}/{len(items)} done")
 
-    t0, failed = time.time(), []
+    t0, failed, partial = time.time(), [], []
     for n, item in enumerate(items, 1):
         if item.hedgeqa_id in done:
             continue
@@ -172,8 +173,41 @@ def main():
             r["source_benchmark"] = item.source_benchmark
             r["hedgeqa_transformation"] = item.transformation_type
             r["gold_commitment"] = item.gold_commitment
-        pd.DataFrame(rows).to_csv(rows_path, mode="a",
-                                  header=not rows_path.exists(), index=False)
+
+        # A round where one agent parsed nothing has no decomposition, so its
+        # row lacks tu/predicted/correct. Record it: such an item is NOT
+        # scored, even though it is not a total parse failure.
+        if any("tu" not in r for r in rows):
+            partial.append(item.hedgeqa_id)
+            print(f"  [PARTIAL] a round has no decomposition (one agent "
+                  f"parsed nothing); rows kept but item is not scoreable",
+                  flush=True)
+
+        df = pd.DataFrame(rows)
+        if rows_path.exists():
+            # Append by column NAME, never by position. This used to write
+            # pd.DataFrame(rows) positionally without a header; when an item's
+            # rows had a different column set, every value after parse_rate
+            # slid under the wrong header (llama3.3:70b hqa_FTB_8315fbdd:
+            # `correct` held "0.0", which bool() reads as True).
+            header = list(pd.read_csv(rows_path, nrows=0).columns)
+            unknown = [c for c in df.columns if c not in header]
+            if unknown:
+                # The file's header lacks columns this item has -- e.g. the
+                # first item written was itself partial. Rewrite the whole file
+                # under the union of columns (a few hundred rows) rather than
+                # dropping data or aborting a multi-hour run.
+                old = pd.read_csv(rows_path, dtype=str, keep_default_na=False)
+                pd.concat([old, df.astype(str)], ignore_index=True).to_csv(
+                    rows_path, index=False)
+                print(f"  [SCHEMA] widened {rows_path.name} with {unknown}",
+                      flush=True)
+                df = None
+            else:
+                df = df.reindex(columns=header)
+        if df is not None:
+            df.to_csv(rows_path, mode="a", header=not rows_path.exists(),
+                      index=False)
         with (raw_dir / "decodes.jsonl").open("a", encoding="utf-8") as f:
             for r in raw_sink:
                 f.write(json.dumps(r) + "\n")
@@ -190,7 +224,11 @@ def main():
         # on the workstation, and a manifest that cannot say which is not
         # provenance.
         "ollama_url": OLLAMA,
+        # `localhost` is true on the laptop AND the workstation, so the URL
+        # alone cannot say which machine produced the decodes.
+        "hostname": socket.gethostname(),
         "failed_no_parse": failed,
+        "partial_decomposition": partial,
         "seconds": round(time.time() - t0, 1),
     }, indent=1), encoding="utf-8")
     print(f"[{args.run_id}] DONE in {(time.time() - t0) / 60:.1f} min")
