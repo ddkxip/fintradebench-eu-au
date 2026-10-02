@@ -1,5 +1,7 @@
 # Parameter sweep
 
+For Gemma on GPU 2, use [GEMMA.md](GEMMA.md) and `config.gemma.json`.
+
 Use `config.json` for model, data, roles, seed, and inference settings.
 Use `sweep.json` for the parameter grid:
 

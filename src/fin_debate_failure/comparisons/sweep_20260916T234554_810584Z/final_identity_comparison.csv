@@ -1,0 +1,16 @@
+﻿FakeTicker,CompanyName,QuestionType,FakeDecision,RealDecision,GroupOutcomeChanged,ChangedAgents
+UDAX,Apple Inc.,valuation_forcing,EXPENSIVE,EXPENSIVE,False,
+UDAX,Apple Inc.,core_holding,NO,NO,False,trading
+UDAX,Apple Inc.,confidence_falsifiability,HOLD,HOLD,False,
+IHHE,Caterpillar Inc.,valuation_forcing,EXPENSIVE,EXPENSIVE,False,trading
+IHHE,Caterpillar Inc.,core_holding,NO,NO,False,
+IHHE,Caterpillar Inc.,confidence_falsifiability,HOLD,HOLD,False,challenger
+XDVX,McDonald's Corporation,valuation_forcing,EXPENSIVE,EXPENSIVE,False,
+XDVX,McDonald's Corporation,core_holding,NO,NO,False,
+XDVX,McDonald's Corporation,confidence_falsifiability,NO_MAJORITY,HOLD,True,challenger
+RCSN,NVIDIA Corporation,valuation_forcing,EXPENSIVE,EXPENSIVE,False,
+RCSN,NVIDIA Corporation,core_holding,NO,YES,True,"fundamental, challenger"
+RCSN,NVIDIA Corporation,confidence_falsifiability,SELL,HOLD,True,challenger
+BACG,Johnson & Johnson,valuation_forcing,ATTRACTIVELY_PRICED,NO_MAJORITY,True,challenger
+BACG,Johnson & Johnson,core_holding,NO,NO,False,
+BACG,Johnson & Johnson,confidence_falsifiability,HOLD,HOLD,False,
